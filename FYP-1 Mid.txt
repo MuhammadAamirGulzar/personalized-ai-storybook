@@ -1,115 +1,0 @@
-NUCES
-
-31st October 2025
-
-My AI Story Book
-Presented By:
-muhammadaamirgulzar
-muhammadaamirgulzar Ali
-muhammadaamirgulzar
-
-Supervisor: Muhammad Aamir Gulzar
-
-FYP Goals and Objectives
-To create an AI-powered storybook
-generator that empowers non-technical users
-(parents, teachers) to create personalized,
-illustrated, and narrated storybooks.
-Core Problem: Existing tools suffer from
-character inconsistency, poor narrative structure,
-and require technical prompt engineering skills.
-
-Our Solution
-Character Consistency: Same character, every page.
-Structured Narrative: Coherent, age-appropriate stories.
-User-Friendly: Simple prompts and interactive modes.
-Key Features: Chatbot co-creation, voice commands,
-and styled PDF exports.
-
-Feedback after FYP-1 defense:
-Extend the scope (broader customization, better comparative analysis)
-Address accuracy: Story authentication, image/narrative similarity, chatbot
-consistency
-Implement further checks for appropriate content
-
-What we did
-Added STT
-Image–Text similarity:
-CLIP (OpenAI’s ViT-B/32, or open-source ViT-L/14)
-Visual similarity (character consistency):
-Same CLIP model (image–image cosine similarity)
-Text–text coherence:
-Sentence Transformers (all-MiniLM-L6-v2, etc.)
-
-“Core Story Generation & Basic UI”
-
-Iteration # 1
-
-muhammadaamirgulzar:
-Set up Ollama.
-Implement Director
-Agent pipeline.
-Do simple story
-generation.
-
-muhammadaamirgulzar:
-Implementation of
-Stable Diffusion 1.5
-Implement Writer
-Agent pipeline.
-Generate 1
-illustration per story.
-
-muhammadaamirgulzar:
-Build basic interface.
-Connect backend
-(story + image).
-Display generated
-story & image
-
-Current Progress
-Backend: Multi-agent pipeline, fully functional Prompt
-Writer, Reviewer, Editor, Image Agent.
-Frontend: Next.js UI, modern themed experience, landing
-page, story input, image toggle, story navigation, PDF
-export.
-File & model storage (local processing).
-
-Remaining Work
-Character Consistency & Personalization
-UI Adjustment: UI customization for genre, style, and length
-Chatbot/interactive mode (planned for FYP-2/3)
-Text-to-Speech & Speech-to-Text translation
-Better evaluations/analytics and reporting
-User accounts, security
-Langchain orchestration
-
-Usecase
-Diagram
-
-Architechture
-Diagram
-
-Class Diagram
-
-Domain
-Model
-
-Sequence Diagrams
-
-Chat
-Interaction
-
-Export
-Process
-
-Image generation
-
-Voice Interaction
-
-Basic Generation
-
-Dataflow
-Diagram
-
-
