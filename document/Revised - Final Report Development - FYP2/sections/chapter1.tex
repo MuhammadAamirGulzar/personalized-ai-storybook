@@ -1,0 +1,147 @@
+\chapter{Introduction}
+\label{sec:introduction}
+
+The rapid advancement of artificial intelligence technologies has opened unprecedented opportunities for creative content generation, fundamentally transforming how digital media is produced and consumed. This document presents \textbf{personalized-ai-storybook}, an innovative AI-powered platform that democratizes children's storybook creation through an integrated pipeline combining Large Language Models (LLMs) and diffusion-based image generation. Building upon the foundational work established in FYP-1, the current phase extends the system with six major enhancements: \textbf{Text-to-Speech (TTS) narration}, \textbf{Speech-to-Text (STT) voice input}, an \textbf{immersive styled open-book PDF export}, comprehensive \textbf{personalized and simple story enhancement pipelines}, a multi-metric \textbf{evaluation framework}, and significant \textbf{user interface improvements}.
+
+The system architecture integrates a FastAPI backend orchestrating a multi-agent pipeline with a Next.js-based frontend, providing an intuitive open-book interface. All AI processing occurs locally using Ollama (llama3.1:8b-instruct-q4\_K\_M for story generation), Stable Diffusion 1.5 via WebUI API for image synthesis, Piper TTS for offline voice narration, and OpenAI Whisper for speech-to-text transcription—ensuring complete privacy and eliminating cloud dependencies.
+
+
+\section{Existing Solutions}
+
+The field of AI-powered storytelling has seen several commercial and research implementations, each with distinct approaches and limitations. Understanding these existing solutions provides context for the innovations introduced by personalized-ai-storybook.
+
+\begin{table}[H]
+\centering
+\caption{Comparison of Existing Solutions}
+\begin{tabular}{|c|p{5cm}|p{5cm}|}
+\hline
+\textbf{System Name} & \textbf{System Overview} & \textbf{System Limitations} \\ \hline
+StoryBird & Cloud-based platform for creating illustrated children's books using pre-existing artwork. Provides templates and an artwork library for story composition. & Lacks AI-generated content, requires internet, limited character customization, subscription-based pricing, no TTS/STT, no character consistency across pages. \\ \hline
+ChatGPT + DALL-E & General-purpose AI models that can generate stories and images separately through a conversational interface. & No integrated pipeline, no character consistency, cloud-dependent, no voice narration, requires manual prompt engineering per image, privacy concerns for children's data. \\ \hline
+Canva Magic Write & Text generation tool with design capabilities for creating storybooks using templates and stock images. & Limited AI story generation depth, no character consistency, no TTS, not specialized for children's content, requires design expertise. \\ \hline
+NovelAI & Subscription-based AI story and image generation service with customization options. & Cloud-dependent, requires subscription, complex interface, not optimized for children's content, no TTS narration, no offline mode. \\ \hline
+\end{tabular}
+\label{tab:system_comparison}
+\end{table}
+
+
+\section{Problem Statement}
+
+The current landscape of digital storytelling presents several fundamental challenges that significantly limit effective content creation and user engagement. Existing AI-powered story generation platforms predominantly suffer from visual inconsistency, where character appearances vary dramatically across different pages of the same narrative, creating a disjointed reading experience that undermines story immersion. Many contemporary solutions require users to possess advanced prompt engineering skills to achieve quality outputs, establishing substantial barriers to entry for non-technical users, particularly children, parents, and educators who represent the primary target demographic for children's content.
+
+The inherent separation between text generation and image creation processes in most platforms frequently results in misalignment, where generated illustrations fail to accurately represent the narrative context or scene descriptions. Furthermore, concerns regarding data privacy and the dependence on cloud-based services for AI processing create barriers for users seeking offline, privacy-preserving solutions for creating children's content. The complexity of existing creative tools and the cost of professional content creation services limit accessibility for families and educators with limited budgets.
+
+Increasing reliance on passive digital media, especially among children, has reduced imagination and active participation in learning. Traditional educational content often lacks personalization, making it difficult to adapt to diverse student needs and cultural contexts. Existing systems lack voice-based interaction, meaning children who cannot type are excluded from the storytelling experience. There is also no mechanism to objectively evaluate the quality of generated stories and images — making it impossible to improve outputs systematically. Collectively, these challenges emphasize the need for a user-friendly, accessible, comprehensive, and consistent storytelling platform that maintains visual coherence, ensures data privacy, and delivers professional-quality illustrated and narrated storybooks without requiring technical expertise.
+
+
+\section{Scope}
+
+personalized-ai-storybook is designed as a comprehensive, offline, AI-powered storybook generation platform. The system supports the complete lifecycle of storybook creation — from voice or text input, through multi-agent story writing and image generation, to a narrated and exported illustrated PDF.
+
+The full scope of this iteration encompasses:
+\begin{itemize}
+    \item \textbf{Text-to-Speech (TTS)}: Scene-by-scene audio narration using Piper TTS (offline ONNX models), with male/female voice selection and audio caching.
+    \item \textbf{Speech-to-Text (STT)}: Voice story prompt submission using OpenAI Whisper (offline), with WAV preprocessing directly in Python (no ffmpeg dependency), resampled to 16kHz for Whisper compatibility.
+    \item \textbf{Styled PDF Export}: Professional open-book layout PDF generation using ReportLab — dark leather cover, cream pages, red margin lines, notebook rulings, spine crease effects, and auto-scaling text.
+    \item \textbf{Simple Story Enhancement}: Multi-agent pipeline (Director → Prompt → Writer → Reviewer → Editor) with background evaluation, content safety filtering, and dynamic genre/style/length customization.
+    \item \textbf{Personalized Story Mode}: User-uploaded photo enables IP-Adapter (FaceID Plus v2) character consistency across all illustrations via Stable Diffusion WebUI API.
+    \item \textbf{Evaluation Metrics}: Comprehensive multi-metric story quality assessment using CLIP (image-text alignment, visual consistency), Sentence Transformers (text coherence), Flesch-Kincaid (readability), InsightFace (character consistency in personalized mode), and a custom story structure validator.
+    \item \textbf{UI Enhancements}: Interactive page-flipping open-book display, dark/light mode, character chatbot, idea workshop, audio playback controls per page, and voice input button.
+\end{itemize}
+
+The system does not support: real-time collaborative editing, cloud storage, mobile native apps (iOS/Android), or multi-language generation in this iteration.
+
+
+\section{Modules}
+
+The personalized-ai-storybook system is organized into six comprehensive modules, each responsible for specific aspects of the complete story generation, narration, and presentation pipeline.
+
+\subsection{Large Language Model (LLM) + Multi-Agent Module}
+This module manages story generation, enhancement, and structuring through a coordinated multi-agent pipeline. It handles the conversion of user prompts into structured stories and manages the multi-agent workflow for story creation.
+\begin{enumerate}
+    \item Local LLM integration via Ollama (llama3.1:8b-instruct-q4\_K\_M) for offline story generation.
+    \item Director Agent for pipeline orchestration across all processing stages.
+    \item Writer Agent for narrative generation, character development, and scene structuring.
+    \item Reviewer Agent for quality assurance and age-appropriateness verification.
+    \item Editor Agent for final polishing, formatting, and PDF export triggering.
+    \item Prompt Agent for input validation, enhancement, and classification.
+    \item Evaluation Agent (background) for multi-metric quality assessment of generated content.
+    \item Idea Workshop Agent (LangChain-based) for interactive story ideation.
+\end{enumerate}
+
+\subsection{IP-Adapter + Stable Diffusion Module}
+This module ensures character consistency and generates high-quality illustrations for each story page using Stable Diffusion 1.5 with IP-Adapter technology.
+\begin{enumerate}
+    \item Character consistency maintenance across all story illustrations using IP-Adapter FaceID Plus v2 via WebUI API.
+    \item Stable Diffusion 1.5 with Realistic Vision checkpoint for high-quality image generation.
+    \item Two-pass generation pipeline: initial txt2img synthesis followed by img2img enhancement.
+    \item Genre and style-specific art generation (fantasy, cartoon, anime, realistic styles).
+    \item Reference image processing for personalized story characters (user photo upload).
+    \item GPU memory management (Ollama pause/resume during image generation).
+\end{enumerate}
+
+\subsection{Text-to-Speech (TTS) Module}
+The TTS module provides scene-by-scene audio narration using local Piper TTS models.
+\begin{enumerate}
+    \item Page-by-page voice narration using Piper TTS (offline ONNX models, no internet required).
+    \item Male (en\_US-ryan-medium) and female (en\_US-lessac-medium) voice selection.
+    \item Audio caching — pre-generated WAV files reused to avoid redundant synthesis.
+    \item Accessibility support for visually impaired users and young children.
+    \item Audio synchronization with story page navigation in the frontend.
+\end{enumerate}
+
+\subsection{Speech-to-Text (STT) Module}
+The STT module converts spoken user input into text story prompts using OpenAI Whisper.
+\begin{enumerate}
+    \item Offline speech-to-text using OpenAI Whisper (base model, no cloud needed).
+    \item WAV file reading and resampling using Python built-in \texttt{wave} module and numpy (bypasses ffmpeg requirement).
+    \item Automatic resampling to Whisper's required 16kHz sample rate.
+    \item Stereo-to-mono conversion for broad microphone compatibility.
+    \item Support for English language transcription with language auto-detection option.
+\end{enumerate}
+
+\subsection{PDF Rendering Module}
+This module handles the generation of immersive, styled PDF storybooks using ReportLab.
+\begin{enumerate}
+    \item Styled PDF generation matching the open-book UI: dark leather cover, cream pages, spine crease effect.
+    \item Professional book-cover page with story title, gold typography, and last scene image.
+    \item Notebook-ruled text pages with red margin line and proportional auto-scaling font.
+    \item Scene illustrations on the left page with white photo mat and drop shadow.
+    \item Page number pill indicator on each scene spread.
+    \item Georgia font family with fallback to Times-Roman for cross-system compatibility.
+\end{enumerate}
+
+\subsection{Context Management + UI Module}
+This module orchestrates the entire workflow and manages user interface interactions.
+\begin{enumerate}
+    \item Next.js-based frontend with TypeScript for responsive, type-safe UI.
+    \item Interactive open-book story display with page-by-page navigation.
+    \item Audio playback controls (play/pause/voice selection) per story page.
+    \item Voice input button for STT-based story prompt submission.
+    \item Character chatbot powered by story context.
+    \item Theme toggle (light/dark mode) with context-based state management.
+    \item JWT-based authentication and PostgreSQL database integration.
+    \item Genre, style, and length customization dropdowns.
+\end{enumerate}
+
+
+\section{Work Division}
+
+The project responsibilities are distributed among team members based on their expertise and the modular architecture of the system. This FYP-2 phase adds new responsibilities reflecting the implemented features.
+
+\clearpage
+
+\begin{table}[H]
+\centering
+\caption{Work Division Table -- FYP-2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{0.25\textwidth}|p{0.15\textwidth}|p{0.60\textwidth}|}
+\hline
+\textbf{Name} & \textbf{Registration} & \textbf{Responsibility / Module / Feature} \\ \hline
+muhammadaamirgulzar Kiyani & muhammadaamirgulzar & \textbf{TTS \& STT Integration}: Piper TTS implementation (offline ONNX, WAV generation, caching, voice selection), OpenAI Whisper STT (ffmpeg-free WAV reader, numpy resampler). \textbf{Evaluation Framework}: CLIP image-text alignment, visual consistency (CLIP), text coherence (Sentence Transformers), readability (Flesch-Kincaid), InsightFace character consistency for personalized mode, story structure validation, weighted overall score. \textbf{Personalized Story Mode}: IP-Adapter FaceID Plus v2, WebUI API integration, GPU memory management (Ollama pause/resume), LoRA verification. \textbf{Testing}: White-box unit tests (35 tests, 90\%+ average coverage), test infrastructure and coverage reporting. \textbf{Deployment}: Backend server configuration (FastAPI/Uvicorn), Ollama model setup, Stable Diffusion WebUI configuration, Python environment and dependency management. \\ \hline
+muhammadaamirgulzar & muhammadaamirgulzar & \textbf{Styled PDF Export}: Full open-book layout PDF (leather cover, cream pages, spine crease, red margin, notebook ruling, auto-scaling font, Georgia typography, photo mat, drop shadow, page pill indicator). \textbf{UI Enhancement}: Simple vs.\ Personalized mode UI tabs, genre/style/length dropdowns, smooth page-flip transitions, loading animations. \textbf{Writer Agent}: Story generation pipeline, Stable Diffusion 1.5 setup, two-pass image generation (txt2img + img2img), illustration generation with style-specific prompts. \textbf{Deployment}: Frontend deployment (Next.js build configuration, static asset serving), PDF export pipeline setup, ReportLab font and asset path configuration for target environment. \\ \hline
+muhammadaamirgulzar & muhammadaamirgulzar & \textbf{Full Pipeline Integration}: Connecting TTS/STT endpoints with frontend, audio playback UI (per-page controls, voice switcher), voice input button, character chatbot (story-context-powered), idea workshop interactive flow. \textbf{Backend API}: FastAPI endpoint management for TTS, STT, evaluation, story generation, and chat. \textbf{Simple Story Enhancement}: Prompt Agent, content safety filtering, multi-agent coordination. \textbf{Testing}: Black-box test cases (68 cases: equivalence partitioning, boundary value analysis, functional tests). \textbf{Deployment}: End-to-end system integration and deployment coordination, PostgreSQL database setup and migration, CORS and middleware configuration, cross-module bug-fixing and environment compatibility testing. \\ \hline
+\end{tabular}%
+}
+\label{tab:work_division}
+\end{table}

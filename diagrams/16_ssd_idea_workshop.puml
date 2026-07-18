@@ -1,0 +1,32 @@
+@startuml MyAIStorybook_SSD_Idea_Workshop
+title MyAIStorybook - System Sequence Diagram: Idea Workshop Scenario
+
+actor "User" as User
+participant ":System" as System
+
+note over User, System
+    Idea Workshop Scenario (Main Success)
+    System is treated as BLACK BOX
+end note
+
+User -> System : startWorkshop(mode)
+System --> User : workshop_started, initial_question
+
+loop [gathering requirements]
+    User -> System : provideInput(user_input)
+    System --> User : acknowledgment, next_question
+end
+
+User -> System : requestStoryGeneration()
+System --> User : generated_story(title, scenes[])
+
+User -> System : endWorkshop()
+System --> User : workshop_ended
+
+note right of System
+    System guides user through
+    interactive story ideation
+    Collects requirements internally
+end note
+
+@enduml

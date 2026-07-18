@@ -1,0 +1,54 @@
+{
+  "title": "Tim's Magical Movie Adventure",
+  "setting": "A cozy living room filled with books and toys",
+  "characters": [
+    "Tim",
+    "King Finn"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "In the heart of his favorite armchair, Tim was enjoying his favorite movie for the hundredth time. As the credits rolled, he yawned and stretched, thinking that all good things must come to an end. But suddenly, the screen sprang to life! Out popped King Finn, the brave and kind hero from the film, waving his royal scepter. 'Hail there, young Tim!' boomed King Finn, 'I've escaped my storybook prison and I need your help to find my way back!' Tim's eyes widened with excitement as he realized this was no ordinary movie night.",
+      "image_description": "Tim in armchair, King Finn popping out of TV screen",
+      "image_path": null
+    },
+    {
+      "scene_number": 2,
+      "text": "The next morning, Tim and King Finn set off on their adventure. They followed a map drawn by the wise old Owl from King Finn's kingdom. It led them to the Whispering Woods, where the trees were tall and the paths were twisted. 'We must beware of the mischievous Pucklewillies,' warned King Finn. 'They love nothing more than leading travelers astray!' Tim gulped, but his heart was brave. As they ventured deeper into the woods, they stumbled upon a group of Pucklewillies, laughing and dancing around a circle of toadstools. Tim took a deep breath and asked for directions to the Castle of Destiny.",
+      "image_description": "Tim and King Finn walking through Whispering Woods, Pucklewillies dancing",
+      "image_path": null
+    },
+    {
+      "scene_number": 3,
+      "text": "With the Pucklewillies' help, Tim and King Finn reached the Castle of Destiny just as night fell. Inside, they found a magical portal swirling with colors. 'This is it!' exclaimed King Finn. 'My way back home!' But as he stepped closer, the portal began to close. 'Quick, Tim!' shouted King Finn, 'You must wish me back into my storybook!' Tim thought hard and wished with all his heart. Suddenly, King Finn was swallowed by the portal, leaving behind only a sparkle of magic dust. Tim felt a pang of sadness, but also happiness, knowing he had helped his friend return home.",
+      "image_description": "Tim watching King Finn disappear into portal",
+      "image_path": null
+    }
+  ],
+  "consistency_report": {
+    "per_scene": {
+      "1": {
+        "scene_number": 1,
+        "word_count": 96,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "2": {
+        "scene_number": 2,
+        "word_count": 105,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "3": {
+        "scene_number": 3,
+        "word_count": 101,
+        "length_score": 1.0,
+        "has_image": true
+      }
+    },
+    "overall": {
+      "avg_length_score": 1.0,
+      "image_coverage": 1.0
+    }
+  }
+}

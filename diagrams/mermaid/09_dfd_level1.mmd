@@ -1,0 +1,98 @@
+%% MyAIStorybook - DFD Level 1
+
+graph TB
+    %% External Entities
+    User[USER]
+    Ollama[OLLAMA LLM]
+    SD[STABLE DIFFUSION]
+    Whisper[WHISPER STT]
+    TTS[COQUI TTS]
+    
+    %% Data Stores
+    UsersDB[(USERS)]
+    StoriesDB[(STORIES)]
+    ChatDB[(CHAT_CONVERSATIONS)]
+    WorkshopDB[(WORKSHOP_SESSIONS)]
+    FilesDB[(GENERATED_FILES)]
+    
+    %% Processes
+    P1[1.0<br/>Authenticate<br/>User]
+    P2[2.0<br/>Generate<br/>Story]
+    P3[3.0<br/>Generate<br/>Images]
+    P4[4.0<br/>Generate<br/>Audio]
+    P5[5.0<br/>Manage<br/>Character Chat]
+    P6[6.0<br/>Manage<br/>Idea Workshop]
+    P7[7.0<br/>Export<br/>Content]
+    
+    %% Authentication Flows
+    User -->|User Credentials| P1
+    P1 -->|Store User Data| UsersDB
+    UsersDB -->|User Info| P1
+    P1 -->|Auth Token| User
+    
+    %% Story Generation Flows
+    User -->|Story Prompt| P2
+    P2 -->|Text Generation Request| Ollama
+    Ollama -->|Generated Story Text| P2
+    P2 -->|Save Story| StoriesDB
+    StoriesDB -->|Story Data| P2
+    P2 -->|Generated Story| User
+    
+    %% Image Generation Flows
+    P2 -->|Scene Descriptions| P3
+    P3 -->|Image Generation Request| SD
+    SD -->|Generated Images| P3
+    P3 -->|Save Images| FilesDB
+    FilesDB -->|Image Paths| P3
+    P3 -->|Image URLs| P2
+    
+    %% Audio Generation Flows
+    User -->|Voice Input| P4
+    P4 -->|Audio Data| Whisper
+    Whisper -->|Transcribed Text| P4
+    P4 -->|Text Prompt| P2
+    
+    P2 -->|Story Text| P4
+    P4 -->|Narration Request| TTS
+    TTS -->|Audio Files| P4
+    P4 -->|Save Audio| FilesDB
+    FilesDB -->|Audio Paths| P4
+    P4 -->|Audio Narration| User
+    
+    %% Character Chat Flows
+    User -->|Chat Message| P5
+    P5 -->|Get Story Context| StoriesDB
+    StoriesDB -->|Story Data| P5
+    P5 -->|Character Response Request| Ollama
+    Ollama -->|Character Response| P5
+    P5 -->|Save Conversation| ChatDB
+    ChatDB -->|Chat History| P5
+    P5 -->|Character Response| User
+    
+    %% Workshop Flows
+    User -->|Workshop Input| P6
+    P6 -->|Save Session| WorkshopDB
+    WorkshopDB -->|Session Data| P6
+    P6 -->|Workshop Guidance Request| Ollama
+    Ollama -->|Agent Response| P6
+    P6 -->|Workshop Guidance| User
+    P6 -->|Story Requirements| P2
+    
+    %% Export Flows
+    User -->|Export Request| P7
+    P7 -->|Get Story| StoriesDB
+    StoriesDB -->|Story Data| P7
+    P7 -->|Get Media Files| FilesDB
+    FilesDB -->|Images/Audio| P7
+    P7 -->|Save PDF| FilesDB
+    FilesDB -->|PDF Path| P7
+    P7 -->|PDF Document| User
+    
+    %% Styling
+    classDef external fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    classDef process fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef datastore fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
+    
+    class User,Ollama,SD,Whisper,TTS external
+    class P1,P2,P3,P4,P5,P6,P7 process
+    class UsersDB,StoriesDB,ChatDB,WorkshopDB,FilesDB datastore

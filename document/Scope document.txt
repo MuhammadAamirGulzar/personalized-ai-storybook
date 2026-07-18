@@ -1,0 +1,500 @@
+personalized-ai-storybook : LLM and
+Diffusion-Based Pipeline for Personalized
+Storybook Generation and Chat-Assisted
+Storytelling
+Project Team
+
+muhammadaamirgulzar Kiyani muhammadaamirgulzar
+muhammadaamirgulzar
+muhammadaamirgulzar
+muhammadaamirgulzar
+muhammadaamirgulzar
+Session 2022-2026
+
+Supervised by
+
+Sir Muhammad Aamir Gulzar
+
+Department of Computer Science
+National University of Computer and Emerging Sciences
+Islamabad, Pakistan
+
+June, 2026
+
+2
+
+Contents
+1 Introduction
+1.1 Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.3 Problem Solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.4 Stake Holders . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+1
+2
+2
+3
+
+2 Project Description
+2.1 Scope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2 Modules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2.1 Large Language Model (LLM) + Multi-Agent Module . . . . . .
+2.2.2 IP-Adapter + Stable Diffusion Module . . . . . . . . . . . . . . .
+2.2.3 Speech-to-Text (STT) Module . . . . . . . . . . . . . . . . . . .
+2.2.4 Text-to-Speech (TTS) Module . . . . . . . . . . . . . . . . . . .
+2.2.5 PDF Rendering Module . . . . . . . . . . . . . . . . . . . . . . .
+2.2.6 Context Management Module . . . . . . . . . . . . . . . . . . .
+2.3 Tools and Technologies . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.4 Work Division . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.5 Timeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+Conclusions and Future Work . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4
+4
+5
+5
+5
+5
+6
+6
+6
+7
+8
+8
+10
+
+A System Architecture and Technical Specifications
+A.1 JSON Story Structure Schema . . . . . . . . . . . . . . . . . . . . . . .
+
+11
+11
+
+3
+
+List of Figures
+
+4
+
+List of Tables
+2.1
+2.2
+
+Work Division Table . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+Project Timeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+0
+
+8
+9
+
+Chapter 1
+Introduction
+This document presents the project proposal for personalized-ai-storybook, an innovative AI-powered
+storybook generation system. The project aims to transform the traditional approach to
+digital storytelling by combining advanced artificial intelligence technologies with usercentric design principles. personalized-ai-storybook represents a comprehensive solution that addresses the growing need for interactive, personalized, and accessible content creation
+tools in the digital age. The system integrates multiple AI technologies including local
+Large Language Models via Ollama, Stable Diffusion 1.5 for image generation, and IPAdapter technology for character consistency, voice narration by Coqui TTS, user speech
+to text translation(STT) by OpenAI Whisper, all orchestrated through LangChain workflows.
+
+1.1
+
+Problem Statement
+
+The current landscape of digital storytelling faces several key challenges that limit effective content creation and user engagement. Existing AI-powered story generation tools
+often fail to maintain visual character consistency across story pages, leading to disjointed
+narratives where character appearances vary dramatically. Many platforms require users
+to have strong prompt engineering skills to achieve quality results, which creates barriers for non-technical users, especially children and educators. The separation of text
+and image generation processes frequently causes misalignment, where illustrations do
+not match the narrative flow. Storytelling experiences are often passive, reducing opportunities for children to use their imagination and actively participate in creating stories.
+Parents and educators also face difficulty finding safe, personalized, and educational content that can adapt to individual preferences and learning objectives. These challenges
+highlight the need for accessible, consistent, and user-friendly storytelling solutions that
+support diverse creative and educational needs.
+1
+
+1. Introduction
+
+1.2
+
+Motivation
+
+The motivation for developing this project arises from the need to democratize highquality content creation while overcoming the shortcomings of current storytelling platforms. Increasing reliance on passive digital media, especially among children, has reduced imagination and active participation in learning. Traditional educational content
+often lacks personalization, making it difficult to adapt to diverse student needs and cultural contexts. Parents also struggle to find safe, engaging, and customizable content
+suited to their children’s interests and learning levels. Technical barriers in current AI
+tools prevent non-technical users from accessing advanced creative features, widening
+the digital divide. Existing AI tools suffer from inconsistent character representations,
+resulting in disjointed and unprofessional outcomes. Collectively, these challenges emphasize the need for a user-friendly, affordable, and consistent storytelling platform.
+
+1.3
+
+Problem Solution
+
+This project addresses the identified challenges through a comprehensive, modular, and
+user-centric approach that integrates cutting-edge AI technologies with practical usability
+considerations. The system provides dual operational modes to accommodate different
+user preferences and technical environments: a Chatbot Mode for interactive story cocreation and a Story Generator Mode for streamlined book production. The architecture
+utilizes local models through Ollama and character consistency is achieved through the
+innovative implementation of IP-Adapter technology with Stable Diffusion 1.5, ensuring
+that characters maintain visual coherence throughout the entire narrative. The system automatically structures user input into page-wise JSON format, eliminating the need for
+complex prompt engineering while maintaining professional content organization. An
+intuitive open-book user interface design mimics traditional reading experiences with illustrations on the left page and story text on the right, enhancing user engagement and
+accessibility. The solution includes comprehensive export capabilities, generating styled
+PDF documents that preserve the visual design integrity while offering both illustrated
+and text-only format options. Text-to-Speech integration provides accessibility support
+for visually impaired users and enhances the experience for children and educational applications. The modular architecture allows for scalability and customization, enabling
+users to adapt the system to specific requirements and technical constraints.
+The key objectives of this project include:
+• Develop a fully functional offline storybook generation system using local AI models
+2
+
+1.4 Stake Holders
+
+• Implement character consistency across all story illustrations using IP-Adapter technology
+• Create an intuitive user interface that requires no technical expertise to operate effectively
+• Provide seamless integration between text generation and image creation workflows
+• Generate professional-quality PDF exports suitable for printing and digital distribution
+• Support multiple genres, art styles, and customization options for diverse creative
+needs
+• Implement accessibility features including text-to-speech narration and structured
+content export
+
+1.4
+
+Stake Holders
+
+This project serves a diverse range of stakeholders, each with specific needs and expected
+benefits from the system:
+Primary Stakeholders:
+• Parents and Families: Seeking safe, personalized, and educational content for
+children without excessive screen time concerns
+• Children and Young Learners: Requiring engaging, interactive content that stimulates creativity and imagination
+• Teachers and Educators: Needing customizable teaching tools for moral lessons,
+cultural education, and creative writing instruction
+• Educational Institutions: Schools and learning centers requiring cost-effective
+content creation solutions for curriculum support
+
+3
+
+Chapter 2
+Project Description
+2.1
+
+Scope
+
+personalized-ai-storybook is an AI-powered storybook generator that enables users to create personalized, illustrated, and narrated storybooks. The project addresses the need for interactive storytelling that transforms passive media consumption into active creative participation, particularly for children. The system supports two primary operational modes:
+a Chatbot Mode for interactive story co-creation and a Story Generator Mode for comprehensive book creation. Users can generate stories from short prompts and by voice
+commands or engage in iterative story development through conversational interaction
+with the system. The platform incorporates advanced AI technologies including local
+LLM integration via Ollama, Stable Diffusion 1.5 with IP-Adapter for character consistency, and LangChain orchestration for workflow management. The system automatically
+structures stories into pages, generates matching illustrations for each page, and maintains character consistency throughout the narrative using IP-Adapter technology. Users
+can provide reference images for personalized story generation, ensuring their characters
+appear consistently across all story pages. The system features an intuitive open-book
+style user interface with illustrations on the left page and story text on the right page,
+mimicking real book reading experience. Additional features include styled PDF export
+functionality,Speech-to-Text Translation, Text-to-Speech narration for accessibility, and
+support for various genres and art styles. The project emphasizes privacy, accessibility,
+and user engagement while providing professional-quality illustrated storybooks suitable
+for education, entertainment, and creative storytelling purposes. The modular architecture
+allows for scalability and customization, making it adaptable to different user needs and
+technical environments.
+4
+
+2.2 Modules
+
+2.2
+
+Modules
+
+The project consists of five core modules that work together to provide a comprehensive
+AI-powered storybook generation experience.
+
+2.2.1
+
+Large Language Model (LLM) + Multi-Agent Module
+
+This module manages story generation, enhancement, and structuring. It handles the
+conversion of user prompts into structured stories and manages the multi-agent workflow
+for story creation.
+1. Local LLM integration via Ollama for offline story generation
+2. Automatic story structuring and page-wise content organization
+3. Prompt enhancement and story improvement capabilities
+4. Multi-agent coordination for story co-creation and character interaction
+5. JSON-based story blueprint generation and management
+
+2.2.2
+
+IP-Adapter + Stable Diffusion Module
+
+This module ensures character consistency and generates high-quality illustrations for
+each story page. It combines Stable Diffusion 1.5 with IP-Adapter technology to maintain
+visual coherence throughout the storybook.
+1. Character consistency maintenance across all story illustrations
+2. Stable Diffusion 1.5 integration for high-quality image generation
+3. IP-Adapter implementation for personalized character rendering
+4. Genre and style-specific art generation (fantasy, cartoon, anime, etc.)
+5. Reference image processing for personalized story characters
+
+2.2.3
+
+Speech-to-Text (STT) Module
+
+The STT module enables users to interact with the system through spoken input. It converts speech into accurate, real-time text that can be used for interactive story participation.
+5
+
+2. Project Description
+
+1. Real-time speech recognition with high accuracy
+2. Hands-free interaction for accessibility and convenience
+
+2.2.4
+
+Text-to-Speech (TTS) Module
+
+The TTS module provides optional audio narration capabilities to enhance accessibility
+and user experience. It converts story text into natural-sounding voice narration that can
+be played page by page.
+1. Page-by-page voice narration with natural-sounding speech
+2. Accessibility support for visually impaired users and children
+3. Audio synchronization with story progression
+
+2.2.5
+
+PDF Rendering Module
+
+This module handles the generation and styling of downloadable PDF storybooks with
+professional layouts. It manages the conversion of story content and illustrations into
+beautifully formatted PDF documents that preserve the open-book design aesthetic.
+1. Styled PDF generation with open-book layout preservation
+2. Text-only and illustrated PDF export options
+3. Professional formatting and typography management
+4. Multi-page document compilation and organization
+
+2.2.6
+
+Context Management Module
+
+This module orchestrates the entire workflow and manages the integration between all
+system components. It handles user interface interactions, session management, and coordinates the flow between LLM, image generation, and output modules.
+1. LangChain orchestration for workflow management
+2. Open-book style user interface with intuitive navigation
+3. Session context preservation and conversation history management
+4. JSON orchestration for page-wise content synchronization
+5. User input processing and story customization controls
+6
+
+2.3 Tools and Technologies
+
+2.3
+
+Tools and Technologies
+
+The project utilizes a comprehensive stack of modern AI and web technologies to deliver
+a robust storybook generation platform.
+AI and Machine Learning:
+• Ollama for local LLM deployment
+• Stable Diffusion 1.5 for image generation
+• IP-Adapter for character consistency
+• LangChain for AI workflow orchestration
+• Speech-to-Text Translation by OpenAI Whisper
+• Text-to-Speech Translation by Coqui TTS
+Development Frameworks:
+• Python for backend development and AI model integration
+• FastAPI for backend development
+• React.js for frontend user interface
+• Node.js for server-side JavaScript execution
+Data Processing:
+• JSON for story structure and page management
+• PIL (Python Imaging Library) for image processing
+• ReportLab for PDF generation
+Database and Storage:
+• SQLite for local data storage
+• File system storage for generated images and PDFs
+• Session storage for conversation history
+Deployment and Infrastructure:
+• CUDA for GPU acceleration
+• Local deployment for offline mode
+7
+
+2. Project Description
+
+2.4
+
+Work Division
+
+The project responsibilities are distributed among team members based on their expertise
+and the modular architecture of the system.
+
+Name
+muhammadaamirgulzar Kiyani
+
+muhammadaamirgulzar
+
+muhammadaamirgulzar
+
+2.5
+
+Table 2.1: Work Division Table
+Registration
+Responsibility/Module/Feature
+221-1178
+(Director + Reviewer Agent Modules)
+Ollama setup, story generation pipeline,
+Reviewer Agent for story enhancement,
+Personalized Story Mode, IP-Adapter integration, Text-to-Speech (voice narration), multi-agent optimization, testing
+and bug-fixing
+221-1237
+(Writer + UI Module) Stable Diffusion installation and pipeline setup, illustration generation, interactive book
+UI (page flipping, PDF export), dropdowns for genre/style/length, personalized/simple UI modes, final UI polishing
+with tabs and transitions
+221-1969
+(Interface + Context Modules) Basic user
+interface development, backend connection (story + image display), interactive
+chatbot with context saving, multi-page
+story pipeline, character chatbot powered
+by story context, full pipeline integration,
+testing, bug-fixing, deployment
+
+Timeline
+
+The project development is structured across multiple iterations to ensure systematic
+progress and deliverable completion.
+
+8
+
+2.5 Timeline
+
+Iteration Time Frame
+#
+01
+Sept–Oct
+
+02
+
+Nov–Dec
+
+03
+
+Jan–Feb
+
+04
+
+Mar–Apr
+
+Table 2.2: Project Timeline
+Tasks/Modules
+muhammadaamirgulzar: Build basic interface, connect backend (story +
+image), display generated story & image.
+muhammadaamirgulzar: Install & configure Stable Diffusion 1.5, implement Writer Agent pipeline, generate 1 illustration per
+story.
+muhammadaamirgulzar: Set up Ollama, implement Director Agent
+pipeline, do simple story generation.
+muhammadaamirgulzar: Build interactive chatbot with context saving,
+connect multi-page story & illustrations pipeline.
+muhammadaamirgulzar: Build interactive book UI (page flipping: text
+right, image left), add styled PDF export feature.
+muhammadaamirgulzar: Add Reviewer Agent, implement story enhancement pipeline.
+muhammadaamirgulzar: Extend Reviewer Agent + Editor Agent workflow, build Kids’ Character Chatbot powered by story context.
+muhammadaamirgulzar: Add dropdowns for genre, style, length, enhance
+UI to show simple & personalized modes.
+muhammadaamirgulzar: Implement Personalized Story Mode, integrate IPAdapter for character consistency across illustrations.
+muhammadaamirgulzar: Integrate full pipeline into one cohesive system,
+testing, bug-fixing, deployment.
+muhammadaamirgulzar: Final UI polishing (tabs for Chatbot / Story Generation / Character Chat), smooth transitions between modes.
+muhammadaamirgulzar: Add voice narration (Text-to-Speech), optimize
+multi-agent flow, testing & bug-fixing.
+
+9
+
+2. Project Description
+
+Conclusion
+The project successfully addresses the critical gap in accessible, privacy-conscious, and
+high-quality digital storytelling tools. Through the integration of advanced AI technologies including local LLM processing via Ollama, Stable Diffusion 1.5 for image generation, and IP-Adapter for character consistency, the system provides a comprehensive
+solution for automated storybook creation.
+The modular design approach has proven effective in creating a scalable and maintainable system architecture. Each of the five core modules - PDF Rendering, Text-toSpeech, Speech-to-Text, IP-Adapter + Stable Diffusion, LLM + Multi-Agent, and Context
+Management - operates independently while maintaining seamless integration through
+LangChain orchestration. This architecture supports future expansion and customization
+without requiring significant system restructuring.
+The project demonstrates significant improvements over existing solutions in several key
+areas: complete offline capability, automatic character consistency maintenance, professionalquality PDF export, and intuitive user interface design. The open-book UI paradigm
+successfully recreates the traditional reading experience while leveraging modern AI capabilities, resulting in enhanced user engagement and accessibility.
+
+Future Work and Enhancements
+The My AI-StoryBook project establishes a strong foundation for numerous future enhancements and research directions. Potential areas of development include:
+• Multi-language Support: Implement localization for major world languages
+• Mobile Application: Develop native mobile applications for iOS and Android platforms
+• Cloud Integration: Implement optional cloud storage for story backup and synchronization
+• Performance Optimization: Reduce processing times through model quantization
+and hardware acceleration
+• Video Generation: Enable automatic story-to-video conversion with narration,
+subtitles, and animated illustrations
+
+10
+
+Appendix A
+System Architecture and Technical
+Specifications
+This appendix provides detailed technical documentation for the personalized-ai-storybook system
+implementation.
+
+A.1
+
+JSON Story Structure Schema
+
+The system uses a standardized JSON format for story organization:
+{
+"story_id": "unique_identifier",
+"title": "Story Title",
+"genre": "fantasy|adventure|educational",
+"style": "cartoon|anime|realistic",
+"pages": [
+{
+"page_number": 1,
+"text": "Story content for this page...",
+"image_prompt": "Detailed prompt for image generation...",
+"characters": ["character1", "character2"],
+"scene_description": "Scene setting and mood..."
+}
+],
+"character_references": {
+"character1": {
+"description": "Physical description...",
+11
+
+A. System Architecture and Technical Specifications
+
+"reference_image": "path/to/reference.jpg"
+}
+}
+}
+
+12
+
+Bibliography
+[1] Ollama. Local LLM Deployment Platform. Available at: https://ollama.ai
+[2] Stability
+AI.
+Stable
+Diffusion
+1.5
+Model.
+Available
+at:
+https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5
+[3] Stability AI. IP-Adapter. Available at: https://huggingface.co/h94/IP-Adapter
+[4] LangChain.
+AI
+Workflow
+https://www.langchain.com
+
+Orchestration
+
+13
+
+Framework.
+
+Available
+
+at:
+
+

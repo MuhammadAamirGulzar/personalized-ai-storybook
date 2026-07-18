@@ -1,0 +1,101 @@
+---
+title: "MyAIStorybook FYP-2 — System Architecture Diagram"
+---
+flowchart TB
+    subgraph L1["Presentation Layer — Next.js / TypeScript"]
+        direction LR
+        UI_GEN["Story Generation UI\nText/Voice Input\nMode Selector"]
+        UI_BOOK["Open-Book Viewer\nPage-Flip Navigation\nIllustration + Text"]
+        UI_AUDIO["Audio Controls\nPlay/Pause\nVoice Selector"]
+        UI_CHAT["Character Chat\nMessage Input\nResponse Display"]
+        UI_WSHOP["Idea Workshop\nMulti-turn Dialog"]
+        UI_AUTH["Auth UI\nLogin / Register\nJWT Storage"]
+    end
+
+    subgraph L2["Application Layer — FastAPI REST API Server"]
+        direction LR
+        API_GEN["POST /api/generate\nStory Generation"]
+        API_TTS["POST /api/tts\nText-to-Speech"]
+        API_STT["POST /api/stt\nSpeech-to-Text"]
+        API_CHAT["POST /api/chat\nCharacter Chat"]
+        API_WSHOP["POST /api/workshop\nIdea Workshop"]
+        API_FACE["POST /api/check-face\nFace Detection"]
+        API_AUTH["Auth Routes\nJWT CRUD"]
+        MW["CORS + Auth\nMiddleware"]
+    end
+
+    subgraph L3["Business Logic Layer — Multi-Agent Pipeline"]
+        direction TB
+        subgraph L3A["Story Generation Pipeline"]
+            PA["PromptAgent\nValidation\nEnhancement"]
+            DA["DirectorAgent\nOrchestration"]
+            WA["WriterAgent\nStory Draft"]
+            RA["ReviewerAgent\nQuality Check"]
+            EA["EditorAgent\nPDF Export"]
+        end
+        subgraph L3B["Image Generation"]
+            IA["ImageAgent\nStandard SD"]
+            PIA["PersonalizedImageAgent\nIP-Adapter FaceID"]
+        end
+        subgraph L3C["Interactive Features"]
+            CA["ChatbotAgent\nStory Context"]
+            IWA["IdeaWorkshopAgent\nLangChain"]
+        end
+        subgraph L3D["Quality and Utility"]
+            EVA["EvaluationAgent\nAsync Subprocess"]
+            CS["ContentSafety\nKeyword Filter"]
+            OM["OllamaManager\nGPU Pause/Resume"]
+        end
+    end
+
+    subgraph L4["AI / ML Layer — Local Offline Inference"]
+        direction LR
+        OLLAMA["Ollama Server\nllama3.1:8b-instruct\nq4_K_M"]
+        SDWUI["Stable Diffusion WebUI\nRealistic Vision\ntxt2img + img2img"]
+        PIPER["Piper TTS\nONNX Models\nen_US-ryan/lessac"]
+        WHISPER["OpenAI Whisper\nBase Model\nOffline STT"]
+        CLIP["CLIP ViT-B/32\nImage-Text Alignment"]
+        SBERT["Sentence Transformers\nText Coherence"]
+        IFACE["InsightFace\nFace Embeddings"]
+    end
+
+    subgraph L5["Data Layer — Hybrid Storage"]
+        direction LR
+        DB[("PostgreSQL\nSQLAlchemy ORM\nUsers, Stories,\nSessions")]
+        FS_IMG[("images/\nPNG Illustrations")]
+        FS_AUD[("audio/\nWAV Cache")]
+        FS_PDF[("exports/\nStyled PDFs")]
+        FS_EVAL[("evaluations/\nMetrics JSON")]
+        FS_STR[("stories/\nStory JSON")]
+    end
+
+    %% Layer connections
+    L1 -->|"HTTP REST\nfetch/axios"| L2
+    L2 -->|"method calls\nPython imports"| L3
+
+    %% Business logic → AI/ML
+    DA -->|"Ollama API\nlocalhost:11434"| OLLAMA
+    IA -->|"WebUI API\nlocalhost:7860"| SDWUI
+    PIA -->|"WebUI API +\nIP-Adapter"| SDWUI
+    EA -->|"subprocess CLI"| PIPER
+    API_STT -->|"model.transcribe()"| WHISPER
+    EVA -->|"model inference"| CLIP
+    EVA -->|"model inference"| SBERT
+    EVA -->|"model inference"| IFACE
+    OM -->|"process management"| OLLAMA
+
+    %% Business logic → Data
+    DA -->|"save JSON"| FS_STR
+    EA -->|"save PDF"| FS_PDF
+    IA -->|"save PNG"| FS_IMG
+    PIA -->|"save PNG"| FS_IMG
+    EVA -->|"save metrics"| FS_EVAL
+    API_TTS -->|"read/write WAV"| FS_AUD
+    L2 -->|"SQLAlchemy ORM"| DB
+
+    %% Styles
+    style L1 fill:#EAF2FB,stroke:#1A5276
+    style L2 fill:#EAFAF1,stroke:#1E8449
+    style L3 fill:#FEF9E7,stroke:#B7950B
+    style L4 fill:#FDEDEC,stroke:#C0392B
+    style L5 fill:#FEF5E7,stroke:#CA6F1E

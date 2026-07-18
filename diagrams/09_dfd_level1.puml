@@ -1,0 +1,109 @@
+@startuml MyAIStorybook_DFD_Level1
+title MyAIStorybook - Level 1 DFD
+
+!define RECTANGLE
+skinparam rectangle {
+    BackgroundColor<<process>> LightYellow
+    BackgroundColor<<external>> LightGreen
+    BackgroundColor<<datastore>> LightGray
+}
+
+' External Entities
+rectangle "USER" as User <<external>>
+rectangle "OLLAMA LLM" as Ollama <<external>>
+rectangle "STABLE DIFFUSION" as SD <<external>>
+rectangle "WHISPER STT" as Whisper <<external>>
+rectangle "COQUI TTS" as TTS <<external>>
+
+' Data Stores
+rectangle "USERS" as UsersDB <<datastore>>
+rectangle "STORIES" as StoriesDB <<datastore>>
+rectangle "CHAT_CONVERSATIONS" as ChatDB <<datastore>>
+rectangle "WORKSHOP_SESSIONS" as WorkshopDB <<datastore>>
+rectangle "GENERATED_FILES" as FilesDB <<datastore>>
+
+' Processes
+rectangle "1.0\nAuthenticate\nUser" as P1 <<process>>
+rectangle "2.0\nGenerate\nStory" as P2 <<process>>
+rectangle "3.0\nGenerate\nImages" as P3 <<process>>
+rectangle "4.0\nGenerate\nAudio" as P4 <<process>>
+rectangle "5.0\nManage\nCharacter Chat" as P5 <<process>>
+rectangle "6.0\nManage\nIdea Workshop" as P6 <<process>>
+rectangle "7.0\nExport\nContent" as P7 <<process>>
+
+' Authentication Flows
+User --> P1 : User Credentials
+P1 --> UsersDB : Store User Data
+UsersDB --> P1 : User Info
+P1 --> User : Auth Token
+
+' Story Generation Flows
+User --> P2 : Story Prompt
+P2 --> Ollama : Text Generation Request
+Ollama --> P2 : Generated Story Text
+P2 --> StoriesDB : Save Story
+StoriesDB --> P2 : Story Data
+P2 --> User : Generated Story
+
+' Image Generation Flows
+P2 --> P3 : Scene Descriptions
+P3 --> SD : Image Generation Request
+SD --> P3 : Generated Images
+P3 --> FilesDB : Save Images
+FilesDB --> P3 : Image Paths
+P3 --> P2 : Image URLs
+
+' Audio Generation Flows
+User --> P4 : Voice Input
+P4 --> Whisper : Audio Data
+Whisper --> P4 : Transcribed Text
+P4 --> P2 : Text Prompt
+
+P2 --> P4 : Story Text
+P4 --> TTS : Narration Request
+TTS --> P4 : Audio Files
+P4 --> FilesDB : Save Audio
+FilesDB --> P4 : Audio Paths
+P4 --> User : Audio Narration
+
+' Character Chat Flows
+User --> P5 : Chat Message
+P5 --> StoriesDB : Get Story Context
+StoriesDB --> P5 : Story Data
+P5 --> Ollama : Character Response Request
+Ollama --> P5 : Character Response
+P5 --> ChatDB : Save Conversation
+ChatDB --> P5 : Chat History
+P5 --> User : Character Response
+
+' Workshop Flows
+User --> P6 : Workshop Input
+P6 --> WorkshopDB : Save Session
+WorkshopDB --> P6 : Session Data
+P6 --> Ollama : Workshop Guidance Request
+Ollama --> P6 : Agent Response
+P6 --> User : Workshop Guidance
+P6 --> P2 : Story Requirements
+
+' Export Flows
+User --> P7 : Export Request
+P7 --> StoriesDB : Get Story
+StoriesDB --> P7 : Story Data
+P7 --> FilesDB : Get Media Files
+FilesDB --> P7 : Images/Audio
+P7 --> FilesDB : Save PDF
+FilesDB --> P7 : PDF Path
+P7 --> User : PDF Document
+
+note right of P2
+    Core story generation
+    using multi-agent pipeline:
+    Prompt → Writer → Reviewer → Editor
+end note
+
+note right of P3
+    Two-pass image generation:
+    txt2img → img2img upscale
+end note
+
+@enduml

@@ -1,0 +1,22 @@
+---
+title: "SSD UC6 — Chat with Story Character"
+---
+sequenceDiagram
+    actor User as ":User"
+    participant S as ":System"
+
+    Note over User,S: System treated as BLACK BOX<br/>UC6 — Chat with Story Character
+
+    User->>S: openCharacterChat(storyId)
+    S-->>User: characterList(characters[])
+
+    User->>S: selectCharacter(storyId, characterName)
+    S-->>User: chatSessionReady(character, greeting)
+
+    loop multi-turn conversation
+        User->>S: sendMessage(storyId, characterName, userMessage)
+        S-->>User: characterResponse(response, character)
+    end
+
+    User->>S: closeChat()
+    S-->>User: chatClosed

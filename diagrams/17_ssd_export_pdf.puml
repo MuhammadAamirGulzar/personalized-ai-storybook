@@ -1,0 +1,29 @@
+@startuml MyAIStorybook_SSD_Export_PDF
+title MyAIStorybook - System Sequence Diagram: Export Story to PDF Scenario
+
+actor "User" as User
+participant ":System" as System
+
+note over User, System
+    Export Story to PDF Scenario (Main Success)
+    System is treated as BLACK BOX
+end note
+
+User -> System : selectStory(story_id)
+System --> User : story_details
+
+User -> System : requestPDFExport()
+System --> User : export_started
+
+System --> User : pdf_ready(file_path, download_url)
+
+User -> System : downloadPDF()
+System --> User : pdf_file
+
+note right of System
+    System generates PDF internally
+    with story text and images
+    Returns downloadable file
+end note
+
+@enduml

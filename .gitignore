@@ -1,0 +1,153 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.log
+local_settings.py
+instance/
+.webassets-cache
+.scrapy
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.pytype/
+cython_debug/
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+.cache/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+.turbo
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+DATABASE_URL
+
+# Generated Content
+generated/images/*.png
+generated/images/*.jpg
+generated/stories/*.json
+generated/pdfs/*.pdf
+# Keep the directories but ignore contents
+!generated/images/.gitkeep
+!generated/stories/.gitkeep
+!generated/pdfs/.gitkeep
+!generated/exports/.gitkeep
+
+# AI Models & Checkpoints (LARGE FILES)
+*.safetensors
+*.ckpt
+*.bin
+*.pth
+*.pt
+*.onnx
+backend/pretrained/
+backend/models/
+backend/ip_adapter_checkpoints/
+backend/controlnet_ipadapter/
+backend/ip_adapter/
+
+# Stable Diffusion WebUI (if in project)
+stable-diffusion-webui/
+sd-webui-controlnet/
+IP-Adapter/
+
+# Logs
+*.log
+logs/
+*.out
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Memory bank (if sensitive)
+memory_bank/
+
+# Documentation artifacts (optional)
+*.pdf
+!README.pdf
+
+# Test files (but allow backend/tests/ folder)
+test_*.py
+*_test.py
+!backend/tests/**
+.pytest_cache/
+# Allow coverage files in tests folder
+.coverage
+!backend/tests/.coverage
+htmlcov/
+!backend/tests/coverage_html/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+*.exe
+*.dll
+*.so
+*.dylib

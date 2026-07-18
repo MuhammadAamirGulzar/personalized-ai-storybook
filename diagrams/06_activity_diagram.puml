@@ -1,0 +1,109 @@
+@startuml MyAIStorybook_Activity_Diagram
+title MyAIStorybook - Activity Diagram: Complete Story Generation Workflow
+
+|User|
+start
+:Enter story prompt;
+:Select generation options\n(images, mode);
+:Click "Weave Magic";
+
+|Frontend|
+:Send generation request\nto backend;
+
+|Backend - PromptAgent|
+:Receive prompt;
+:Validate prompt format;
+
+if (Prompt valid?) then (yes)
+    :Enhance prompt\nwith details;
+else (no)
+    :Return error message;
+    |Frontend|
+    :Display error to user;
+    stop
+endif
+
+|Backend - DirectorAgent|
+:Initialize multi-agent\npipeline;
+
+|Backend - WriterAgent|
+:Generate story structure;
+:Create title and setting;
+:Develop characters;
+:Write 3 scenes;
+:Generate image descriptions;
+
+|Backend - ReviewerAgent|
+:Review story draft;
+:Check age-appropriateness;
+:Evaluate narrative coherence;
+:Assess educational value;
+:Generate feedback;
+
+|Backend - EditorAgent|
+:Apply reviewer feedback;
+:Refine story text;
+:Ensure JSON validity;
+:Generate PDF export;
+
+|Backend|
+if (Generate images?) then (yes)
+    |Backend - ImageAgent|
+    fork
+        :Generate Scene 1 image;
+        :txt2img (512x512);
+        :img2img upscale;
+    fork again
+        :Generate Scene 2 image;
+        :txt2img (512x512);
+        :img2img upscale;
+    fork again
+        :Generate Scene 3 image;
+        :txt2img (512x512);
+        :img2img upscale;
+    end fork
+    :Save all images;
+else (no)
+    :Skip image generation;
+endif
+
+|Backend - EvaluationAgent|
+:Evaluate story quality\n(background process);
+note right
+    Runs asynchronously
+    without blocking response
+end note
+
+|Backend|
+:Save story to database;
+:Prepare response JSON;
+:Return story data;
+
+|Frontend|
+:Receive story data;
+:Initialize story display;
+:Render page navigation;
+:Load images (if available);
+
+|User|
+:View generated story;
+:Navigate through pages;
+
+if (Want to chat with character?) then (yes)
+    :Select character;
+    :Start chat conversation;
+    |Backend - ChatbotAgent|
+    :Generate character responses;
+    |User|
+    :Continue chatting;
+else (no)
+endif
+
+if (Want to export?) then (yes)
+    :Download PDF;
+else (no)
+endif
+
+stop
+
+@enduml

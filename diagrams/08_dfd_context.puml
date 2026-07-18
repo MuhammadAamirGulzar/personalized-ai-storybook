@@ -1,0 +1,52 @@
+@startuml MyAIStorybook_DFD_Context
+title MyAIStorybook - Context Diagram (DFD Level 0)
+
+!define RECTANGLE
+skinparam rectangle {
+    BackgroundColor<<system>> LightBlue
+    BackgroundColor<<external>> LightGreen
+}
+
+rectangle "USER\n(Parent/Educator/Child)" as User <<external>>
+rectangle "OLLAMA LLM\nSERVICE" as Ollama <<external>>
+rectangle "STABLE DIFFUSION\nSERVICE" as SD <<external>>
+rectangle "WHISPER STT\nSERVICE" as Whisper <<external>>
+rectangle "COQUI TTS\nSERVICE" as TTS <<external>>
+
+rectangle "MyAIStorybook\nSystem" as System <<system>> {
+}
+
+User --> System : Story Prompt
+User --> System : Voice Input
+User --> System : Chat Messages
+User --> System : Workshop Ideas
+User --> System : User Credentials
+
+System --> User : Generated Story
+System --> User : Story Images
+System --> User : PDF Export
+System --> User : Audio Narration
+System --> User : Character Responses
+System --> User : Workshop Guidance
+
+System --> Ollama : Text Generation Request
+Ollama --> System : Generated Text
+
+System --> SD : Image Generation Request
+SD --> System : Generated Images
+
+System --> Whisper : Audio Input
+Whisper --> System : Transcribed Text
+
+System --> TTS : Text for Narration
+TTS --> System : Audio Output
+
+note right of System
+    The MyAIStorybook system
+    processes user inputs through
+    multiple AI agents to generate
+    personalized illustrated stories
+    with interactive features
+end note
+
+@enduml

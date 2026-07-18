@@ -1,0 +1,120 @@
+@startuml
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 2
+skinparam participantFontSize 12
+skinparam noteFontSize 11
+
+title MyAIStorybook FYP-2 — Sequence Diagram: Complete Story Generation
+
+actor "User" as U
+participant "Frontend\n(Next.js)" as FE
+participant "FastAPI\n(main.py)" as API
+participant "PromptAgent" as PA
+participant "DirectorAgent" as DA
+participant "WriterAgent\n(Ollama LLM)" as WA
+participant "ReviewerAgent" as RA
+participant "EditorAgent\n(PDF Export)" as EA
+participant "ImageAgent\n(WebUI API)" as IA
+participant "OllamaManager" as OM
+participant "EvaluationAgent\n(Async)" as EVA
+participant "TTSManager" as TTS
+participant "FileSystem\n(generated/)" as FS
+
+== User Input Phase ==
+U -> FE: Submit prompt\n(text or voice)
+alt Voice Input
+    FE -> API: POST /api/stt (WAV file)
+    API -> API: WhisperSTTManager\n.transcribe_audio()
+    API --> FE: {text: transcribed_text}
+    FE -> FE: Pre-fill prompt field
+end
+FE -> API: POST /api/generate\n{prompt, mode, genre, style,\ngenerate_images, user_photo?}
+API -> API: Select mode:\nsimple | personalized
+
+== Validation Phase ==
+API -> PA: process_prompt(user_prompt)
+PA -> PA: Validate length [5-500]\nClassify prompt type\nContentSafety check
+PA --> API: {enhanced_prompt, prompt_type}
+alt Invalid/Nonsense
+    API --> FE: HTTP 400 error
+end
+
+== Story Generation Phase ==
+API -> DA: create_story(enhanced_prompt,\ngenre, style, length)
+DA -> WA: generate_story(prompt)
+WA -> WA: Format LLM prompt with\nstory structure template
+WA ->> WA: Call Ollama API\n(llama3.1:8b-instruct-q4_K_M)
+WA -> WA: Parse JSON response\n(retry up to 2x on failure)
+WA --> DA: story_draft {title,\nsetting, characters, scenes[]}
+
+DA -> RA: review_story(story_draft)
+RA -> RA: Check coherence\nCheck age-appropriateness\nValidate scene count >= 3
+RA --> DA: reviewed_story
+
+DA -> EA: edit_story(reviewed_story)
+EA -> EA: Finalize metadata\nSet finalized=true
+EA -> EA: export_pdf(story_data)
+EA -> FS: Save PDF to\ngenerated/exports/
+EA --> DA: final_story, pdf_path
+
+== Image Generation Phase ==
+alt generate_images = true
+    DA -> OM: pause_ollama()\n(Free GPU VRAM)
+    OM --> DA: paused OK
+
+    alt use_personalized_images = true
+        loop For each scene
+            DA -> IA: PersonalizedImageAgent\n.generate_image(description,\nuser_photo)
+            IA -> IA: Encode face (IP-Adapter)
+            IA ->> IA: POST /sdapi/v1/txt2img\n(512x512 + IP embedding)
+            IA ->> IA: POST /sdapi/v1/img2img\n(768x768 refinement)
+            IA -> FS: Save PNG to\ngenerated/images/
+            IA --> DA: image_path
+        end
+    else simple mode
+        loop For each scene
+            DA -> IA: ImageAgent\n.generate_image(description)
+            IA ->> IA: POST /sdapi/v1/txt2img\n+ img2img refinement
+            IA -> FS: Save PNG
+            IA --> DA: image_path
+        end
+    end
+
+    DA -> OM: resume_ollama()
+end
+
+== Save & Return Phase ==
+DA -> FS: Save story JSON to\ngenerated/stories/
+DA --> API: final_story (with image paths)
+
+== Background Evaluation ==
+API ->> EVA: Launch subprocess\n(evaluation_agent.py <json_path> <story_id>)
+note right of EVA
+  Runs ASYNCHRONOUSLY:
+  - CLIP image-text alignment
+  - CLIP visual consistency
+  - Sentence Transformer coherence
+  - Flesch-Kincaid readability
+  - Story structure check
+  - InsightFace (if personalized)
+  - Save to generated/evaluations/
+end note
+
+API --> FE: {story_json, pdf_path, status: "success"}
+
+== Display & Narration Phase ==
+FE -> FE: Render open-book UI\n(left: image, right: text)
+U -> FE: Click Play on scene page
+FE -> API: POST /api/tts\n{story_id, scene_number, voice}
+API -> TTS: generate_audio(text,\nstory_id, scene_n, voice)
+TTS -> TTS: Check audio cache
+alt Cache miss
+    TTS -> TTS: Write text to temp file
+    TTS ->> TTS: Run Piper subprocess\n(PowerShell)
+    TTS -> FS: Save WAV to\ngenerated/audio/
+end
+TTS --> API: relative_audio_path
+API --> FE: {audio_path}
+FE -> FE: Load & play WAV audio
+
+@enduml

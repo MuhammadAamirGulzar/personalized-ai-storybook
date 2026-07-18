@@ -1,0 +1,372 @@
+SYSTEM
+MODELING
+Event Driven Modeling
+• Event driven modeling shows how a system
+  responds to external and internal events.
+• It is based on the assumption that a system has
+  a finite number of states and events may
+  cause a transition from one state to another.
+• This view is particularly appropriate when
+  reasoning about real-time systems.
+  – For example a system controlling a valve may
+    move from a state “Valve open” to “Valve close”
+    when a command(stimulus) is received from
+    operator.
+State Diagram
+• UML supports event-based modeling using state
+  diagrams, which were based on state charts.
+• State diagrams show system states and
+  events that cause transition from one state to
+  another.
+• They DONOT show the flow of data within
+  the system
+• May include additional information on the
+  computation carried out in each state.
+State Diagram Example
+• Control System for a microwave oven
+  –   Has a switch to select full or half power
+  –   Numeric keypad to enter cooking time
+  –   Start/stop button
+  –   Alpha numeric display
+• Sequence:
+  – Select power level (with half or full)
+  – Input the cooking time using the numeric keypad
+  – Start pressed and the food cooked for the given time
+State Diagram Example
+                               system states
+
+
+
+                                               actions taken in
+                                                  that state
+
+
+
+
+    stimuli that force a
+transition from one state to
+          another
+States for microwave Oven
+Stimulus for microwave Oven
+State Diagram
+A state machine diagram
+models the behavior of a
+single object, specifying
+the sequence of events
+an object goes through
+during its lifetime in
+response to events. As an
+example, the following
+state machine diagram
+shows the states that a
+door goes through during
+its lifetime
+State Diagrams (Billing Example)
+State Diagrams show the sequences of states an object goes
+through during its life cycle in response to stimuli, together
+with its responses and actions; an abstraction of all possible
+behaviors.
+            Start                                                              En
+                                  Unpaid           Paid                        d
+                Invoice created            payin          Invoice destroying
+                                           g
+    Elements of State Diagrams
+
+•   The basic elements of state diagrams are
+     –   states – the state in which the object finds itself at any moment
+     –   transitions – take the object from one state to another
+     –   events – cause the transition from one state to another
+     –   actions – take place as a result of a transition
+•   In the UML, many other extensions have been added,
+    such as:
+     – generalization/Inheritance among events (i.e. a mouse click and keyboard input as subclasses
+       of user interface events)
+     – hierarchical diagrams for managing complexity (from State Charts)
+     – guards – conditions on transitions
+•   State Diagrams should only be used for objects with significant dynamic
+    behaviour
+        States
+• Symbol for a state
+
+
+• A system in a state will remain in it until the
+  occurrence of an event that will cause it to
+  transition to another one
+   – Being in a state means that a system will behave in a
+     predetermined way in response to a given event
+• Symbols for the initial and final states
+     States
+• Numerous types of events can cause the
+  system to transition from one state to
+  another
+
+• Names for states are usually chosen as:
+  – Adjectives: open, closed, ready…
+  – Present continuous verbs: opening, closing,
+    waiting…
+     Transitions
+• Transitions are represented with arrows
+            Transitions
+• Transitions represent a change in a state in response to an event
+    – Theoretically, it is supposed to occur in a instantaneous manner (it
+      does not take time to execute)
+• A transition can have
+    – Trigger: causes the transition; can be an event of simply the passage
+      of time
+    – Guard: a condition that must evaluate to true for the transition to
+      occur
+    – Effect: an action that will be invoked directly on the system of the
+      object being modeled
+      Self Transition
+ •State can also have self transitions
+  – These self transition are more useful when they
+    have an effect associated with them
+• Timer events are usually popular with self
+  transitions
+• Below is a typical example:
+States and Transitions
+
+                                             transition              state
+
+
+
+                     On First     up floor
+                                                    Moving
+       arrive at      Floor                          Up
+       first floor
+
+   Moving to
+                     An Elevator                                 up floor
+   First Floor                               arrive at
+                                               floor
+
+                                arrive at floor
+                                                          Idle
+                      Moving
+                      Down        down floor
+
+         time-out
+ Basic UML State Diagram Syntax
+
+• A state is drawn with a round
+  box, with three compartments          Name               sometimes
+  for                                state variables
+                                                           left out when
+                                                           empty
+   – name                               actions
+   – state variables (if any)
+   – actions to be performed
+• A transition is drawn with an
+  arrow, possibly labeled with
+   – event causing the transaction         AnEvent [guard] / SomeAction
+
+   – guard condition
+   – Action to perform
+State Diagram for Seminar
+Registration
+                                             event           action, taken during
+                                                                  transition
+
+               Setup                                                 Available
+                                 AddParticipant / Set count = 0
+         do/initialize seminar
+                                                                  do/initialize seminar
+
+     cancel
+                                                                              [ count = 20 ]
+    seminar
+                                      cancel seminar
+
+                                                                                               guard
+              Canceled                                                   Full
+                                        cancel seminar
+                                                                   do/finalize seminar
+         do/refund payments
+
+                                                                                    aktivity, carried out
+                                                                                     while in that state
+                                              multiple
+                                               exits
+Predefined Action Labels
+•   “entry/”
+     –   identifies an action, specified by the corresponding action expression, which is performed upon entry
+         to the state (entry action)
+•   “exit/”
+     –   identifies an action, specified by the corresponding action expression, that is performed upon exit
+         from the state (exit action)
+•   “do/”
+     –   identifies an ongoing activity (“do activity”) that is performed as long as the modeled element is in the
+         state or until the computation specified by the action expression is completed (the latter may result in
+         a completion event being generated).
+•   “include/”
+     –   is used to identify a submachine invocation. The action expression contains the name of the
+         submachine that is to be invoked.
+       State Actions
+•An effect can also be associated with a state
+•If a destination state is associated with numerous
+ incident transitions (transitions arriving at that
+ state), and every transition defines the same effect:
+ – The effect can therefore be associated with the state
+   instead of the transitions (avoid duplications)
+ – This can be achieved using an “On Entry” effect (we can
+   have multiple entry effects)
+ – We can also add one or more “On Exit” effect
+Simple Diagram for Heart Monitor Applications
+
+
+
+               Switch on                 Startup       Problem
+                                                       detected
+
+                            Switch off
+         Off                                 Startup               Alarm
+                                            Complete
+
+               Switch off                               Problem
+                                                        detected
+                                   Operational
+ Events, Conditions, and States
+
+• Event: something that happens at a point in time
+        • Operator presses self-test button
+        • The alarm goes off
+• Condition: something that has a duration
+        • The fuel level is high
+        • The alarm is on
+• State : an abstraction of the attributes and links of an object (or
+  entire system)
+        • The controller is in the state self-test after the self-test button has been
+          pressed and the rest-button has not yet been pressed
+        • The tank is in the state too-low when the fuel level has been below level-
+          low for alarm-threshold seconds
+      Example
+• Example of a garage door state Diagram
+•
+           Decisions
+    Just like activity diagrams, we can use decisions
+    nodes (although we usually call them decision
+    pseudo-states)
+
+    •Decision pseudo-states are represented with a
+     diamond
+     – We always have one input transition and multiple
+       outputs
+     – The branch of execution is decided by the guards
+       associated with the transitions coming out of the
+       decision pseudo-state
+Decisions
+Junction Pseudo-State
+
+Junction pseudo-states are used to
+chain together multiple
+transitions.
+
+A single junction can have one or
+more incoming, and one or more
+outgoing, transitions; a guard can
+be applied to each transition.
+Features of Statecharts
+
+• Two major features are               S1
+                                            S2
+
+  introduced for controlling      Nested State Diagrams
+  complexity
+  – nested state diagrams
+  – concurrent state diagrams
+                                Concurrent State Diagrams
+    Nested State Diagrams
+
+•   Hierarchical organization is a classic way
+    to control complexity
+     –   of programs
+     –   of documentation                               superstate
+
+     –   of objects
+     –   …
+•   Even diagrams can be hierarchical
+     – Traditional data flow diagrams are
+       hierarchical
+•   Why not state diagrams?
+     – superstates                               substates
+     – substates
+Superstates and Substates
+
+            name of superstate                  substates                         terminal state
+
+
+       Dialing
+
+                  LiftReceiver                              LiftReceiver
+                                          Digit(n)
+                 entry/ start dial tone                     TheNumber: int
+                 exit/ stop dial tone                       entry/ AddDigit
+
+
+                                                                                         self-transition
+                                                                              Digit(n)
+
+
+
+                                                                          enclosing superstate
+   State model for
+   telephone dialing
+       Compound States
+• A state machine can include several sub-machines
+• Below is an example of a sub-machine included in
+  the compound state “Connected”
+
+                            Connected
+
+                                             disconn
+                        Waiting              ect
+
+
+
+           receiveByt         byteProcesse
+           e                  d                                  Disconnected
+                                                       connect
+
+                 ProcessingByte
+
+
+
+                                                                        closeSessio
+                                                                        n
+Compound States
+Example
+  Compound States
+  Example
+• Same example, with an alternative notation
+  – The link symbol in the “Check Pin” state
+    indicates that the details of the sub-machine
+    associated with “Check Pin” are specified in an
+    another state machine
+     Alternative Entry
+     Pointsin a sub-machine, we do not
+• Sometimes,
+ want to start the execution from the initial
+ state
+  – We want to start the execution from a “name
+                     PerformActivity
+
+
+
+    alternative entry point”
+        Alternative Entry
+        Points
+• Here’s the same system, from a higher level
+  – Transition from the “Not Already Initialized”
+    state leads to the standard initial state in the
+    sub-machine
+  – Transition from the “Already Initialized” state is
+    connected to the named alternative entry point
+    “Skip Initializing”
+ Alternative Exit Points
+• It is also possible to have alternative exit
+  points for a compound state
+   – Transition from “Processing Instructions” state
+     takes the regular exit
+   – Transition from the “Reading Instructions” state
+     takes an "alternative named exit point
+

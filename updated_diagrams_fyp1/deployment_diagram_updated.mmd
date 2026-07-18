@@ -1,0 +1,48 @@
+```mermaid
+graph TB
+    subgraph "Client Browser"
+        Frontend["Next.js Frontend<br/>React + TypeScript"]
+    end
+    
+    subgraph "Application Server (Windows 10/11)"
+        FastAPI["FastAPI Backend<br/>Python"]
+        Agents["Multi-Agent System<br/>(Director, Writer, Reviewer,<br/>Editor, Image, Chat,<br/>Workshop, Evaluation)"]
+        ORM["SQLAlchemy ORM"]
+    end
+    
+    subgraph "AI Processing Engine"
+        Ollama["Ollama Service<br/>llama3.1:8b-instruct-q4_K_M"]
+        WebUI["stable-diffusion-webui<br/>Local API Server"]
+        IPAdapter["IP-Adapter Integration"]
+        Model["Realistic Vision Model<br/>Stable Diffusion 1.5"]
+    end
+    
+    subgraph "PostgreSQL Database"
+        DB["7 Tables:<br/>Users, Stories,<br/>Chat Conversations,<br/>Chat Messages,<br/>Workshop Sessions,<br/>Workshop Messages,<br/>Workshop Stories"]
+    end
+    
+    subgraph "File System Storage"
+        FS["generated/<br/>├─ images/<br/>├─ stories/<br/>├─ exports/<br/>├─ drafts/<br/>└─ reviews/"]
+    end
+    
+    Frontend -->|"HTTP/REST<br/>/api/generate<br/>/api/chat<br/>/api/workshop"| FastAPI
+    FastAPI --> Agents
+    FastAPI --> ORM
+    FastAPI -->|"Read/Write"| FS
+    
+    Agents -->|"Story Generation"| Ollama
+    Agents -->|"POST /sdapi/v1/txt2img<br/>POST /sdapi/v1/img2img"| WebUI
+    Agents -->|"Save Results"| ORM
+    
+    WebUI --> IPAdapter
+    WebUI --> Model
+    
+    ORM -->|"SQL Operations"| DB
+    
+    style WebUI fill:#e1f5fe
+    style DB fill:#c8e6c9
+    style Ollama fill:#fff9c4
+    
+    classDef primary fill:#bbdefb
+    classDef secondary fill:#f8bbd0
+```

@@ -1,0 +1,375 @@
+/* Global Styles with Theme Variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+/* CSS Custom Properties - Elegant Soft Lavender Light Theme */
+:root {
+  /* Colors - Cohesive Soft Lavender Palette */
+  --color-primary: #7C3AED;
+  --color-primaryDark: #6D28D9;
+  --color-primaryLight: #A78BFA;
+  --color-accent: #EC4899;
+  --color-background: #FAFAFF;
+  --color-backgroundSecondary: #F5F3FF;
+  --color-backgroundTertiary: #EDE9FE;
+  --color-textPrimary: #1E1B4B;
+  --color-textSecondary: #4C1D95;
+  --color-textTertiary: #6D28D9;
+  --color-surface: rgba(255, 255, 255, 0.9);
+  --color-surfaceSecondary: rgba(245, 243, 255, 0.8);
+  --color-surfaceTertiary: rgba(237, 233, 254, 0.7);
+  --color-border: rgba(167, 139, 250, 0.25);
+  --color-borderSecondary: rgba(139, 92, 246, 0.3);
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #7C3AED;
+  --color-shadow: rgba(124, 58, 237, 0.1);
+  --color-shadowLight: rgba(124, 58, 237, 0.05);
+  --color-gradientPrimary: linear-gradient(135deg, #7C3AED 0%, #A855F7 50%, #C084FC 100%);
+  --color-gradientSecondary: linear-gradient(135deg, #FAFAFF 0%, #F5F3FF 50%, #EDE9FE 100%);
+  --color-gradientAccent: linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%);
+
+  /* Fonts */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-secondary: 'Playfair Display', Georgia, serif;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Shadows - Subtle purple glow */
+  --shadow-sm: 0 1px 3px 0 rgba(124, 58, 237, 0.08);
+  --shadow-md: 0 4px 14px -2px rgba(124, 58, 237, 0.12);
+  --shadow-lg: 0 12px 28px -5px rgba(124, 58, 237, 0.15);
+  --shadow-xl: 0 24px 50px -8px rgba(124, 58, 237, 0.18);
+}
+
+/* Magical Story Dark Theme - Original Colors (Unchanged) */
+[data-theme="dark"] {
+  --color-primary: #8B5CF6;
+  --color-primaryDark: #7C3AED;
+  --color-primaryLight: #A78BFA;
+  --color-accent: #F59E0B;
+  --color-background: #0A0A0F;
+  --color-backgroundSecondary: #1A1A2E;
+  --color-backgroundTertiary: #16213E;
+  --color-textPrimary: #E2E8F0;
+  --color-textSecondary: #CBD5E1;
+  --color-textTertiary: #94A3B8;
+  --color-surface: #1A1A2E;
+  --color-surfaceSecondary: #16213E;
+  --color-surfaceTertiary: #0F3460;
+  --color-border: #2D3748;
+  --color-borderSecondary: #4A5568;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+  --color-shadow: rgba(0, 0, 0, 0.4);
+  --color-shadowLight: rgba(0, 0, 0, 0.2);
+  --color-gradientPrimary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
+  --color-gradientSecondary: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+  --color-gradientAccent: linear-gradient(135deg, #F59E0B 0%, #EC4899 50%, #8B5CF6 100%);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* ✨ Elegant Soft Lavender Background for Light Theme */
+body {
+  background:
+    /* Soft lavender gradient orbs - cohesive purple tones only */
+    radial-gradient(ellipse 80% 60% at 10% 10%, rgba(167, 139, 250, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 80% at 90% 20%, rgba(196, 181, 253, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 70% at 80% 90%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(192, 132, 252, 0.18) 0%, transparent 50%),
+    /* Clean lavender-white base */
+    linear-gradient(180deg, #FAFAFF 0%, #F8F7FF 25%, #F5F3FF 50%, #F3F0FF 75%, #FAFAFF 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Magical background effects for dark theme */
+[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%),
+    linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 100%);
+  background-attachment: fixed;
+}
+
+/* Magical floating particles for dark theme */
+[data-theme="dark"] .floating-book {
+  color: rgba(139, 92, 246, 0.3);
+  animation: magicalFloat 8s ease-in-out infinite;
+}
+
+[data-theme="dark"] .book-1 {
+  color: rgba(139, 92, 246, 0.3);
+  animation-delay: 0s;
+}
+
+[data-theme="dark"] .book-2 {
+  color: rgba(236, 72, 153, 0.3);
+  animation-delay: 2s;
+}
+
+[data-theme="dark"] .book-3 {
+  color: rgba(245, 158, 11, 0.3);
+  animation-delay: 4s;
+}
+
+[data-theme="dark"] .book-4 {
+  color: rgba(59, 130, 246, 0.3);
+  animation-delay: 6s;
+}
+
+@keyframes magicalFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    opacity: 0.3;
+  }
+
+  25% {
+    transform: translateY(-15px) rotate(2deg) scale(1.1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translateY(-25px) rotate(-1deg) scale(1.05);
+    opacity: 0.4;
+  }
+
+  75% {
+    transform: translateY(-10px) rotate(1deg) scale(1.08);
+    opacity: 0.6;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  color: var(--color-textPrimary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  line-height: 1.6;
+  /* Background is set via mesh gradient earlier */
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 70px;
+  /* Account for fixed navigation */
+}
+
+.story-input-section {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  background: rgba(250, 250, 255, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.story-input-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+.story-display-section {
+  min-height: calc(100vh - 70px);
+  padding: var(--spacing-xl) var(--spacing-md);
+  background: rgba(250, 250, 255, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Dark theme overrides for story sections */
+[data-theme="dark"] .story-input-section {
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .story-display-section {
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+/* Background Decoration */
+.background-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.floating-book {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.08;
+  animation: float 6s ease-in-out infinite;
+  color: var(--color-textPrimary);
+}
+
+.book-1 {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.book-2 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 1.5s;
+}
+
+.book-3 {
+  bottom: 30%;
+  left: 15%;
+  animation-delay: 3s;
+}
+
+.book-4 {
+  bottom: 15%;
+  right: 10%;
+  animation-delay: 4.5s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+/* Global Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth transitions for theme changes */
+
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surfaceSecondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-borderSecondary);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-textTertiary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 60px;
+  }
+
+  .story-input-section {
+    min-height: calc(100vh - 60px);
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .story-display-section {
+    min-height: calc(100vh - 60px);
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .floating-book {
+    font-size: 1.5rem;
+  }
+}
+
+/* Print styles */
+@media print {
+
+  .navigation,
+  .footer {
+    display: none;
+  }
+
+  .main-content {
+    padding-top: 0;
+  }
+}

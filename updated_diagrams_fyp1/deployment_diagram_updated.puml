@@ -1,0 +1,89 @@
+@startuml Deployment_Diagram_Updated
+!define RECTANGLE class
+
+' Title
+title MyAIStorybook - Deployment Diagram (Current Iteration)
+
+' Client Side
+node "Client Browser" as browser {
+    [Next.js Frontend] as frontend
+    [React Components] as react
+    [TypeScript Logic] as ts
+}
+
+' Application Server
+node "Application Server (Windows 10/11)" as appserver {
+    [FastAPI Backend] as fastapi
+    [Multi-Agent System] as agents
+    [ORM Layer] as orm
+}
+
+' AI Processing
+node "AI Processing Engine" as aiengine {
+    [Ollama Service\nllama3.1:8b] as ollama
+    [stable-diffusion-webui\nLocal API] as webui
+    [IP-Adapter] as ipadapter
+    [Realistic Vision Model] as model
+}
+
+' Database
+database "PostgreSQL Database" as db {
+    [Users Table] as users_table
+    [Stories Table] as stories_table
+    [Sessions Table] as sessions_table
+    [Chat Tables] as chat_table
+}
+
+' File Storage
+folder "File System Storage" as storage {
+    folder "generated/" as gen {
+        folder "images/" as images
+        folder "stories/" as stories
+        folder "exports/" as exports
+    }
+}
+
+' Connections
+frontend --> fastapi : HTTP/REST API
+react --> frontend
+ts --> frontend
+
+fastapi --> agents : Orchestrate
+fastapi --> orm : Data Access
+fastapi --> storage : Read/Write Files
+
+agents --> ollama : Story Generation
+agents --> webui : Image Generation
+agents --> orm : Save Results
+
+webui --> ipadapter : Character Consistency
+webui --> model : Inference
+
+orm --> db : SQL Operations
+
+' Notes
+note right of webui
+  Primary method for 
+  IP-Adapter integration
+  Endpoints: /sdapi/v1/txt2img
+            /sdapi/v1/img2img
+end note
+
+note right of db
+  7 Tables:
+  - Users
+  - Stories
+  - Chat Conversations
+  - Chat Messages
+  - Workshop Sessions
+  - Workshop Messages
+  - Workshop Stories
+end note
+
+note right of ollama
+  Paused during image
+  generation to free
+  GPU memory
+end note
+
+@enduml

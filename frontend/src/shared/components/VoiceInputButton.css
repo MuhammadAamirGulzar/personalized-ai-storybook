@@ -1,0 +1,243 @@
+/* Voice Input Button Styles - Premium Design */
+.voice-input-button {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  z-index: 10;
+  overflow: visible;
+}
+
+.voice-input-button:hover:not(:disabled):not(.listening) {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+}
+
+.voice-input-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.voice-input-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* SVG Microphone Icon */
+.mic-svg-icon {
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* ========== RECORDING STATE ========== */
+.voice-input-button.listening {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.voice-input-button.listening .mic-svg-icon {
+  animation: icon-pulse 1s ease-in-out infinite;
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(239, 68, 68, 0.9), 0 0 60px rgba(239, 68, 68, 0.4);
+  }
+}
+
+/* Icon subtle pulse */
+@keyframes icon-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+/* ========== WAVE RINGS ANIMATION ========== */
+.wave-rings {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(239, 68, 68, 0.6);
+  border-radius: 50%;
+  animation: ripple 1.5s ease-out infinite;
+}
+
+.ring-1 {
+  width: 100%;
+  height: 100%;
+  animation-delay: 0s;
+}
+
+.ring-2 {
+  width: 100%;
+  height: 100%;
+  animation-delay: 0.5s;
+}
+
+.ring-3 {
+  width: 100%;
+  height: 100%;
+  animation-delay: 1s;
+}
+
+@keyframes ripple {
+  0% {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+  }
+
+  100% {
+    width: 250%;
+    height: 250%;
+    opacity: 0;
+  }
+}
+
+/* ========== AUDIO BARS ANIMATION ========== */
+.audio-bars {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 14px;
+}
+
+.audio-bars .bar {
+  width: 3px;
+  background: linear-gradient(180deg, #ef4444 0%, #f87171 100%);
+  border-radius: 2px;
+  animation: audio-wave 0.8s ease-in-out infinite;
+}
+
+.audio-bars .bar:nth-child(1) {
+  animation-delay: 0s;
+  height: 6px;
+}
+
+.audio-bars .bar:nth-child(2) {
+  animation-delay: 0.1s;
+  height: 10px;
+}
+
+.audio-bars .bar:nth-child(3) {
+  animation-delay: 0.2s;
+  height: 8px;
+}
+
+.audio-bars .bar:nth-child(4) {
+  animation-delay: 0.3s;
+  height: 12px;
+}
+
+@keyframes audio-wave {
+
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    transform: scaleY(0.4);
+  }
+}
+
+/* ========== HOLD HINT ========== */
+.hold-hint {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(102, 126, 234, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.voice-input-button:hover .hold-hint {
+  opacity: 1;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .voice-input-button {
+    width: 38px;
+    height: 38px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .mic-svg-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .audio-bars {
+    bottom: -18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .voice-input-button {
+    width: 34px;
+    height: 34px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .mic-svg-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .audio-bars {
+    bottom: -16px;
+    gap: 2px;
+  }
+
+  .audio-bars .bar {
+    width: 2px;
+  }
+}

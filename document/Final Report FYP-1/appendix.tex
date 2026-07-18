@@ -1,0 +1,269 @@
+\appendix
+\chapter{System Architecture and Technical Specifications}
+
+This appendix provides detailed technical documentation, configuration specifications, API contracts, and implementation details for the personalized-ai-storybook system.
+
+\section{JSON Story Structure Schema}
+
+The system employs a standardized JSON schema for story representation throughout the pipeline, validated by Pydantic models defined in \texttt{backend/models/story\_schema.py}.
+
+\subsection{Complete Story Schema Example}
+
+\begin{verbatim}
+{
+  "title": "The Adventure of the Brave Little Fox",
+  "setting": "A magical forest where animals can talk",
+  "characters": [
+    "Felix the Fox",
+    "Olivia the Owl"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "In a magical forest where animals could talk, 
+              lived a small orange fox named Felix with 
+              bright green eyes. Every morning, Felix would 
+              wake up wondering what exciting adventure the 
+              day might bring...",
+      "image_description": "Small orange fox with green eyes 
+                            in forest",
+      "image_path": "generated/images/brave_fox_1697234567_
+                     scene_1.png"
+    },
+    {
+      "scene_number": 2,
+      "text": "One sunny morning, Felix met Olivia, a wise old 
+              owl with silver feathers. She told him about 
+              a hidden treasure deep in the forest...",
+      "image_description": "Fox looking up at silver owl 
+                            in tree",
+      "image_path": "generated/images/brave_fox_1697234567_
+                     scene_2.png"
+    },
+    {
+      "scene_number": 3,
+      "text": "With Olivia's guidance and his own courage, 
+              Felix discovered that the real treasure was 
+              the friendship they built along the journey...",
+      "image_description": "Fox and owl standing together 
+                            smiling",
+      "image_path": "generated/images/brave_fox_1697234567_
+                     scene_3.png"
+    }
+  ],
+  "meta": {
+    "prompt_type": "normal",
+    "enhanced_prompt": "A courageous young fox embarks on 
+                        adventure..."
+  }
+}
+\end{verbatim}
+
+\section{API Endpoint Specifications}
+
+\subsection{POST /api/generate}
+
+\textbf{Description:} Initiates story generation with the specified prompt and configuration parameters.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "prompt": "string (required)",
+  "generate_images": boolean (optional, default: true),
+  "use_personalized_images": boolean (optional, default: false),
+  "user_photo": "base64_encoded_image (optional)",
+  "mode": "simple | personalized (optional, default: simple)"
+}
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "story": Story object (JSON schema above),
+  "pdf_path": "string (path to generated PDF)",
+  "status": "success | error"
+}
+\end{verbatim}
+
+\subsection{POST /api/chat}
+
+\textbf{Description:} Interactive chat mode for conversational interaction with story characters.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "message": "string (user chat message)",
+  "story_id": "string (required)",
+  "session_id": "string (optional)"
+}
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "response": "string (chatbot response)",
+  "conversation_id": "string"
+}
+\end{verbatim}
+
+\subsection{POST /api/workshop/session}
+
+\textbf{Description:} Creates a new idea workshop session for interactive story development.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "mode": "new_idea | improvement (required)",
+  "existing_story": "string (optional, for improvement mode)"
+}
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "session_id": "string",
+  "initial_message": "string"
+}
+\end{verbatim}
+
+\subsection{POST /api/workshop/message}
+
+\textbf{Description:} Sends a message in an active workshop session.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "session_id": "string (required)",
+  "message": "string (required)"
+}
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "response": "string (agent response)",
+  "ready_to_generate": boolean,
+  "metadata": object (collected story requirements)
+}
+\end{verbatim}
+
+\subsection{GET /api/stories}
+
+\textbf{Description:} Retrieves list of user's generated stories with metadata.
+
+\textbf{Query Parameters:}
+\begin{verbatim}
+?limit=10&offset=0&filter=recent
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "stories": [
+    {
+      "id": "string",
+      "title": "string",
+      "created_at": "timestamp",
+      "mode": "simple | personalized"
+    }
+  ],
+  "total": integer
+}
+\end{verbatim}
+
+\subsection{GET /device}
+
+\textbf{Description:} Returns hardware information including device type and GPU availability.
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "device": "cuda | cpu",
+  "name": "string (GPU name if available)"
+}
+\end{verbatim}
+
+\section{Database Schema}
+
+The system uses PostgreSQL with SQLAlchemy ORM. The database consists of 7 tables:
+
+\subsection{Users Table}
+\begin{itemize}
+    \item \texttt{id}: Primary key (integer)
+    \item \texttt{username}: Unique username (string)
+    \item \texttt{email}: User email (string)
+    \item \texttt{hashed\_password}: Bcrypt hashed password (string)
+    \item \texttt{created\_at}: Account creation timestamp
+\end{itemize}
+
+\subsection{Stories Table}
+\begin{itemize}
+    \item \texttt{id}: Primary key (integer)
+    \item \texttt{user\_id}: Foreign key to Users table
+    \item \texttt{title}: Story title (string)
+    \item \texttt{mode}: Generation mode (simple/personalized)
+    \item \texttt{story\_data}: Complete story JSON (JSONB)
+    \item \texttt{created\_at}: Story creation timestamp
+\end{itemize}
+
+\subsection{Chat Conversations \& Messages Tables}
+\begin{itemize}
+    \item \texttt{ChatConversations}: Links conversations to stories
+    \item \texttt{ChatMessages}: Stores individual chat messages with role (user/assistant)
+\end{itemize}
+
+\subsection{Workshop Sessions, Messages \& Stories Tables}
+\begin{itemize}
+    \item \texttt{WorkshopSessions}: Tracks idea workshop sessions
+    \item \texttt{WorkshopMessages}: Stores workshop conversation history
+    \item \texttt{WorkshopStories}: Generated stories from workshop sessions
+\end{itemize}
+
+\section{stable-diffusion-webui API Integration}
+
+The system integrates with AUTOMATIC1111's stable-diffusion-webui local API for image generation with IP-Adapter support.
+
+\subsection{Key Endpoints Used}
+
+\textbf{/sdapi/v1/txt2img:} Initial image generation from text prompt with IP-Adapter embedding injection.
+
+\textbf{/sdapi/v1/img2img:} Image refinement and upscaling pass for quality enhancement.
+
+\subsection{Configuration Parameters}
+\begin{itemize}
+    \item Model: Realistic Vision v5.1
+    \item Sampler: DPM++ 2M Karras
+    \item Steps: 25-30
+    \item CFG Scale: 7-7.5
+    \item Resolution: 512x512 (txt2img) → 768x768 (img2img)
+    \item IP-Adapter: Enabled with user photo embedding
+\end{itemize}
+
+\section{Future Work}
+
+The following features are planned for future iterations:
+
+\subsection{Text-to-Speech (TTS) Integration}
+\begin{itemize}
+    \item Page-by-page voice narration using Coqui TTS
+    \item Character-specific voice customization
+    \item Audio book export functionality
+\end{itemize}
+
+\subsection{Speech-to-Text (STT) Integration}
+\begin{itemize}
+    \item Voice input processing using OpenAI Whisper
+    \item Real-time speech recognition
+    \item Multi-language support
+\end{itemize}
+
+\subsection{Additional Enhancements}
+\begin{itemize}
+    \item Multi-language story generation
+    \item Advanced character customization controls
+    \item Story templates for specific genres
+    \item Collaborative storytelling features
+    \item Mobile applications (iOS/Android)
+    \item Cloud deployment option
+    \item Story analytics and recommendation system
+\end{itemize}

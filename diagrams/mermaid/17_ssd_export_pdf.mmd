@@ -1,0 +1,20 @@
+%% MyAIStorybook - System Sequence Diagram: Export Story to PDF Scenario
+
+sequenceDiagram
+    actor User
+    participant System as :System
+    
+    Note over User,System: Export Story to PDF Scenario (Main Success)<br/>System is treated as BLACK BOX
+    
+    User->>System: selectStory(story_id)
+    System-->>User: story_details
+    
+    User->>System: requestPDFExport()
+    System-->>User: export_started
+    
+    System-->>User: pdf_ready(file_path, download_url)
+    
+    User->>System: downloadPDF()
+    System-->>User: pdf_file
+    
+    Note right of System: System generates PDF internally<br/>with story text and images<br/>Returns downloadable file

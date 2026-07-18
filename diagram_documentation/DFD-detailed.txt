@@ -1,0 +1,283 @@
+    Software Engineering-I
+
+
+
+Data and Process Modeling
+INTRODUCTION
+       During the requirements modeling process you used fact-finding
+        techniques to investigate the current system and identify user
+        requirements.
+       Now, you will use that information to develop a logical model of the
+        proposed system and document the system requirements.
+       A logical model shows what the system must do, regardless of how
+        it will be implemented physically.
+       Later, in the systems design phase, you build a physical model that
+        describes how the system will be constructed.
+       Data and process modeling involves three main tools:
+           data flow diagrams,
+           a data dictionary,
+           and process descriptions.
+
+
+
+    2                          Software Engineering-I
+DATA FLOW DIAGRAMS
+       A data flow diagram (DFD) shows how data moves
+        through an information system but does not show
+        program logic or processing steps.
+       A set of DFDs provides a logical model that shows
+        what the system does, not how it does it.
+
+
+
+
+    3                          Software Engineering-I
+DFD Symbols
+       DFDs use four basic symbols that represent
+        processes, data flows, data stores, and entities.
+       Several different versions of DFD symbols exist, but
+        they all serve the same purpose.
+           Gane and Sarson symbol set.
+           Yourdon symbol set.
+       Symbols are referenced by using all capital letters
+        for the symbol name.
+
+
+
+
+    4                              Software Engineering-I
+PROCESS
+       A process receives input data and produces output
+        that has a different content, form, or both.
+       Processes can be very simple or quite complex.
+       Processes contain the business logic, also called
+        business rules, that transform the data and produce
+        the required results.
+
+
+
+
+    5                           Software Engineering-I
+PROCESS SYMBOL
+The process name identifies a specific function and
+ consists of a verb (and an adjective, if necessary)
+ followed by a singular noun.
+Examples
+           APPLY RENT PAYMENT, CALCULATE COMMISSION,
+            ASSIGN FINAL GRADE, VERIFY ORDER, and FILL ORDER.
+       Processing details are not shown in a DFD.
+       For example, you might have a process named
+        DEPOSIT PAYMENT.
+       The process symbol does not reveal the business logic
+        for the DEPOSIT PAYMENT process.
+        To document the logic, you create a process description.
+    6                              Software Engineering-I
+Data flow diagram symbols, symbol names,
+and examples
+
+
+
+
+7                   Software Engineering-I
+                                                          Cont…..
+       In DFDs, a process symbol can be referred to as a
+        black box, because the inputs, outputs, and
+        general functions of the process are known, but the
+        underlying details and logic of the process are
+        hidden.
+       We can zoom in on a process symbol and create a
+        more in-depth DFD that shows the process’s internal
+        workings — which might reveal even more
+        processes, data flows, and data stores.
+       In this manner, the information system can be
+        modeled as a series of increasingly detailed pictures.
+
+    8                            Software Engineering-I
+DATA FLOW
+       A data flow is a path for data to move from one
+        part of the information system to another.
+       A data flow in a DFD represents one or more data
+        items.
+           For example, a data flow could consist of a single data
+            item (such as a student ID number) or
+           It could include a set of data (such as a class roster with
+            student ID numbers, names, and registration dates for a
+            specific class).
+
+
+
+
+    9                                  Software Engineering-I
+DATA FLOW SYMBOL
+    The symbol for a data flow is a line with a single or
+     double arrowhead.
+    The data flow name appears above, below, or alongside
+     the line.
+    A data flow name consists of a singular noun and an
+     adjective, if needed.
+    Examples
+        DEPOSIT, INVOICE PAYMENT, STUDENT GRADE, ORDER,
+         and COMMISSION.
+    Exceptions to the singular name rule are data flow
+     names, such as GRADING PARAMETERS, where a
+     singular name could mislead you into thinking a single
+     parameter or single item of data exists.
+
+    10                        Software Engineering-I
+Examples of correct combinations of data
+flow and process symbols.
+
+
+
+
+                                  •Because a process changes
+                                  the data’s content or form, at
+                                  least one data flow must enter
+                                  and one data flow must exit
+                                  each process symbol.
+
+
+
+
+11                   Software Engineering-I
+ Examples of incorrect combinations of data
+ flow and process symbols.
+
+
+Spontaneous generation
+
+
+
+
+        Black hole
+
+
+
+
+        Gray hole
+
+
+
+   12                    Software Engineering-I
+DATA STORE
+    A data store is used in a DFD to represent data
+     that the system stores because one or more
+     processes need to use the data at a later time.
+    For instance, instructors need to store student
+     scores on tests and assignments during the
+     semester so they can assign final grades at the end
+     of the term.
+    A DFD does not show the detailed contents of a data
+     store
+
+
+
+
+    13                       Software Engineering-I
+DATA STORE SYMBOL
+    In a DFD, the Gane and Sarson symbol for a data store is a
+     flat rectangle that is open on the right side and closed on the
+     left side.
+    The name of the data store appears between the lines and
+     identifies the data it contains.
+     A data store name is a plural name consisting of a noun and
+     adjectives, if needed.
+    Examples of data store names are
+        STUDENTS, ACCOUNTS RECEIVABLE, PRODUCTS, DAILY
+         PAYMENTS, PURCHASE ORDERS, OUTSTANDING CHECKS,
+         INSURANCE POLICIES, and EMPLOYEES.
+    Exceptions to the plural name rule are collective nouns that
+     represent multiple occurrences of objects.
+    For example, GRADEBOOK represents a group of students
+     and their scores.
+
+
+    14                            Software Engineering-I
+ Examples of correct uses of data store
+ symbols in a data flow diagram.
+
+
+
+
+• A data store must be connected to a process with a data flow.
+• In each case, the data store has at least one incoming and one outgoing data
+  flow and is connected to a process symbol with a data flow.
+   15                                   Software Engineering-I
+Examples of incorrect uses of data store
+symbols
+
+
+
+
+• Two data stores cannot be connected by a data flow without an intervening
+  process,
+• Each data store should have an outgoing and incoming data flow.
+
+
+16                                   Software Engineering-I
+                                                           Cont….
+    In some situations, a data store has no input data
+     flow because it contains fixed reference data that is
+     not updated by the system.
+    For example,
+        Consider a data store called TAX TABLE, which contains
+         withholding tax data that a company downloads from the
+         Internal Revenue Service. When the company runs its
+         payroll, the CALCULATE WITHHOLDING process
+         accesses data from this data store.
+        On a DFD, this would be represented as a one-way
+         outgoing data flow from the TAX TABLE data store into
+         the CALCULATE WITHHOLDING process.
+
+    17                            Software Engineering-I
+ENTITY
+    A DFD shows only external entities that provide data
+     to the system or receive output from the system.
+     A DFD shows the boundaries of the system and how
+     the system interfaces with the outside world.
+    For example,
+        A customer entity submits an order to an order processing
+         system.
+        Other examples of entities include a patient who supplies
+         data to a medical records system, a homeowner who
+         receives a bill from a city property tax system, or an
+         accounts payable system that receives data from the
+         company’s purchasing system.
+
+    18                            Software Engineering-I
+                                                         Cont….
+    DFD entities also are called terminators, because they
+     are data origins or final destinations.
+    Systems analysts call an entity that supplies data to the
+     system a source, and an entity that receives data from
+     the system a sink.
+     An entity name is the singular form of a department,
+     outside organization, other information system, or
+     person.
+     An external entity can be a source or a sink or both, but
+     each entity must be connected to a process by a data
+     flow.
+     ENTITY SYMBOL
+    The symbol for an entity is a rectangle, which may be
+     shaded to make it look three-dimensional.
+     The name of the entity appears inside the symbol.
+    19                          Software Engineering-I
+Examples of correct uses of external entities
+in a data flow diagram
+
+
+
+
+20                    Software Engineering-I
+Examples of incorrect uses of external
+entities
+
+
+
+
+• An external entity must be connected by a data flow to a process, and not
+  directly to a data store or to another external entity.
+
+
+21                                    Software Engineering-I
+

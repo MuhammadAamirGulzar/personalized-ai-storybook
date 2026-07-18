@@ -1,0 +1,129 @@
+%% MyAIStorybook - Class Diagram (Simplified and Correct)
+%% Focus on core domain classes with proper relationships
+
+classDiagram
+    %% Core Domain Classes
+    class User {
+        -int id
+        -String email
+        -String username
+        -String passwordHash
+        -Boolean isActive
+        +verifyPassword(password) Boolean
+        +getStories() Story[]
+    }
+    
+    class Story {
+        -int id
+        -String title
+        -String mode
+        -Date createdAt
+        +addScene(scene) void
+        +getScenes() Scene[]
+        +exportToPDF() String
+    }
+    
+    class Scene {
+        -int sceneNumber
+        -String text
+        -String imagePrompt
+        +generateImage() void
+        +generateAudio() void
+    }
+    
+    class Character {
+        -String name
+        -String description
+        -String personality
+        +chat(message) String
+    }
+    
+    class Setting {
+        -String location
+        -String timePeriod
+        -String atmosphere
+    }
+    
+    %% Chat Domain
+    class ChatConversation {
+        -int id
+        -String characterName
+        -Date createdAt
+        +addMessage(message) void
+        +getHistory() ChatMessage[]
+    }
+    
+    class ChatMessage {
+        -int id
+        -String role
+        -String message
+        -Date timestamp
+    }
+    
+    %% Workshop Domain
+    class WorkshopSession {
+        -int id
+        -String mode
+        -String status
+        +addMessage(message) void
+        +generateStory() Story
+    }
+    
+    class WorkshopMessage {
+        -int id
+        -String role
+        -String message
+        -Object metadata
+    }
+    
+    %% AI Agents (Core)
+    class DirectorAgent {
+        +orchestratePipeline(prompt) Story
+    }
+    
+    class WriterAgent {
+        +generateStory(prompt) Story
+    }
+    
+    class ReviewerAgent {
+        +reviewStory(story) Feedback
+    }
+    
+    class EditorAgent {
+        +refineStory(story, feedback) Story
+        +exportPDF(story) String
+    }
+    
+    class ImageAgent {
+        +generateImage(prompt, sceneNum) String
+    }
+    
+    class ChatbotAgent {
+        +chat(story, character, message) String
+    }
+    
+    %% Relationships - Composition and Aggregation
+    User "1" --> "0..*" Story : creates
+    Story "1" *-- "3" Scene : contains
+    Story "1" *-- "1..*" Character : has
+    Story "1" *-- "1" Setting : has
+    
+    Story "1" --> "0..*" ChatConversation : enables
+    ChatConversation "1" *-- "1..*" ChatMessage : contains
+    
+    User "1" --> "0..*" WorkshopSession : participates
+    WorkshopSession "1" *-- "1..*" WorkshopMessage : contains
+    
+    %% Agent Relationships
+    DirectorAgent --> WriterAgent : uses
+    DirectorAgent --> ReviewerAgent : uses
+    DirectorAgent --> EditorAgent : uses
+    
+    WriterAgent ..> Story : creates
+    ImageAgent ..> Scene : generates image for
+    ChatbotAgent ..> Character : impersonates
+    
+    %% Notes
+    note for Story "Contains complete story structure with 3 scenes"
+    note for DirectorAgent "Orchestrates the multi-agent pipeline"
+    note for ChatbotAgent "Enables character interaction"

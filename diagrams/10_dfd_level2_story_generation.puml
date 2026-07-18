@@ -1,0 +1,108 @@
+@startuml MyAIStorybook_DFD_Level2_StoryGeneration
+title MyAIStorybook - Level 2 DFD: Story Generation Process (Process 2.0)
+
+!define RECTANGLE
+skinparam rectangle {
+    BackgroundColor<<process>> LightYellow
+    BackgroundColor<<external>> LightGreen
+    BackgroundColor<<datastore>> LightGray
+}
+
+' External Entities
+rectangle "USER" as User <<external>>
+rectangle "OLLAMA LLM" as Ollama <<external>>
+
+' Data Stores
+rectangle "STORIES" as StoriesDB <<datastore>>
+rectangle "DRAFTS" as DraftsDB <<datastore>>
+rectangle "REVIEWS" as ReviewsDB <<datastore>>
+rectangle "EDITS" as EditsDB <<datastore>>
+rectangle "PROMPTS" as PromptsDB <<datastore>>
+
+' Sub-processes of Process 2.0
+rectangle "2.1\nValidate and\nEnhance Prompt" as P21 <<process>>
+rectangle "2.2\nOrchestrate\nPipeline" as P22 <<process>>
+rectangle "2.3\nWrite\nStory Draft" as P23 <<process>>
+rectangle "2.4\nReview\nStory" as P24 <<process>>
+rectangle "2.5\nEdit and\nFinalize Story" as P25 <<process>>
+rectangle "2.6\nEvaluate\nQuality" as P26 <<process>>
+
+' Data Flows
+User --> P21 : Raw Prompt
+P21 --> Ollama : Validation Request
+Ollama --> P21 : Classification Result
+P21 --> PromptsDB : Save Enhanced Prompt
+PromptsDB --> P21 : Prompt Data
+
+P21 --> P22 : Validated Prompt
+P21 --> User : Error Message\n[if invalid]
+
+P22 --> P23 : Enhanced Prompt
+P23 --> Ollama : Story Generation Request\n(title, setting, characters, scenes)
+Ollama --> P23 : Story Draft JSON
+P23 --> DraftsDB : Save Draft
+DraftsDB --> P23 : Draft Data
+P23 --> P22 : Story Draft
+
+P22 --> P24 : Story Draft
+P24 --> Ollama : Review Request\n(coherence, age-appropriateness)
+Ollama --> P24 : Review Feedback
+P24 --> ReviewsDB : Save Review
+ReviewsDB --> P24 : Review Data
+P24 --> P22 : Feedback
+
+P22 --> P25 : Draft + Feedback
+P25 --> Ollama : Refinement Request
+Ollama --> P25 : Final Story JSON
+P25 --> EditsDB : Save Edit
+EditsDB --> P25 : Edit Data
+P25 --> P22 : Final Story
+
+P22 --> StoriesDB : Save Final Story
+StoriesDB --> P22 : Story ID
+P22 --> User : Complete Story
+
+P22 --> P26 : Final Story\n[background]
+P26 --> Ollama : Evaluation Request
+Ollama --> P26 : Quality Metrics
+P26 --> StoriesDB : Update Metrics
+
+note right of P21
+    PromptAgent:
+    - Validates prompt format
+    - Classifies type
+    - Enhances with details
+end note
+
+note right of P23
+    WriterAgent:
+    - Generates title
+    - Creates setting
+    - Develops characters
+    - Writes 3 scenes
+    - Max 2 retries on JSON error
+end note
+
+note right of P24
+    ReviewerAgent:
+    - Checks coherence
+    - Validates age-appropriateness
+    - Assesses educational value
+    - Provides suggestions
+end note
+
+note right of P25
+    EditorAgent:
+    - Applies feedback
+    - Refines text
+    - Ensures JSON validity
+    - Generates PDF
+end note
+
+note bottom of P26
+    EvaluationAgent:
+    Runs asynchronously
+    without blocking response
+end note
+
+@enduml

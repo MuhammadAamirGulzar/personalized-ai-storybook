@@ -1,0 +1,55 @@
+{
+  "title": "Ali's Dragon Adventure",
+  "setting": "The mystical realm of Draconia",
+  "characters": [
+    "Ali",
+    "Drago",
+    "Princess Lyra"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "In the heart of the mystical realm of Draconia, a curious boy named Ali lived. He had always been fascinated by dragons and their secrets. One sunny morning, he packed his backpack with adventure essentials like a map drawn by his grandfather, who was once a dragon rider. \"I'm going to find a dragon and make it my friend,\" Ali declared, stepping into the enchanted forest.",
+      "image_description": "Ali excitedly entering the enchanted forest",
+      "image_path": null
+    },
+    {
+      "scene_number": 2,
+      "text": "After days of exploring, Ali discovered an ancient stone statue of a dragon. Suddenly, the statue came to life! It was Drago, a young dragon with scales as shiny as emeralds and eyes that sparkled like gold. \"I'm Drago,\" the dragon roared softly. \"You're brave to come alone.\" Just then, Princess Lyra appeared on her unicorn, warning Ali not to trust Drago, as he belonged to the mischievous Dragonling clan.",
+      "image_description": "Ali meeting Drago for the first time",
+      "image_path": null
+    },
+    {
+      "scene_number": 3,
+      "text": "Ali promised Drago they would prove his clan's good intentions. Together with Princess Lyra, they embarked on a quest to find the mystical Crystal of Harmony, said to calm even the wildest dragons. After solving riddles and overcoming obstacles, they reached the crystal cave. There, Ali stepped forward, asking Drago to trust him. Drago took a deep breath, inhaled the crystal's light, and roared in joy as his wings transformed into magnificent shimmering colors.",
+      "image_description": "Ali, Drago, and Princess Lyra celebrating their success",
+      "image_path": null
+    }
+  ],
+  "consistency_report": {
+    "per_scene": {
+      "1": {
+        "scene_number": 1,
+        "word_count": 67,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "2": {
+        "scene_number": 2,
+        "word_count": 72,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "3": {
+        "scene_number": 3,
+        "word_count": 76,
+        "length_score": 1.0,
+        "has_image": true
+      }
+    },
+    "overall": {
+      "avg_length_score": 1.0,
+      "image_coverage": 1.0
+    }
+  }
+}

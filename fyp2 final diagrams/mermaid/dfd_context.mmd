@@ -1,0 +1,28 @@
+---
+title: MyAIStorybook FYP-2 — Context Diagram (DFD Level 0)
+---
+flowchart TB
+    User["👤 User\n(Text Prompt / Voice Audio\n/ Reference Photo)"]
+    Ollama["🤖 Ollama Server\n(Local LLM Inference)"]
+    SDWUI["🎨 Stable Diffusion\nWebUI (Local)"]
+    DB["🗄️ PostgreSQL\nDatabase"]
+
+    SYS{{"MyAIStorybook\nSystem"}}
+
+    User -->|"Text Prompt /\nVoice Audio /\nReference Photo"| SYS
+    SYS -->|"Story JSON / Open-Book UI /\nAudio WAV / PDF / Metrics"| User
+
+    SYS -->|"Enhanced Prompt\n(Story generation request)"| Ollama
+    Ollama -->|"Story JSON\n(LLM response)"| SYS
+
+    SYS -->|"Scene Description +\nIP-Adapter Embedding"| SDWUI
+    SDWUI -->|"Generated Images\n(PNG 512x512→768x768)"| SYS
+
+    SYS -->|"User Data / Story Records /\nSession History"| DB
+    DB -->|"Stored Stories / User Auth /\nConversation History"| SYS
+
+    style SYS fill:#AED6F1,stroke:#1A5276,color:#000,font-size:14px
+    style User fill:#A9DFBF,stroke:#1E8449
+    style Ollama fill:#F9E79F,stroke:#B7950B
+    style SDWUI fill:#F9E79F,stroke:#B7950B
+    style DB fill:#FDEBD0,stroke:#CA6F1E

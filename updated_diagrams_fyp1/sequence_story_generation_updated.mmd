@@ -1,0 +1,91 @@
+```mermaid
+sequenceDiagram
+    actor User
+    participant Frontend as Next.js Frontend
+    participant Backend as FastAPI Backend
+    participant Prompt as PromptAgent
+    participant Director as DirectorAgent
+    participant Writer as WriterAgent
+    participant Reviewer as ReviewerAgent
+    participant Editor as EditorAgent
+    participant Ollama as Ollama LLM
+    participant ImageAgent as PersonalizedImageAgent
+    participant WebUI as WebUI API Server
+    participant DB as PostgreSQL Database
+    participant FS as File System
+    
+    User->>Frontend: Enter story prompt + user photo (optional)
+    Frontend->>Backend: POST /api/generate {prompt, use_personalized, user_photo}
+    
+    Backend->>Prompt: process_prompt(prompt)
+    Prompt->>Prompt: Validate & classify
+    Prompt-->>Backend: enhanced_prompt, prompt_type
+    
+    alt Invalid prompt
+        Backend-->>Frontend: 400 Error: Invalid prompt
+        Frontend-->>User: Show error message
+    else Valid prompt
+        
+        rect rgb(240, 248, 255)
+        Note over Backend,Director: Story Text Generation Phase
+        Backend->>Director: create_story(enhanced_prompt)
+        
+        Director->>Writer: generate_story(prompt)
+        Writer->>Ollama: Generate story JSON
+        Ollama-->>Writer: {title, setting, characters, scenes[]}
+        Writer->>FS: Save draft JSON
+        Writer-->>Director: story_draft
+        
+        Director->>Reviewer: review_story(story_draft)
+        Reviewer->>Ollama: Validate & assess quality
+        Ollama-->>Reviewer: review_feedback
+        Reviewer->>FS: Save review JSON
+        Reviewer-->>Director: reviewed_story
+        
+        Director->>Editor: edit_story(reviewed_story)
+        Editor->>Editor: Polish & format
+        Editor->>Editor: Generate PDF (ReportLab)
+        Editor->>FS: Save PDF to exports/
+        Editor->>FS: Save final story JSON
+        Editor-->>Director: final_story + pdf_path
+        
+        Director-->>Backend: final_story
+        end
+        
+        opt Image generation enabled
+            rect rgb(255, 248, 240)
+            Note over Backend,WebUI: Image Generation Phase (WebUI API)
+            Note right of Backend: Pause Ollama to free GPU memory
+            Backend->>Ollama: Pause service
+            
+            loop For each scene
+                Backend->>ImageAgent: generate_image(scene, user_photo)
+                
+                ImageAgent->>WebUI: POST /sdapi/v1/txt2img {prompt, ip_adapter_image}
+                Note right of WebUI: Load Realistic Vision model<br/>Inject IP-Adapter embedding<br/>First pass: txt2img (512x512)
+                WebUI-->>ImageAgent: base_image
+                
+                ImageAgent->>WebUI: POST /sdapi/v1/img2img {image, denoise_strength}
+                Note right of WebUI: Second pass: img2img refinement<br/>Upscale to 768x768
+                WebUI-->>ImageAgent: final_image
+                
+                ImageAgent->>FS: Save PNG to images/
+                ImageAgent-->>Backend: image_path
+            end
+            
+            Note right of Backend: Resume Ollama after images complete
+            Backend->>Ollama: Resume service
+            end
+        end
+        
+        rect rgb(240, 255, 240)
+        Note over Backend,DB: Database Save
+        Backend->>DB: Save story metadata + user_id + mode + story_data
+        DB-->>Backend: story_id
+        end
+        
+        Backend-->>Frontend: {story, images[], pdf_path}
+        Frontend->>Frontend: Render story UI
+        Frontend-->>User: Display story with images and PDF link
+    end
+```

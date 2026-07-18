@@ -1,0 +1,116 @@
+/* Theme Toggle Styles */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: var(--color-surface-secondary);
+  transform: scale(1.05);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-track {
+  width: 50px;
+  height: 26px;
+  background: var(--color-border);
+  border-radius: 13px;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 2px solid var(--color-border-secondary);
+  animation: themeTransition 0.3s ease;
+}
+
+.theme-toggle:hover .theme-toggle-track {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.theme-toggle-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--color-surface);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.theme-toggle-thumb.dark {
+  transform: translateX(24px);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.theme-toggle-thumb.light {
+  transform: translateX(0);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.theme-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-primary);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-thumb.dark .theme-icon {
+  color: white;
+}
+
+.theme-toggle-thumb.light .theme-icon {
+  color: white;
+}
+
+/* Animation for smooth theme switching */
+
+@keyframes themeTransition {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .theme-toggle-track {
+    width: 45px;
+    height: 24px;
+  }
+  
+  .theme-toggle-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .theme-toggle-thumb.dark {
+    transform: translateX(21px);
+  }
+  
+  .theme-icon {
+    width: 12px;
+    height: 12px;
+  }
+}

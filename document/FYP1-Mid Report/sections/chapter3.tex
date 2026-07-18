@@ -1,0 +1,266 @@
+\chapter{System Overview}
+\label{sec:system-overview}
+
+This chapter provides a comprehensive description of the complete personalized-ai-storybook system architecture, design patterns, and technical implementation details across all FYP iterations. The system is designed as a modular, scalable platform that leverages modern AI technologies and software engineering best practices to deliver reliable, high-quality storybook generation capabilities with advanced interactive features.
+
+\section{System Context}
+personalized-ai-storybook operates as a comprehensive full-stack web application with a clear separation between presentation, business logic, and AI processing layers. The system architecture emphasizes local processing, privacy preservation, and offline capability by deploying all AI models on the user's hardware rather than relying on cloud-based API services. The FastAPI backend serves as the computational engine, orchestrating complex multi-agent workflows and AI model inference, while the Next.js frontend provides an intuitive, responsive user interface optimized for diverse user classes ranging from children to professional educators.
+
+The system integrates sophisticated AI technologies: Ollama for local Large Language Model deployment (specifically llama3.1:8b-instruct with 4-bit quantization), Stable Diffusion 1.5 with the DreamShaper 8 checkpoint for high-quality image generation with character consistency, Coqui TTS \cite{coqui2024} for natural speech synthesis, OpenAI Whisper \cite{whisper2023} for speech-to-text processing, and PyTorch \cite{pytorch2024} with the Diffusers library \cite{diffusers2024} for model management. The modular architecture allows individual components to be updated, replaced, or extended without affecting other system parts, facilitating future enhancements and customization. All generated content is stored in a structured file system, enabling easy access, backup, and analysis. The system supports multiple input modalities including text, voice, and interactive chat, with advanced features for personalized content generation, multi-language support, and real-time user interaction.
+
+\section{Architectural Design}
+The personalized-ai-storybook system employs a layered architecture pattern to achieve modularity, maintainability, and clarity of responsibility. The architecture is organized into distinct layers, each with well-defined responsibilities and clear interfaces for inter-layer communication.
+
+\subsection{Architecture Layers}
+
+\textbf{1. Presentation Layer (Frontend)}\\
+The topmost layer handles all user interactions and visual presentation concerns. This layer comprises the Next.js-based user interface components built with TypeScript, including the Landing Page for initial engagement, Multi-modal Input interface supporting text, voice, and chat interaction, Loading Experience component for providing feedback during generation, Interactive Story Display for presenting completed stories with page navigation and audio controls, Real-time Chat interface for conversational interaction, and Theme Toggle for customizing visual appearance. The presentation layer communicates with the Application Layer through RESTful API calls to the FastAPI backend and supports Progressive Web App capabilities for offline functionality.
+
+\textbf{2. Application Layer (Backend API)}\\
+This layer acts as the entry point for all backend operations, managing HTTP request handling, routing, and response formatting. The FastAPI application defined in main.py coordinates workflow execution by delegating to the multi-agent system, manages CORS policies for frontend communication, serves static files for generated images and documents, and handles error responses with appropriate HTTP status codes. This layer translates user requests into agent pipeline invocations and formats agent outputs for frontend consumption.
+
+\textbf{3. Business Logic Layer (Multi-Agent System)}\\
+This layer contains the core domain logic and specialized agent implementations. The Director Agent orchestrates the sequential execution of Prompt Agent (validation, enhancement, and language detection), Writer Agent (story generation via Ollama with character development), Reviewer Agent (quality assurance and educational value assessment), and Editor Agent (final polish and PDF export). The Image Agent operates semi-independently, generating illustrations with character consistency and style transfer. The TTS Agent handles text-to-speech synthesis with emotion detection and voice customization. The STT Agent processes voice input using OpenAI Whisper for multi-language support. The Chatbot Agent manages conversational AI interactions and personalized recommendations. The Evaluation Agent runs asynchronously in the background via subprocess to collect quality metrics and user interaction data. The Story Agent serves as a facade, providing a simplified interface that delegates to the Director Agent. All agents operate on structured data models validated by Pydantic schemas.
+
+\textbf{4. AI/ML Layer (Model Inference)}\\
+The most computationally intensive layer houses the actual AI model inference operations. Ollama provides local LLM inference through a subprocess call to the command-line interface, processing structured prompts and returning JSON-formatted story content. The Stable Diffusion pipeline manages image generation through advanced techniques: initial txt2img synthesis at 512x512 resolution, followed by img2img refinement for high-resolution enhancement, character consistency maintenance, and style transfer. The DPMSolver scheduler with Karras sigmas optimizes the sampling process. Coqui TTS handles text-to-speech synthesis with emotion detection and voice style customization. OpenAI Whisper processes speech-to-text transcription with multi-language support. PyTorch handles all tensor operations, automatic device detection (CUDA vs CPU), and model weight management.
+
+\textbf{5. Data Layer (File System Storage)}\\
+This layer manages persistent storage and data retrieval through a structured file system. Generated content is organized into dedicated directories: images/ for PNG illustrations with character consistency metadata, stories/ for final JSON outputs with comprehensive metadata, audio/ for TTS-generated narration files, drafts/ for Writer Agent intermediate outputs, prompts/ for enhanced prompts with language detection, reviews/ for Reviewer Agent feedback and educational assessments, edits/ for Editor Agent outputs, exports/ for PDF documents and audio books, evaluations/ for quality metrics and user interaction data, and user_data/ for preference learning and personalization. All file operations use safe filename generation to prevent security vulnerabilities. No database is used in the current iteration, making deployment and backup straightforward.
+
+\textbf{6. Infrastructure Layer (System Services)}\\
+The foundational layer provides essential supporting services. The File System Manager handles safe I/O operations with proper path sanitization. The PDF Generation Service uses ReportLab to create formatted documents. The Audio Processing Service manages TTS synthesis, STT transcription, and audio file optimization. The User Preference Learning Service collects interaction data and adapts content generation. The Multi-language Support Service handles language detection, translation, and cultural context adaptation. The Error Handler manages exception logging and user-facing error messages. Device detection automatically identifies CUDA availability for GPU acceleration. The Configuration system currently relies on hardcoded values, with future iterations planned to support environment variables.
+
+\subsection{Architecture Diagram}
+
+% SPACE FOR ARCHITECTURE DIAGRAM - TO BE ADDED
+\vspace{1cm}
+\begin{center}
+\textit{[The complete system architecture diagram showing all layers, components, and their interactions will be inserted here. The diagram illustrates the flow from user interaction through the presentation layer, API coordination, multi-agent processing, AI model inference, and file system storage. Key data flows and control paths are clearly marked, including voice input processing, audio generation, chat interaction, character consistency, and multi-language support. The diagram source is available in diagrams/architecture\_diagram/architecture\_diagram.mmd and should be converted to an image format for inclusion.]}
+\end{center}
+\vspace{1cm}
+
+\subsection{Key Design Patterns}
+
+\textbf{Facade Pattern}\\
+The StoryAgent class implements the Facade pattern, providing a simplified interface to the complex multi-agent pipeline orchestrated by the DirectorAgent. This abstraction allows main.py to request story generation through a single method call while hiding the intricate coordination of Prompt, Writer, Reviewer, and Editor agents. The facade also maintains backward compatibility if the internal implementation changes.
+
+\textbf{Pipeline Pattern}\\
+The story generation workflow follows a Pipeline pattern where each agent performs a specialized transformation on the data and passes the result to the next stage. The sequence is: Prompt Agent (enhancement) → Writer Agent (creation) → Reviewer Agent (validation) → Editor Agent (refinement and PDF export). This sequential processing ensures consistent quality through validation and refinement at each stage. The Director Agent manages the pipeline execution and aggregates intermediate outputs.
+
+\textbf{Strategy Pattern}\\
+The system employs the Strategy pattern for flexible handling of optional features. The generate\_images parameter acts as a strategy selector, allowing users to choose between illustrated or text-only story generation. The device detection mechanism (CUDA vs CPU) also follows this pattern, automatically selecting appropriate inference parameters based on available hardware. Future iterations will extend this pattern to support multiple LLM backends or image models.
+
+\textbf{Observer Pattern (Partial)}\\
+Status tracking throughout the generation pipeline implements a simplified Observer pattern through console logging. Each agent emits progress events (✅, ❌, ⚠️ indicators) that are logged for debugging and monitoring. While the current implementation lacks a formal event subscription mechanism, the foundation exists for future enhancement with Server-Sent Events or WebSocket-based real-time updates to the frontend.
+
+\textbf{Template Method Pattern}\\
+Agent implementations follow a Template Method pattern where the Director Agent defines the overall algorithm structure (the sequence of agent invocations), while each specialized agent implements specific steps. This allows easy addition of new agents or modification of existing ones without changing the orchestration logic.
+
+\subsection{Communication Protocols}
+
+\textbf{REST API}\\
+The frontend communicates with the backend through RESTful HTTP endpoints defined in FastAPI:
+\begin{itemize}
+    \item \texttt{POST /api/generate}: Accepts story generation requests with JSON body containing prompt and generate\_images flag. Returns complete story JSON with status information.
+    \item \texttt{GET /device}: Returns hardware information including device type (cuda/cpu) and GPU name if available.
+    \item \texttt{GET /generated/*}: Static file serving for images, stories, and PDFs stored in the generated directory structure.
+\end{itemize}
+
+\textbf{Subprocess Communication}\\
+The backend communicates with Ollama through subprocess calls to the command-line interface. Prompts are sent via stdin, and JSON responses are captured from stdout. The Evaluation Agent is similarly invoked as a background subprocess to avoid blocking the main API response.
+
+\textbf{Future Enhancements}\\
+Planned for subsequent iterations: Server-Sent Events (SSE) for real-time progress updates during story generation, WebSocket connections for potential future chatbot mode, and RESTful endpoints for browsing and managing previously generated stories.
+
+\section{Design Models}
+This section presents detailed design models that capture the system's behavior, structure, and data flow using standard software engineering notations.
+
+\subsection{Activity Diagram: Story Generation Workflow}
+
+% SPACE FOR ACTIVITY DIAGRAM - TO BE ADDED
+\vspace{3cm}
+\begin{center}
+\textit{[Activity diagram showing the complete story generation workflow from user prompt input through validation, enhancement, multi-agent processing (Writer → Reviewer → Editor), optional image generation, background evaluation, and final response will be inserted here. The diagram will illustrate decision points (valid/invalid prompt, images enabled/disabled), parallel processing potential, and error handling flows.]}
+\end{center}
+\vspace{2cm}
+
+\subsection{Sequence Diagram: Multi-Agent Story Generation}
+
+% SPACE FOR SEQUENCE DIAGRAM - TO BE ADDED
+\vspace{3cm}
+\begin{center}
+\textit{[Sequence diagram illustrating the temporal ordering of interactions between User, Frontend (StoryInput.tsx), API Controller (main.py), StoryAgent, DirectorAgent, PromptAgent, WriterAgent, ReviewerAgent, EditorAgent, ImageAgent, and Ollama/Stable Diffusion during the story generation process will be inserted here. The diagram shows message passing, synchronous vs asynchronous calls, response returns, and approximate timing.]}
+\end{center}
+\vspace{2cm}
+
+\subsection{Class Diagram: Core Domain Model}
+
+% SPACE FOR CLASS DIAGRAM - TO BE ADDED
+\vspace{3cm}
+\begin{center}
+\textit{[Class diagram depicting the main domain classes including Story (with attributes: title, setting, characters, scenes), Scene (with attributes: scene\_number, text, image\_description, image\_path), Agent classes (StoryAgent, DirectorAgent, PromptAgent, WriterAgent, ReviewerAgent, EditorAgent, ImageAgent, EvaluationAgent) with their key methods and relationships (inheritance from base patterns, composition for pipeline coordination, association for data flow) will be inserted here.]}
+\end{center}
+\vspace{2cm}
+
+\subsection{State Transition Diagram: Story Generation States}
+
+% SPACE FOR STATE DIAGRAM - TO BE ADDED
+\vspace{3cm}
+\begin{center}
+\textit{[State diagram showing the lifecycle of a story generation request through states: Idle, Validating Prompt, Enhancing Prompt, Generating Story Structure, Reviewing Content, Editing and Formatting, Generating Images (if enabled), Completed Successfully, and Error (with sub-states for different error types: Invalid Prompt, Generation Failure, Image Failure) with transition conditions, guard clauses, and actions will be inserted here.]}
+\end{center}
+\vspace{2cm}
+
+\subsection{Data Flow Diagram: System-Level Processing}
+
+% SPACE FOR DATA FLOW DIAGRAM - TO BE ADDED
+\vspace{3cm}
+\begin{center}
+\textit{[Level 0 DFD showing external entity (User) interacting with the personalized-ai-storybook system, with inputs (story prompt, generation options) and outputs (generated story, images, PDF). Level 1 DFD decomposing the system into processes: 1.0 Validate and Enhance Input, 2.0 Generate Story Narrative, 3.0 Generate Scene Illustrations, 4.0 Review and Validate Quality, 5.0 Edit and Format Output, 6.0 Evaluate Story Metrics, with data stores (Prompts, Drafts, Images, Reviews, Edits, Stories, Exports, Evaluations) and data flows between processes will be inserted here.]}
+\end{center}
+\vspace{2cm}
+
+\section{Data Design}
+This section details the information architecture, data structures, and storage mechanisms employed by the personalized-ai-storybook system in Iteration 1.
+
+\subsection{Story Data Schema}
+The system uses a standardized JSON schema for representing generated stories, validated by Pydantic models defined in backend/models/story\_schema.py. The schema ensures consistency across all components and facilitates seamless serialization for storage and transmission.
+
+\textbf{Story JSON Structure:}
+\begin{verbatim}
+{
+  "title": "The Brave Little Explorer",
+  "setting": "A mysterious forest at the edge of the kingdom",
+  "characters": [
+    "Emma the young adventurer",
+    "Whiskers the guide cat"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "Emma stood at the forest entrance, her heart racing...",
+      "image_description": "Young girl with backpack looking at dense forest",
+      "image_path": "generated/images/brave_explorer_1697..._scene_1.png"
+    },
+    {
+      "scene_number": 2,
+      "text": "Deep in the forest, Emma discovered an ancient tree...",
+      "image_description": "Girl examining large ancient tree with glowing bark",
+      "image_path": "generated/images/brave_explorer_1697..._scene_2.png"
+    },
+    {
+      "scene_number": 3,
+      "text": "With Whiskers' help, Emma solved the forest's puzzle...",
+      "image_description": "Girl and cat standing before magical portal",
+      "image_path": "generated/images/brave_explorer_1697..._scene_3.png"
+    }
+  ],
+  "meta": {
+    "prompt_type": "normal",
+    "enhanced_prompt": "A young girl explorer discovers magic in forest"
+  }
+}
+\end{verbatim}
+
+\subsection{Pydantic Schema Definitions}
+The system enforces data integrity through Pydantic v2 models \cite{pydantic2024}:
+
+\textbf{Scene Model:}
+\begin{itemize}
+    \item scene\_number: int (required)
+    \item text: str (required)
+    \item image\_description: Optional[str]
+    \item image\_path: Optional[str]
+\end{itemize}
+
+\textbf{Story Model:}
+\begin{itemize}
+    \item title: str (required)
+    \item setting: str (required)
+    \item characters: List[str] (required)
+    \item scenes: List[Scene] (required)
+\end{itemize}
+
+Additional metadata fields may be added dynamically without breaking validation.
+
+\subsection{Database and Storage Architecture}
+The personalized-ai-storybook Iteration 1 implementation employs a file-system-based storage approach optimized for simplicity, local deployment, and transparency. This design decision prioritizes ease of setup, human readability, and straightforward backup over query performance or concurrent access capabilities.
+
+\textbf{Directory Structure:}
+\begin{verbatim}
+generated/
+├── images/           # PNG illustrations (512x512 upscaled)
+├── stories/          # Final story JSON files
+├── drafts/           # Writer Agent intermediate outputs
+├── prompts/          # Enhanced prompts from Prompt Agent
+├── reviews/          # Reviewer Agent feedback and validations
+├── edits/            # Editor Agent refined outputs
+├── exports/          # Generated PDF documents
+└── evaluations/      # Quality metrics from Evaluation Agent
+\end{verbatim}
+
+\textbf{File Naming Conventions:}
+\begin{itemize}
+    \item Stories: \texttt{<sanitized\_title>\_<timestamp>.json}
+    \item Images: \texttt{<sanitized\_title>\_<timestamp>\_scene\_<number>.png}
+    \item PDFs: \texttt{<sanitized\_title>\_<timestamp>.pdf}
+    \item Agent outputs: \texttt{<sanitized\_title>\_<agent\_name>\_<timestamp>.json}
+\end{itemize}
+
+Filenames use sanitization to remove special characters, replace spaces with underscores, and convert to lowercase, preventing path traversal and filesystem compatibility issues.
+
+\subsection{Configuration Data}
+System configuration in the current iteration uses hardcoded values with future migration to environment variables planned. Critical parameters include:
+\begin{itemize}
+    \item Ollama Model: \texttt{llama3.1:8b-instruct-q4\_K\_M} (hardcoded in agents)
+    \item SD Checkpoint: User-specific path (hardcoded in \texttt{image\_agent.py}, requires manual update)
+    \item Generated Directory: \texttt{generated/} (relative to backend directory)
+    \item Device: Auto-detected (CUDA if available, else CPU)
+    \item Max Scenes: 3 (configured in StoryAgent initialization)
+    \item Writer Retries: 2 (configured in WriterAgent)
+\end{itemize}
+
+\subsection{Data Validation and Integrity}
+All data structures are validated using Pydantic \cite{pydantic2024} models that enforce type safety, required fields, and value constraints. The Pydantic schema definitions reside in \texttt{backend/models/story\_schema.py} and include:
+\begin{itemize}
+    \item \texttt{Scene}: Validates individual scene structure with required scene\_number and text
+    \item \texttt{Story}: Validates complete story structure with required title, setting, characters, and scenes list
+\end{itemize}
+
+The Writer Agent validates its JSON output against the Story model before returning, ensuring all downstream agents receive well-formed data. Invalid structures trigger retry logic or error responses.
+
+\subsection{Data Persistence Strategy}
+The current file-based implementation offers several advantages for Iteration 1:
+\begin{itemize}
+    \item Zero database setup or administration overhead
+    \item Human-readable JSON format for debugging and manual inspection
+    \item Easy backup via simple file copying
+    \item Platform independence without database dependencies
+    \item Simplified deployment on diverse hardware configurations
+    \item Direct access to generated images and PDFs without additional serving logic
+\end{itemize}
+
+Future iterations may incorporate SQLite for local querying or PostgreSQL for multi-user deployments while maintaining the file-based approach for generated artifacts (images and PDFs).
+
+\subsection{Data Flow Summary}
+The complete data flow through the system:
+\begin{enumerate}
+    \item User input (prompt, generate\_images flag) enters through frontend and is transmitted via HTTP POST to \texttt{/api/generate}
+    \item The API controller extracts parameters and invokes StoryAgent
+    \item Prompt Agent validates and enhances input, storing result in \texttt{generated/prompts/}
+    \item Director Agent coordinates the pipeline execution
+    \item Writer Agent generates story structure JSON, saving draft in \texttt{generated/drafts/}
+    \item Reviewer Agent validates content, logging assessment in \texttt{generated/reviews/}
+    \item Editor Agent refines content and generates PDF, saving both in \texttt{generated/edits/} and \texttt{generated/exports/}
+    \item If enabled, Image Agent creates illustrations for each scene, storing PNGs in \texttt{generated/images/}
+    \item Final story with image paths saved in \texttt{generated/stories/}
+    \item Evaluation Agent spawned as background subprocess to generate metrics in \texttt{generated/evaluations/}
+    \item API controller returns story JSON with image URLs (e.g., \texttt{/generated/images/filename.png})
+    \item Frontend fetches story JSON and displays with page navigation
+    \item Frontend loads images via static file serving
+\end{enumerate}
+
+This flow ensures all artifacts are persisted for later analysis, debugging, or re-use, while maintaining clear separation between agent responsibilities.
+
+\clearpage

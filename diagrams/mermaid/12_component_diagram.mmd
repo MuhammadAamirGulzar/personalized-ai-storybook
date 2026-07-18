@@ -1,0 +1,86 @@
+%% MyAIStorybook - Component Diagram
+
+graph TB
+    subgraph System["MyAIStorybook System"]
+        
+        subgraph Frontend["🔷 component: Frontend Layer"]
+            NextJS["🔷 component<br/>Next.js App"]
+            ReactComp["🔷 component<br/>React Components"]
+            APIClient["🔷 component<br/>API Client"]
+            
+            NextJS --> ReactComp
+            ReactComp --> APIClient
+        end
+        
+        subgraph Backend["🔷 component: Backend Layer"]
+            FastAPI["🔷 component<br/>FastAPI Server"]
+            StoryService["🔷 component<br/>Story Service"]
+            ChatService["🔷 component<br/>Chat Service"]
+            WorkshopService["🔷 component<br/>Workshop Service"]
+            AuthService["🔷 component<br/>Auth Service"]
+            
+            FastAPI --> StoryService
+            FastAPI --> ChatService
+            FastAPI --> WorkshopService
+            FastAPI --> AuthService
+        end
+        
+        subgraph AIAgents["🔷 component: AI Agent Layer"]
+            Director["🔷 component<br/>Director Agent"]
+            Writer["🔷 component<br/>Writer Agent"]
+            Reviewer["🔷 component<br/>Reviewer Agent"]
+            Editor["🔷 component<br/>Editor Agent"]
+            ImageAgent["🔷 component<br/>Image Agent"]
+            ChatbotAgent["🔷 component<br/>Chatbot Agent"]
+            
+            Director --> Writer
+            Director --> Reviewer
+            Director --> Editor
+        end
+        
+        subgraph AIModels["🔷 component: AI Model Layer"]
+            Ollama["🔷 component<br/>Ollama LLM"]
+            SD["🔷 component<br/>Stable Diffusion"]
+            Whisper["🔷 component<br/>Whisper STT"]
+            TTS["🔷 component<br/>Coqui TTS"]
+        end
+        
+        subgraph DataLayer["🔷 component: Data Layer"]
+            PostgreSQL["🗄️ database<br/>PostgreSQL"]
+            FileSystem["📁 folder<br/>File System"]
+        end
+    end
+    
+    %% Interfaces (shown as circles)
+    HTTP{{"⭕ HTTP API"}}
+    LLM_IF{{"⭕ LLM Interface"}}
+    IMG_IF{{"⭕ Image Gen Interface"}}
+    DB_IF{{"⭕ Database Interface"}}
+    FILE_IF{{"⭕ File Interface"}}
+    
+    %% Connections through interfaces
+    APIClient -->|provides| HTTP
+    HTTP -->|requires| FastAPI
+    
+    StoryService -->|requires| LLM_IF
+    LLM_IF -->|provides| Director
+    
+    Director -->|requires| LLM_IF
+    LLM_IF -->|provides| Ollama
+    
+    ImageAgent -->|requires| IMG_IF
+    IMG_IF -->|provides| SD
+    
+    StoryService -->|requires| DB_IF
+    DB_IF -->|provides| PostgreSQL
+    
+    StoryService -->|requires| FILE_IF
+    FILE_IF -->|provides| FileSystem
+    
+    %% Styling
+    classDef component fill:#bbdefb,stroke:#1565c0,stroke-width:2px
+    classDef interface fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef database fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
+    
+    class Frontend,Backend,AIAgents,AIModels,DataLayer component
+    class HTTP,LLM_IF,IMG_IF,DB_IF,FILE_IF interface

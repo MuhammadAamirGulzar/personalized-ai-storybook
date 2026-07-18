@@ -1,0 +1,97 @@
+@startuml MyAIStorybook_Sequence_Story_Generation
+title MyAIStorybook - Sequence Diagram: Story Generation from Prompt
+
+actor "User" as User
+participant "Frontend\n(Next.js)" as Frontend
+participant "FastAPI\nBackend" as Backend
+participant "PromptAgent" as Prompt
+participant "DirectorAgent" as Director
+participant "WriterAgent" as Writer
+participant "ReviewerAgent" as Reviewer
+participant "EditorAgent" as Editor
+participant "ImageAgent" as Image
+participant "Ollama\nLLM" as LLM
+participant "Stable\nDiffusion" as SD
+database "PostgreSQL" as DB
+
+User -> Frontend: Enter story prompt\nand click "Weave Magic"
+activate Frontend
+
+Frontend -> Backend: POST /api/generate\n{prompt, generate_images, mode}
+activate Backend
+
+Backend -> Prompt: validate_and_enhance(prompt)
+activate Prompt
+Prompt -> LLM: Classify and enhance prompt
+activate LLM
+LLM --> Prompt: Enhanced prompt
+deactivate LLM
+Prompt --> Backend: Validated prompt
+deactivate Prompt
+
+Backend -> Director: orchestrate_pipeline(prompt)
+activate Director
+
+Director -> Writer: generate_story(prompt)
+activate Writer
+Writer -> LLM: Generate story structure\n(title, setting, characters, scenes)
+activate LLM
+LLM --> Writer: Story draft (JSON)
+deactivate LLM
+Writer --> Director: Draft story
+deactivate Writer
+
+Director -> Reviewer: review_story(draft)
+activate Reviewer
+Reviewer -> LLM: Evaluate story quality\n(coherence, age-appropriateness)
+activate LLM
+LLM --> Reviewer: Review feedback
+deactivate LLM
+Reviewer --> Director: Feedback and suggestions
+deactivate Reviewer
+
+Director -> Editor: refine_story(draft, feedback)
+activate Editor
+Editor -> LLM: Apply improvements\nand finalize story
+activate LLM
+LLM --> Editor: Final story (JSON)
+deactivate LLM
+Editor -> Editor: Generate PDF export
+Editor --> Director: Final story + PDF path
+deactivate Editor
+
+Director --> Backend: Complete story
+deactivate Director
+
+alt generate_images == true
+    loop For each scene
+        Backend -> Image: generate_image(scene_description)
+        activate Image
+        Image -> SD: txt2img(prompt, 512x512)
+        activate SD
+        SD --> Image: Initial image
+        deactivate SD
+        
+        Image -> SD: img2img(image, upscale)
+        activate SD
+        SD --> Image: High-res image
+        deactivate SD
+        
+        Image --> Backend: Image path
+        deactivate Image
+    end
+end
+
+Backend -> DB: Save story and metadata
+activate DB
+DB --> Backend: Story ID
+deactivate DB
+
+Backend --> Frontend: {status: "success",\nstory: {...}, story_id}
+deactivate Backend
+
+Frontend -> Frontend: Display story with\npage navigation
+Frontend --> User: Show generated story
+deactivate Frontend
+
+@enduml

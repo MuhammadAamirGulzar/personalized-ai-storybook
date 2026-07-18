@@ -1,0 +1,25 @@
+%% MyAIStorybook - System Sequence Diagram: Voice Input Story Generation Scenario
+
+sequenceDiagram
+    actor User
+    participant System as :System
+    
+    Note over User,System: Voice Input Story Generation Scenario (Main Success)<br/>System is treated as BLACK BOX
+    
+    User->>System: makeNewStory()
+    
+    User->>System: recordVoiceInput()
+    System-->>User: recording_started
+    
+    User->>System: stopRecording(audio_data)
+    System-->>User: transcription(text)
+    
+    User->>System: confirmPrompt(confirmed_text)
+    System-->>User: prompt_confirmed
+    
+    User->>System: selectOptions(generate_images, mode)
+    
+    User->>System: generateStory()
+    System-->>User: story_with_images(title, scenes[], images[])
+    
+    Note right of System: System converts voice to text internally<br/>using Speech-to-Text<br/>Then proceeds with normal generation

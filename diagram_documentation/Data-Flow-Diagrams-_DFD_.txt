@@ -1,0 +1,211 @@
+Data Flow Diagrams (DFD)
+                          DFD…
+• A way of representing flow of data within a system, its
+  processes, and entities
+• Part of structured analysis in procedural programming
+  models
+   – Not part of OOP
+• Provides information about
+   – Inputs
+   – outputs
+• It does not give information about
+   –   Control flow
+   –   Decision rules
+   –   Loops
+   –   Implementation
+
+                                                            2
+        DFD Elements/Components
+• Process (function/transformation)
+    – Transforms input into an output
+    – Named in one word, short sentence, or a phrase
+    – Treated as ‘black box’
+• Data flow (flow)
+    – Transfers information from one part of the system to another
+    – Flow should have a name that shows what information is being moved (ex.
+      Student ID)
+    – One flow should transmit only one type of information
+    – Flow is always directional
+• Warehouse (data store/file/database)
+    – Stores data for later use
+    – Name is a plural noun (e.g. orders)
+• Terminator (External entity)
+    – Communicates with the system
+    – Stands outside the system
+    – Ex: various organizations, people, authorities, department , another system that
+      does not belong to the model system                                           3
+                  General Rules
+• Entity names should be comprehensible nouns
+• Entity names should be general (independent of
+  implementation)
+• Processes are verb phrases (apply discount, calculate
+  commission, fill order) and should be numbered
+• Processes do not show processing logic (e.g. how commission
+  is calculated)
+• Numbering is random, but must be consistent across all DFD
+  levels
+• Maximum number of processes in one DFD is recommended
+  to be from 6 to 9; minimum is 3; exception: context diagram
+• Each process must have a name, inputs, and outputs
+• Each flow should have a name
+• Each data store must have input and output flows
+                                                          4
+              DFD Levels/Hierarchy
+• Number of levels depends on the size of the system
+• DFDs at higher levels are less detailed
+• Context diagram is the highest in hierarchy (Level 0 or DFD 0)
+• Level 1 or DFD 1: process numbering as process 1, process 2, …
+• Level 2 or DFD 2: process numbering continues
+   – E.g. process 1 is divided into 1.1, 1.2, 1.3,… (DFD 2 of process
+     1, Zooming in Process 1)
+   – Same for all processes of DFD 1
+• Level 3 or DFD 3: process number continues from previous level
+   – E.g. process 1.1 is divided into 1.1.1, 1.1.2, 1.1.3, … (DFD 2 of
+     process 1.1)
+                                                                   5
+6
+     Main steps of creating DFDs
+• Create a list of activities
+• Construct context diagram
+  – Identifies external entities
+  – Identifies main processes
+• Construct level 0 DFD
+  – Identifies manageable processes
+• Construct level 1-n DFDs
+  – Identifies actual data flows and data stores
+
+                                                   7
+Notation
+
+
+
+
+           8
+           You can refer to …
+• http://faculty.babson.edu/dewire/Readings/df
+  dmistk.htm
+
+• https://www.cs.uct.ac.za/mit_notes/software/
+  pdfs/Chp06.pdf
+
+
+
+
+                                             9
+             Context Diagram
+
+                                                        Request forecast
+               Order                                     Sales Forecast
+                                      Lemonade          Production Schedule
+CUSTOMER                                                  Order Decisions     EMPLOYEE
+                                       System
+           Product Served
+                                                              Pay
+             Payment                                       Time Worked
+
+                                  Goods
+                            Payment
+                                                 Purchase Order
+
+
+
+
+                                      VENDOR
+
+
+
+
+                                                                                         10
+                                      Sales Forecast
+               Order                 Production Schedule
+                            Lemonade
+CUSTOMER                               Order Decisions EMPLOYEE
+           Product Served    System
+                                           Pay
+              Payment                      Time Worked
+                           Goods
+                       Payment
+                                      Purchase Order
+
+
+                             VENDOR                                                1.0
+                                                                                   Sale
+                                                       Customer Order                             Sales Forecast
+                                                                                              Request
+                                                                              Product Ordered Forecast
+                                                                   Payment
+                                                                                    2.0              Production
+                                             CUSTOMER                                                               EMPLOYEE
+                                                                                 Production           Schedule
+                                                             Product Served
+
+                                                          Goods                        Inventory
+
+                                                                                   3.0
+                                              VENDOR                             Procure-            Order
+                                                             Purchase Order       ment              Decisions
+                                                            Payment
+                                                                                              Pay           Time Worked
+
+                                                                                   4.0
+                                   Level – 1 DFD                                  Payroll
+                                                                                                                          11
+                                       CUSTOMER
+
+  Customer Order
+                                                      Request for Forecast
+                                        ORDER
+
+
+                    1.1
+                   Record
+                   Order
+
+                                                    1.3
+                                                  Produce
+                                 Severed Order     Sales
+                                                  Forecast
+Payment                                                            Sales Forecast
+
+                             Payment
+                     1.2     info
+                   Receive             PAYMENT
+                   Payment
+
+
+
+
+                      Level – 2 DFD (Sales)                                         12
+  Product Order
+
+                                       ORDER
+
+                     2.1
+                    Serve
+                               Quantity Severed
+                   Product
+
+
+
+  Production                         RAW MATERIALS
+   Schedule
+
+                     2.2
+                   Produce   Quantity Used
+                   Product
+
+
+                                     INVENTORTY
+        Production Data
+
+
+
+                     2.3      Quantity Produced & Location
+                    Store     Stored
+                   Product
+
+
+
+
+Level – 2 DFD (Production)                                   13
+

@@ -1,0 +1,98 @@
+@startuml MyAIStorybook_Sequence_Workshop
+title MyAIStorybook - Sequence Diagram: Idea Workshop Session
+
+actor "User" as User
+participant "Frontend\n(Next.js)" as Frontend
+participant "FastAPI\nBackend" as Backend
+participant "IdeaWorkshopAgent" as Workshop
+participant "Ollama\nLLM" as LLM
+database "PostgreSQL" as DB
+
+User -> Frontend: Start Idea Workshop
+activate Frontend
+
+Frontend -> Backend: POST /api/workshop/start\n{mode: "new_idea" | "improvement"}
+activate Backend
+
+Backend -> DB: Create workshop session
+activate DB
+DB --> Backend: session_id
+deactivate DB
+
+Backend --> Frontend: {session_id, initial_message}
+deactivate Backend
+
+Frontend --> User: Display workshop interface
+deactivate Frontend
+
+loop Interactive Conversation
+    User -> Frontend: Send message\n(story ideas, requirements)
+    activate Frontend
+    
+    Frontend -> Backend: POST /api/workshop/chat\n{session_id, message}
+    activate Backend
+    
+    Backend -> DB: Get session history
+    activate DB
+    DB --> Backend: Previous messages
+    deactivate DB
+    
+    Backend -> Workshop: process_message(message, history)
+    activate Workshop
+    
+    Workshop -> Workshop: Extract requirements\n(characters, setting, themes)
+    
+    Workshop -> LLM: Generate response\n(questions or acknowledgments)
+    activate LLM
+    LLM --> Workshop: Agent response
+    deactivate LLM
+    
+    Workshop --> Backend: {response, extracted_metadata}
+    deactivate Workshop
+    
+    Backend -> DB: Save message and metadata
+    activate DB
+    DB --> Backend: Saved
+    deactivate DB
+    
+    Backend --> Frontend: {response, requirements_collected}
+    deactivate Backend
+    
+    Frontend --> User: Display agent response
+    deactivate Frontend
+end
+
+User -> Frontend: Request story generation
+activate Frontend
+
+Frontend -> Backend: POST /api/workshop/generate\n{session_id}
+activate Backend
+
+Backend -> DB: Get all collected requirements
+activate DB
+DB --> Backend: Requirements metadata
+deactivate DB
+
+Backend -> Workshop: generate_story(requirements)
+activate Workshop
+
+Workshop -> LLM: Generate complete story\nfrom requirements
+activate LLM
+LLM --> Workshop: Generated story
+deactivate LLM
+
+Workshop --> Backend: Final story
+deactivate Workshop
+
+Backend -> DB: Save workshop story
+activate DB
+DB --> Backend: story_id
+deactivate DB
+
+Backend --> Frontend: {story, story_id}
+deactivate Backend
+
+Frontend --> User: Display generated story
+deactivate Frontend
+
+@enduml

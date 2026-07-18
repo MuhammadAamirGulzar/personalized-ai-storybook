@@ -1,0 +1,44 @@
+%% MyAIStorybook - Relational Schema
+
+erDiagram
+    USER ||--o{ WORKSHOP_SESSION : "initiates"
+    
+    WORKSHOP_SESSION ||--|{ WORKSHOP_MESSAGE : "contains"
+    WORKSHOP_SESSION ||--o{ WORKSHOP_STORY : "generates"
+    
+    USER {
+        int id PK
+        string email
+        string username
+        string hashed_password
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+    
+    WORKSHOP_SESSION {
+        int id PK
+        int user_id FK
+        string mode
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+    
+    WORKSHOP_MESSAGE {
+        int id PK
+        int session_id FK
+        string role
+        text message
+        json message_metadata
+        datetime created_at
+    }
+    
+    WORKSHOP_STORY {
+        int id PK
+        int session_id FK
+        int version
+        text story_text
+        text user_story_text
+        datetime created_at
+    }

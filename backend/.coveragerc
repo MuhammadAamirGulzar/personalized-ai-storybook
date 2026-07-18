@@ -1,0 +1,51 @@
+# Coverage.py configuration for MyAIStorybook
+
+[run]
+source = .
+omit =
+    */tests/*
+    */test_*
+    */__pycache__/*
+    */venv/*
+    */env/*
+    */migrations/*
+    */pretrained/*
+    setup.py
+    conftest.py
+    # Omit untested auth files (require database)
+    */auth/database.py
+    */auth/dependencies.py
+    */auth/init_db.py
+    */auth/models.py
+    */auth/routes.py
+    */auth/security.py
+    # Omit untested utils files (external dependencies)
+    */utils/ip_adapter_downloader.py
+    # Omit untested agent files (require external services)
+    */agents/director_agent.py
+    */agents/editor_agent.py
+    */agents/evaluation_agent.py
+    */agents/idea_workshop_agent.py
+    */agents/idea_workshop_agent_CURRENT_BROKEN.py
+    */agents/idea_workshop_agent_langchain.py
+    */agents/image_agent.py
+    */agents/personalized_image_agent_webui_api.py
+    */agents/reviewer_agent.py
+    */agents/writer_agent.py
+
+[report]
+precision = 2
+show_missing = True
+skip_covered = False
+
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    @abstractmethod
+
+[html]
+directory = tests/coverage_html

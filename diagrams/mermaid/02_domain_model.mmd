@@ -1,0 +1,119 @@
+%% MyAIStorybook - Domain Model (Class Diagram)
+
+classDiagram
+    class User {
+        -int id
+        -String email
+        -String username
+        -String password_hash
+        -Boolean is_active
+        -DateTime created_at
+    }
+    
+    class Story {
+        -int id
+        -String title
+        -String mode
+        -JSON story_data
+        -DateTime created_at
+    }
+    
+    class Scene {
+        -int scene_number
+        -String text
+        -String image_prompt
+        -String image_path
+        -String audio_path
+    }
+    
+    class Character {
+        -String name
+        -String description
+        -String personality
+        -String backstory
+    }
+    
+    class Setting {
+        -String location
+        -String time_period
+        -String atmosphere
+        -String description
+    }
+    
+    class ChatConversation {
+        -int id
+        -String character_name
+        -DateTime created_at
+    }
+    
+    class ChatMessage {
+        -int id
+        -String role
+        -String message
+        -DateTime created_at
+    }
+    
+    class WorkshopSession {
+        -int id
+        -String mode
+        -String status
+        -DateTime created_at
+    }
+    
+    class WorkshopMessage {
+        -int id
+        -String role
+        -String message
+        -JSON message_metadata
+        -DateTime created_at
+    }
+    
+    class WorkshopStory {
+        -int id
+        -int version
+        -String story_text
+        -String user_story_text
+        -DateTime created_at
+    }
+    
+    class Image {
+        -String filename
+        -String path
+        -int scene_number
+        -DateTime created_at
+    }
+    
+    class Audio {
+        -String filename
+        -String path
+        -int scene_number
+        -DateTime created_at
+    }
+    
+    class PDFDocument {
+        -String filename
+        -String path
+        -DateTime created_at
+    }
+    
+    %% Relationships
+    User "1" -- "0..*" Story : creates
+    Story "1" *-- "3..*" Scene : contains
+    Story "1" *-- "1..*" Character : has
+    Story "1" *-- "1" Setting : has
+    Story "1" -- "0..1" PDFDocument : exports to
+    
+    Scene "1" -- "0..1" Image : illustrated by
+    Scene "1" -- "0..1" Audio : narrated by
+    
+    Story "1" -- "0..*" ChatConversation : enables
+    ChatConversation "1" *-- "1..*" ChatMessage : contains
+    ChatConversation "1" -- "1" Character : about
+    
+    User "1" -- "0..*" WorkshopSession : participates in
+    WorkshopSession "1" *-- "1..*" WorkshopMessage : contains
+    WorkshopSession "1" -- "0..*" WorkshopStory : generates
+    
+    note for Story "Story contains complete narrative structure in JSON format with all metadata"
+    note for Scene "Each story has exactly 3 scenes (configurable) with text and optional media"
+    note for Character "Characters can be chatted with after story generation"

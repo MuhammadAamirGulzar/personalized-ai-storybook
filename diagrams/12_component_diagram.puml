@@ -1,0 +1,73 @@
+@startuml MyAIStorybook_Component_Diagram
+!define RECTANGLE
+skinparam componentStyle rectangle
+
+title MyAIStorybook - Component Diagram
+
+component "Next.js App" <<component>>
+component "React Components" <<component>>
+component "API Client" <<component>>
+
+component "FastAPI Server" <<component>>
+component "Story Service" <<component>>
+component "Chat Service" <<component>>
+component "Workshop Service" <<component>>
+component "Auth Service" <<component>>
+
+component "Director Agent" <<component>>
+component "Writer Agent" <<component>>
+component "Reviewer Agent" <<component>>
+component "Editor Agent" <<component>>
+component "Image Agent" <<component>>
+component "Chatbot Agent" <<component>>
+
+component "Ollama LLM" <<component>>
+component "Stable Diffusion" <<component>>
+component "Whisper STT" <<component>>
+component "Coqui TTS" <<component>>
+
+database "PostgreSQL" <<database>>
+folder "File System" <<folder>>
+
+' Interfaces
+interface "HTTP API" as HTTP
+interface "LLM Interface" as LLM_IF
+interface "Image Gen Interface" as IMG_IF
+interface "Database Interface" as DB_IF
+interface "File Interface" as FILE_IF
+
+' Frontend Layer connections
+[Next.js App] --> [React Components]
+[React Components] --> [API Client]
+
+' Backend Layer connections
+[FastAPI Server] --> [Story Service]
+[FastAPI Server] --> [Chat Service]
+[FastAPI Server] --> [Workshop Service]
+[FastAPI Server] --> [Auth Service]
+
+' AI Agent Layer connections
+[Director Agent] --> [Writer Agent]
+[Director Agent] --> [Reviewer Agent]
+[Director Agent] --> [Editor Agent]
+
+' Interface connections
+[API Client] -right-> HTTP
+HTTP -right-> [FastAPI Server]
+
+[Story Service] --> LLM_IF
+LLM_IF --> [Director Agent]
+
+[Director Agent] --> LLM_IF
+LLM_IF --> [Ollama LLM]
+
+[Image Agent] --> IMG_IF
+IMG_IF --> [Stable Diffusion]
+
+[Story Service] --> DB_IF
+DB_IF --> [PostgreSQL]
+
+[Story Service] --> FILE_IF
+FILE_IF --> [File System]
+
+@enduml

@@ -1,0 +1,38 @@
+---
+title: "SSD UC3 — Listen to Story Narration (TTS)"
+---
+sequenceDiagram
+    actor User as ":User"
+    participant S as ":System"
+
+    Note over User,S: System treated as BLACK BOX<br/>UC3 — Listen to Story Narration
+
+    User->>S: openStory(storyId)
+    S-->>User: storyData(title, scenes[], pdfPath)
+
+    User->>S: selectVoice(voice: "male" | "female")
+    S-->>User: voiceSelected(voice)
+
+    loop for each scene page user navigates to
+        User->>S: requestNarration(storyId, sceneNumber, voice)
+
+        alt audio already cached
+            S-->>User: audioReady(audioPath, cached: true)
+        else audio not cached
+            S-->>User: audioGenerating(sceneNumber)
+            S-->>User: audioReady(audioPath, cached: false)
+        end
+
+        User->>S: playAudio(audioPath)
+        S-->>User: audioPlaying(duration)
+
+        opt user pauses
+            User->>S: pauseAudio()
+            S-->>User: audioPaused(position)
+        end
+
+        opt user resumes
+            User->>S: resumeAudio(position)
+            S-->>User: audioPlaying(duration)
+        end
+    end

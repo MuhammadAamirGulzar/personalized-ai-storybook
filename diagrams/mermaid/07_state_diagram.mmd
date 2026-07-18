@@ -1,0 +1,117 @@
+%% MyAIStorybook - State Diagram: Story Generation Lifecycle
+
+stateDiagram-v2
+    [*] --> Idle
+    
+    Idle --> PromptValidation : User submits prompt
+    
+    state PromptValidation {
+        [*] --> Validating
+        Validating --> Enhanced : Valid prompt
+        Validating --> Invalid : Invalid/Nonsense
+        Enhanced --> [*]
+        Invalid --> [*]
+    }
+    
+    PromptValidation --> Idle : Invalid prompt / Display error
+    PromptValidation --> WritingDraft : Valid prompt
+    
+    state WritingDraft {
+        [*] --> GeneratingStructure
+        GeneratingStructure --> CreatingCharacters
+        CreatingCharacters --> WritingScenes
+        WritingScenes --> FormattingJSON
+        FormattingJSON --> [*]
+        FormattingJSON --> GeneratingStructure : JSON parse error [retry < max_retries]
+    }
+    
+    WritingDraft --> Reviewing : Draft complete
+    
+    state Reviewing {
+        [*] --> EvaluatingContent
+        EvaluatingContent --> CheckingCoherence
+        CheckingCoherence --> AssessingAge
+        AssessingAge --> GeneratingFeedback
+        GeneratingFeedback --> [*]
+    }
+    
+    Reviewing --> Editing : Review complete
+    
+    state Editing {
+        [*] --> ApplyingFeedback
+        ApplyingFeedback --> RefiningText
+        RefiningText --> ValidatingJSON
+        ValidatingJSON --> GeneratingPDF
+        GeneratingPDF --> [*]
+    }
+    
+    Editing --> ImageGeneration : [generate_images == true]
+    Editing --> Completed : [generate_images == false]
+    
+    state ImageGeneration {
+        [*] --> GeneratingScene1
+        GeneratingScene1 --> GeneratingScene2
+        GeneratingScene2 --> GeneratingScene3
+        GeneratingScene3 --> [*]
+        
+        state GeneratingScene1 {
+            [*] --> Txt2Img1
+            Txt2Img1 --> Img2Img1
+            Img2Img1 --> Saved1
+            Saved1 --> [*]
+        }
+    }
+    
+    ImageGeneration --> Completed : All images generated
+    ImageGeneration --> Completed : Image generation failed / Continue with text-only
+    
+    state Completed {
+        [*] --> SavingToDatabase
+        SavingToDatabase --> Evaluating
+        Evaluating --> Ready
+        Ready --> [*]
+        
+        note right of Evaluating
+            Background evaluation
+            runs asynchronously
+        end note
+    }
+    
+    Completed --> DisplayingStory : Story ready
+    
+    state DisplayingStory {
+        [*] --> ShowingPage1
+        ShowingPage1 --> ShowingPage2 : Next page
+        ShowingPage2 --> ShowingPage3 : Next page
+        ShowingPage3 --> ShowingPage2 : Previous page
+        ShowingPage2 --> ShowingPage1 : Previous page
+        
+        ShowingPage1 --> CharacterChat : Select character
+        ShowingPage2 --> CharacterChat : Select character
+        ShowingPage3 --> CharacterChat : Select character
+        
+        state CharacterChat {
+            [*] --> ChattingActive
+            ChattingActive --> ChattingActive : Send/Receive messages
+            ChattingActive --> [*] : End chat
+        }
+        
+        CharacterChat --> ShowingPage1 : Return to story
+        CharacterChat --> ShowingPage2 : Return to story
+        CharacterChat --> ShowingPage3 : Return to story
+    }
+    
+    DisplayingStory --> Idle : Reset / New story
+    DisplayingStory --> [*] : User exits
+    
+    note right of WritingDraft
+        Writer Agent uses
+        Ollama LLM to generate
+        story structure
+    end note
+    
+    note right of ImageGeneration
+        Image Agent uses
+        Stable Diffusion with
+        two-pass generation
+    end note

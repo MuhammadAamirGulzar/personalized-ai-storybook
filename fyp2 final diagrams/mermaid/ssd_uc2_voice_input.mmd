@@ -1,0 +1,27 @@
+---
+title: "SSD UC2 — Generate Story from Voice Input"
+---
+sequenceDiagram
+    actor User as ":User"
+    participant S as ":System"
+
+    Note over User,S: System treated as BLACK BOX<br/>UC2 — Generate Story from Voice Input (extends UC1)
+
+    User->>S: clickVoiceInput()
+    S-->>User: recorderStarted, recorderState: "listening"
+
+    User->>S: submitVoiceAudio(audioFile: WAV)
+    S-->>User: transcriptionResult(text, language, confidence)
+
+    alt confidence < threshold OR text is empty
+        S-->>User: error("Could not transcribe audio")
+    end
+
+    User->>S: confirmTranscription(transcribedText)
+    S-->>User: promptReceived, promptType
+
+    loop system generating story
+        S-->>User: progressUpdate(stage, message)
+    end
+
+    S-->>User: storyGenerated(storyId, title, scenes[], pdfPath)

@@ -1,0 +1,49 @@
+@startuml
+skinparam sequenceMessageAlign left
+skinparam sequenceArrowThickness 2
+skinparam participantFontSize 13
+skinparam noteFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceLifeLineBorderColor DarkBlue
+skinparam sequenceParticipantBackgroundColor #DDEEFF
+skinparam sequenceActorBackgroundColor #FFFACD
+
+title System Sequence Diagram (SSD): UC1 — Generate Story from Text Prompt
+
+actor ":User" as U
+participant ":System" as S
+
+note over U, S #LightYellow
+  Use Case: UC1 — Generate Story from Text Prompt
+  Primary Actor: Registered User
+  The system is treated as a BLACK BOX.
+  Only external system events (inputs/outputs) are shown.
+end note
+
+U -> S : makeNewSale()
+note right: System initializes a new story request session
+
+U -> S : selectMode(mode: "simple")
+S --> U : modeConfirmed, availableGenres[]
+
+U -> S : setStoryOptions(genre: String, style: String, length: String)
+S --> U : optionsConfirmed
+
+U -> S : submitPrompt(promptText: String)
+note right: e.g. submitPrompt("A brave fox learns to share")
+S --> U : promptReceived, promptType: String
+note left: Returns prompt classification\n(normal, detailed, short)
+
+alt [promptType = "invalid" OR promptType = "nonsense"]
+    S --> U : error("Invalid prompt. Please enter a meaningful idea.")
+end
+
+loop [system generating story]
+    S --> U : progressUpdate(stage: String, message: String)
+    note left: e.g. "Writing story...", "Generating images..."
+end
+
+S --> U : storyGenerated(storyId: int, title: String,\n  scenes: Scene[], pdfPath: String)
+note left: Returns complete story JSON\nwith image URLs and PDF download link
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+skinparam sequenceMessageAlign left
+skinparam sequenceArrowThickness 2
+skinparam participantFontSize 13
+skinparam backgroundColor #FEFEFE
+skinparam sequenceParticipantBackgroundColor #DDEEFF
+skinparam sequenceActorBackgroundColor #FFFACD
+
+title System Sequence Diagram (SSD): UC4 — Generate Personalized Story
+
+actor ":User" as U
+participant ":System" as S
+
+note over U, S #LightYellow
+  Use Case: UC4 — Generate Personalized Story
+  Primary Actor: Registered User
+  Precondition: User is authenticated and on the personalized mode tab.
+  The system is treated as a BLACK BOX.
+end note
+
+U -> S : selectMode(mode: "personalized")
+S --> U : modeConfirmed, uploadPromptVisible: true
+
+U -> S : uploadReferencePhoto(photoFile: ImageFile)
+note right: e.g. JPEG/PNG of the user\nto maintain face consistency
+
+S --> U : faceDetectionResult(faceDetected: bool, confidence: float, gender: String)
+
+alt [faceDetected = false]
+    S --> U : warning("No face detected. Personalized consistency may be limited.")
+    U -> S : continueAnywayOrRetry(choice: "continue" | "retry")
+end
+
+U -> S : setStoryOptions(genre: String, style: String, length: String)
+S --> U : optionsConfirmed
+
+U -> S : submitPrompt(promptText: String)
+S --> U : promptReceived, promptType: String
+
+alt [promptType = "invalid"]
+    S --> U : error("Invalid prompt.")
+end
+
+loop [system generating personalized story]
+    S --> U : progressUpdate(stage: String, message: String)
+    note left: "Writing story...", "Encoding face...",\n"Generating personalized scene 1/3...", etc.
+end
+
+S --> U : storyGenerated(storyId: int, title: String,\n  scenes: Scene[], pdfPath: String, mode: "personalized")
+note left: All scene images maintain facial\nconsistency via IP-Adapter FaceID
+
+@enduml

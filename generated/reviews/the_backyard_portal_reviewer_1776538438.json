@@ -1,0 +1,54 @@
+{
+  "title": "The Backyard Portal",
+  "setting": "A futuristic, lush garden in a city of tomorrow",
+  "characters": [
+    "Liam",
+    "Glimmer the Robot"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "One sunny afternoon, Liam was playing in his backyard when he stumbled upon an unusual, shimmering patch of grass. As he touched it, a hidden door appeared! It was no ordinary door; it had strange symbols and glowed softly. Liam's heart pounded with curiosity. He pushed the door open to reveal a lush, magical garden unlike anything in his futuristic city. A friendly robot named Glimmer greeted him, 'Welcome, young explorer! This is the Garden of Glowing Greens.' Liam couldn't believe his eyes; trees bore fruits that glowed like lanterns, and flowers emitted soft melodies.",
+      "image_description": "Liam discovering a glowing doorway in his futuristic backyard",
+      "image_path": null
+    },
+    {
+      "scene_number": 2,
+      "text": "'Glimmer, can we have an adventure?' Liam asked eagerly. Glimmer agreed, 'But first, we must find the Golden Blossom to light our way.' They ventured deeper into the garden, crossing babbling streams and climbing over vibrant vines. Suddenly, a giant Venus flytrap-like plant blocked their path! It was the Guard of Greenery. 'Halt!' it boomed. 'Only those who can answer my riddle may pass: What has roots as nobody sees, is taller than trees, up, up it goes, and yet never grows?' Liam pondered, while Glimmer's gears whirred.",
+      "image_description": "Liam and Glimmer facing a giant Venus flytrap-like plant",
+      "image_path": null
+    },
+    {
+      "scene_number": 3,
+      "text": "'A mountain!' Liam exclaimed. The Guard of Greenery laughed heartily, 'Correct! You may pass.' It opened its petals to reveal the Golden Blossom shining brightly within. With their path illuminated, they finally reached the Tree of Whispers. Its ancient bark held wisdom about tomorrow's technology. Liam listened intently while Glimmer scanned the information into his databanks. As they left the magical garden, Liam knew he'd found more than just adventure; he'd gained a new friend and wisdom to share with his city.",
+      "image_description": "Liam listening to the Tree of Whispers with Glimmer by his side",
+      "image_path": null
+    }
+  ],
+  "consistency_report": {
+    "per_scene": {
+      "1": {
+        "scene_number": 1,
+        "word_count": 97,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "2": {
+        "scene_number": 2,
+        "word_count": 90,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "3": {
+        "scene_number": 3,
+        "word_count": 85,
+        "length_score": 1.0,
+        "has_image": true
+      }
+    },
+    "overall": {
+      "avg_length_score": 1.0,
+      "image_coverage": 1.0
+    }
+  }
+}

@@ -1,0 +1,30 @@
+%% MyAIStorybook - System Sequence Diagram (SSD): Generate Story
+%% Shows ONE scenario with system as BLACK BOX
+
+sequenceDiagram
+    actor Cashier as User
+    participant System as :System
+    
+    Note over Cashier,System: Generate Story Scenario (Main Success)
+    
+    Cashier->>System: makeNewStory()
+    
+    Cashier->>System: enterPrompt(prompt_text)
+    System-->>Cashier: validation_result
+    
+    Cashier->>System: selectOptions(generate_images, mode)
+    
+    Cashier->>System: generateStory()
+    
+    alt generate_images == true
+        System-->>Cashier: story_with_images(title, scenes[], images[])
+    else generate_images == false
+        System-->>Cashier: story_text_only(title, scenes[])
+    end
+    
+    loop for each page
+        Cashier->>System: viewPage(page_number)
+        System-->>Cashier: page_content(text, image)
+    end
+    
+    Note over Cashier,System: System is treated as BLACK BOX<br/>No internal implementation shown

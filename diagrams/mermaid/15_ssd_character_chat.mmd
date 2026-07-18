@@ -1,0 +1,23 @@
+%% MyAIStorybook - System Sequence Diagram: Character Chat Scenario
+
+sequenceDiagram
+    actor User
+    participant System as :System
+    
+    Note over User,System: Character Chat Scenario (Main Success)<br/>System is treated as BLACK BOX
+    
+    User->>System: selectStory(story_id)
+    System-->>User: story_details
+    
+    User->>System: selectCharacter(character_name)
+    System-->>User: chat_ready
+    
+    loop conversation continues
+        User->>System: sendMessage(message_text)
+        System-->>User: character_response(response_text)
+    end
+    
+    User->>System: endChat()
+    System-->>User: chat_ended
+    
+    Note right of System: System operations are high-level<br/>Character responses generated internally<br/>Focus on WHAT system does

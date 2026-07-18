@@ -1,0 +1,45 @@
+@startuml
+skinparam sequenceMessageAlign left
+skinparam sequenceArrowThickness 2
+skinparam participantFontSize 13
+skinparam backgroundColor #FEFEFE
+skinparam sequenceParticipantBackgroundColor #DDEEFF
+skinparam sequenceActorBackgroundColor #FFFACD
+
+title System Sequence Diagram (SSD): UC7 — Idea Workshop
+
+actor ":User" as U
+participant ":System" as S
+
+note over U, S #LightYellow
+  Use Case: UC7 — Idea Workshop (Multi-turn story ideation)
+  Primary Actor: Registered User
+  The system is treated as a BLACK BOX.
+  Workshop Agent collects story requirements through conversation.
+end note
+
+U -> S : startWorkshopSession(mode: "simple" | "personalized")
+S --> U : sessionStarted(sessionId: String, greeting: String)
+note left: Agent greets and asks for first\nrequirement (e.g., "What kind of hero?")
+
+' Multi-turn requirement collection loop
+loop [until all requirements collected]
+    U -> S : sendWorkshopMessage(sessionId: String, message: String)
+    note right: User answers agent questions:\nhero, setting, challenge, moral, etc.
+    S --> U : agentResponse(message: String, requirementsCollected: int,\n   requirementsNeeded: int, isReady: bool)
+    note left: Agent asks next question or\nconfirms it has enough info
+end
+
+' Requirements complete — confirmation
+S --> U : requirementsComplete(summary: StoryRequirements,\n   confirmationMessage: String)
+
+U -> S : confirmAndGenerate(sessionId: String, confirmed: bool)
+note right: User reviews collected requirements\nand approves generation
+
+loop [system generating story from workshop requirements]
+    S --> U : progressUpdate(stage: String, message: String)
+end
+
+S --> U : storyGenerated(storyId: int, title: String,\n  scenes: Scene[], pdfPath: String)
+
+@enduml

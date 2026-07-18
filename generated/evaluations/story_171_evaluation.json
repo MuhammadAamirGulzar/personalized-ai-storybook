@@ -1,0 +1,34 @@
+{
+  "story_id": 171,
+  "timestamp": "2026-04-18T22:23:40.495068",
+  "mode": "personalized",
+  "num_scenes": 3,
+  "overall_score": 82,
+  "metrics": {
+    "image_text_alignment": {
+      "score": 78,
+      "label": "Good"
+    },
+    "visual_consistency": {
+      "score": 74,
+      "label": "Good"
+    },
+    "text_coherence": {
+      "score": 92,
+      "label": "Excellent"
+    },
+    "readability": {
+      "score": 68,
+      "label": "Fair"
+    },
+    "story_structure": {
+      "score": 100,
+      "label": "Excellent"
+    },
+    "character_consistency": {
+      "score": 69,
+      "label": "Fair"
+    }
+  },
+  "evaluation_time_seconds": 18.85
+}

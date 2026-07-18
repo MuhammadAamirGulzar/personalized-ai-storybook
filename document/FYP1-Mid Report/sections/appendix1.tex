@@ -1,0 +1,1161 @@
+\chapter{System Architecture and Technical Specifications}
+\label{appendix:technical-specs}
+
+This appendix provides detailed technical documentation, configuration specifications, API contracts, and implementation details for the complete personalized-ai-storybook system across all FYP iterations.
+
+\section{JSON Story Structure Schema}
+The system employs a standardized JSON schema for story representation throughout the pipeline, validated by Pydantic models defined in \texttt{backend/models/story\_schema.py}.
+
+\subsection{Complete Story Schema Example}
+\begin{verbatim}
+{
+  "title": "The Adventure of the Brave Little Fox",
+  "setting": "A magical forest where animals can talk",
+  "characters": [
+    "Felix the Fox",
+    "Olivia the Owl"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "In a magical forest where animals could talk, lived
+               a small orange fox named Felix with bright green eyes.
+               Every morning, Felix would wake up wondering what
+               exciting adventure the day might bring...",
+      "image_description": "Small orange fox with green eyes in forest",
+      "image_path": "generated/images/brave_fox_1697234567_scene_1.png"
+    },
+    {
+      "scene_number": 2,
+      "text": "One sunny morning, Felix met Olivia, a wise old owl
+               with silver feathers. She told him about a hidden
+               treasure deep in the forest...",
+      "image_description": "Fox looking up at silver owl in tree",
+      "image_path": "generated/images/brave_fox_1697234567_scene_2.png"
+    },
+    {
+      "scene_number": 3,
+      "text": "With Olivia's guidance and his own courage, Felix
+               discovered that the real treasure was the friendship
+               they built along the journey...",
+      "image_description": "Fox and owl standing together smiling",
+      "image_path": "generated/images/brave_fox_1697234567_scene_3.png"
+    }
+  ],
+  "meta": {
+    "prompt_type": "normal",
+    "enhanced_prompt": "A courageous young fox embarks on adventure..."
+  }
+}
+\end{verbatim}
+
+\section{API Endpoint Specifications}
+
+\subsection{POST /api/generate}
+\textbf{Description:} Initiates story generation with the specified prompt and configuration parameters.
+
+\subsection{POST /api/generate/voice}
+\textbf{Description:} Initiates story generation from voice input using speech-to-text processing.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "audio_file": "base64_encoded_audio_data",
+  "language": "en-US (optional, default: auto-detect)",
+  "generate_images": boolean (optional, default: true)
+}
+\end{verbatim}
+
+\subsection{POST /api/chat}
+\textbf{Description:} Interactive chat mode for conversational story development.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "message": "string (user chat message)",
+  "session_id": "string (optional, for continuing conversation)",
+  "context": "story_context (optional)"
+}
+\end{verbatim}
+
+\subsection{POST /api/generate/audio}
+\textbf{Description:} Generates audio narration for existing story.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "story_id": "string (required)",
+  "voice_style": "string (optional, default: 'neutral')",
+  "language": "string (optional, default: 'en')"
+}
+\end{verbatim}
+
+\subsection{POST /api/generate/character-consistent}
+\textbf{Description:} Generates images with character consistency across scenes.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "story_id": "string (required)",
+  "character_reference": "base64_image_data (optional)",
+  "style_transfer": boolean (optional, default: false)
+}
+\end{verbatim}
+
+\subsection{GET /api/stories}
+\textbf{Description:} Retrieves list of user's generated stories with metadata.
+
+\textbf{Query Parameters:}
+\begin{verbatim}
+?limit=10&offset=0&filter=recent
+\end{verbatim}
+
+\subsection{GET /api/stories/{story_id}
+\textbf{Description:} Retrieves specific story with all associated media.
+
+\subsection{POST /api/export/pdf}
+\textbf{Description:} Exports story to PDF format with custom styling.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "story_id": "string (required)",
+  "format": "string (optional, default: 'standard')",
+  "include_images": boolean (optional, default: true)
+}
+\end{verbatim}
+
+\subsection{POST /api/export/audiobook}
+\textbf{Description:} Exports story as audiobook with narration.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "story_id": "string (required)",
+  "voice_style": "string (optional, default: 'neutral')",
+  "background_music": boolean (optional, default: false)
+}
+\end{verbatim}
+
+
+\subsection{POST /api/evaluate}
+\textbf{Description:} Evaluates story quality and provides feedback.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "story_id": "string (required)",
+  "evaluation_criteria": ["creativity", "coherence", "age_appropriateness"]
+}
+\end{verbatim}
+
+\subsection{GET /api/user/preferences}
+\textbf{Description:} Retrieves user preferences and learning data.
+
+\subsection{PUT /api/user/preferences}
+\textbf{Description:} Updates user preferences and settings.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "preferred_style": "string (optional)",
+  "age_group": "string (optional)",
+  "language": "string (optional)",
+  "image_style": "string (optional)"
+}
+\end{verbatim}
+
+\textbf{Request Headers:}
+\begin{verbatim}
+Content-Type: application/json
+\end{verbatim}
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "prompt": "string (required, 5-500 characters recommended)",
+  "generate_images": boolean (optional, default: true)
+}
+\end{verbatim}
+
+\textbf{Example Request:}
+\begin{verbatim}
+{
+  "prompt": "A cat who learns to sail the seas",
+  "generate_images": true
+}
+\end{verbatim}
+
+\textbf{Success Response (200 OK):}
+\begin{verbatim}
+{
+  "status": "Images generated successfully. ✅",
+  "story": {
+    "title": "The Sailing Cat",
+    "setting": "A peaceful harbor by the ocean",
+    "characters": ["Mittens the Cat", "Captain Jim"],
+    "scenes": [
+      {
+        "scene_number": 1,
+        "text": "Mittens the cat had always been curious...",
+        "image_description": "Orange cat looking at boats in harbor",
+        "image_path": "generated/images/sailing_cat_1697..._scene_1.png",
+        "image_url": "/generated/images/sailing_cat_1697..._scene_1.png"
+      },
+      // ... additional scenes
+    ],
+    "meta": {
+      "prompt_type": "normal",
+      "enhanced_prompt": "A brave cat learns sailing from captain"
+    }
+  }
+}
+\end{verbatim}
+
+\textbf{Error Response (400 Bad Request - Invalid Prompt):}
+\begin{verbatim}
+{
+  "error": "Your prompt appears invalid or meaningless. 
+            Please enter a more meaningful idea."
+}
+\end{verbatim}
+
+\textbf{Error Response (500 Internal Server Error):}
+\begin{verbatim}
+{
+  "detail": "Story generation failed: [specific error message]"
+}
+\end{verbatim}
+
+\subsection{GET /device}
+\textbf{Description:} Returns hardware information including CPU/GPU availability and capabilities.
+
+\textbf{Success Response (200 OK - GPU Available):}
+\begin{verbatim}
+{
+  "device": "cuda",
+  "name": "NVIDIA GeForce GTX 1060"
+}
+\end{verbatim}
+
+\textbf{Success Response (200 OK - CPU Only):}
+\begin{verbatim}
+{
+  "device": "cpu"
+}
+\end{verbatim}
+
+\subsection{GET /generated/\{path\}}
+\textbf{Description:} Static file serving for generated images, stories, and other content.
+
+\textbf{Example URLs:}
+\begin{itemize}
+    \item \texttt{/generated/images/story\_123\_scene\_1.png} - Scene illustration
+    \item \texttt{/generated/stories/story\_title\_123.json} - Story JSON
+    \item \texttt{/generated/exports/story\_title\_123.pdf} - PDF export
+    \item \texttt{/generated/evaluations/story\_title\_123\_eval.json} - Quality metrics
+\end{itemize}
+
+\textbf{Response:} Binary file content with appropriate MIME type
+
+\section{Complete System Configuration}
+
+\subsection{Environment Variables Configuration}
+The complete system uses environment variables for all configuration parameters:
+
+\textbf{Core System Configuration:}
+\begin{verbatim}
+# LLM Configuration
+OLLAMA_MODEL=llama3.1:8b-instruct-q4_K_M
+OLLAMA_BASE_URL=http://localhost:11434
+
+# Image Generation
+SD_CHECKPOINT_PATH=backend/pretrained/dreamshaper_8.safetensors
+SD_DEVICE=cuda  # or cpu
+SD_CACHE_DIR=backend/pretrained/cache
+
+# Audio Generation
+TTS_MODEL_PATH=backend/pretrained/tts_model
+TTS_DEVICE=cuda  # or cpu
+STT_MODEL_PATH=backend/pretrained/whisper_model
+
+# Database Configuration
+DATABASE_URL=sqlite:///./storybook.db
+REDIS_URL=redis://localhost:6379
+
+# File Storage
+GENERATED_DIR=generated
+MAX_FILE_SIZE=50MB
+STORAGE_BACKEND=local  # or s3, gcs
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
+
+# Security
+SECRET_KEY=your-secret-key-here
+JWT_EXPIRE_MINUTES=60
+
+# Feature Flags
+ENABLE_TTS=true
+ENABLE_STT=true
+ENABLE_CHATBOT=true
+ENABLE_CHARACTER_CONSISTENCY=true
+\end{verbatim}
+
+\subsection{Agent Configuration Parameters}
+Each agent has configurable parameters through environment variables:
+
+\textbf{Writer Agent:}
+\begin{verbatim}
+WRITER_MAX_SCENES=5
+WRITER_RETRY_ATTEMPTS=3
+WRITER_TEMPERATURE=0.7
+WRITER_MAX_TOKENS=2000
+\end{verbatim}
+
+\textbf{Image Agent:}
+\begin{verbatim}
+IMAGE_RESOLUTION=512x512
+IMAGE_INFERENCE_STEPS=25
+IMAGE_GUIDANCE_SCALE=7.0
+IMAGE_HIRES_FIX=true
+IMAGE_UPSCALE_FACTOR=2
+\end{verbatim}
+
+\textbf{TTS Agent:}
+\begin{verbatim}
+TTS_VOICE_STYLE=neutral
+TTS_SPEECH_RATE=1.0
+TTS_VOLUME=0.8
+TTS_EMOTION=neutral
+\end{verbatim}
+
+\textbf{STT Agent:}
+\begin{verbatim}
+STT_LANGUAGE=auto
+STT_MODEL_SIZE=base
+STT_TEMPERATURE=0.0
+STT_BEAM_SIZE=5
+\end{verbatim}
+
+\textbf{Chatbot Agent:}
+\begin{verbatim}
+CHATBOT_MODEL=llama3.1:8b-instruct-q4_K_M
+CHATBOT_TEMPERATURE=0.8
+CHATBOT_MAX_TOKENS=1000
+CHATBOT_CONTEXT_WINDOW=4000
+\end{verbatim}
+
+\subsection{Database Schema Configuration}
+The complete system includes comprehensive database schemas:
+
+\textbf{User Management:}
+\begin{verbatim}
+Users Table:
+- id (UUID, Primary Key)
+- username (String, Unique)
+- email (String, Unique)
+- preferences (JSON)
+- created_at (DateTime)
+- last_login (DateTime)
+\end{verbatim}
+
+\textbf{Story Management:}
+\begin{verbatim}
+Stories Table:
+- id (UUID, Primary Key)
+- user_id (UUID, Foreign Key)
+- title (String)
+- content (JSON)
+- metadata (JSON)
+- created_at (DateTime)
+- updated_at (DateTime)
+\end{verbatim}
+
+\textbf{Chat Sessions:}
+\begin{verbatim}
+ChatSessions Table:
+- id (UUID, Primary Key)
+- user_id (UUID, Foreign Key)
+- story_id (UUID, Foreign Key, Optional)
+- messages (JSON)
+- context (JSON)
+- created_at (DateTime)
+\end{verbatim}
+
+\textbf{Media Files:}
+\begin{verbatim}
+MediaFiles Table:
+- id (UUID, Primary Key)
+- story_id (UUID, Foreign Key)
+- file_type (String: image, audio, video)
+- file_path (String)
+- metadata (JSON)
+- created_at (DateTime)
+\end{verbatim}
+
+\subsection{Frontend Configuration}
+\textbf{Environment Variables:}
+\begin{verbatim}
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+NEXT_PUBLIC_ENABLE_VOICE=true
+NEXT_PUBLIC_ENABLE_CHAT=true
+\end{verbatim}
+
+\textbf{API Endpoints Configuration:}
+\begin{verbatim}
+export const API_ENDPOINTS = {
+  GENERATE: '/api/generate',
+  GENERATE_VOICE: '/api/generate/voice',
+  CHAT: '/api/chat',
+  STORIES: '/api/stories',
+  EXPORT_PDF: '/api/export/pdf',
+  EXPORT_AUDIO: '/api/export/audiobook',
+  PREFERENCES: '/api/user/preferences'
+};
+\end{verbatim}
+
+\section{Complete System Requirements}
+
+\subsection{Minimum Hardware Requirements}
+\begin{itemize}
+    \item \textbf{Processor:} Intel Core i5 (8th gen) or AMD Ryzen 5 equivalent
+    \item \textbf{RAM:} 12 GB DDR4 (increased for TTS/STT models)
+    \item \textbf{Storage:} 50 GB available space (30 GB for models, 20 GB for generated content)
+    \item \textbf{Operating System:} Windows 10/11, macOS 10.15+, Ubuntu 20.04+
+    \item \textbf{Network:} Internet connection for initial model download and Ollama installation
+    \item \textbf{Audio:} Microphone and speakers for voice features
+    \item \textbf{Note:} CPU-only systems functional but slow (3-5 min per image, 2-3 min per audio)
+\end{itemize}
+
+\subsection{Recommended Hardware Requirements}
+\begin{itemize}
+    \item \textbf{Processor:} Intel Core i7 (10th gen) or AMD Ryzen 7 equivalent
+    \item \textbf{RAM:} 24 GB DDR4 (for optimal multi-agent performance)
+    \item \textbf{GPU:} NVIDIA RTX 3060 12GB or higher (RTX 4080 optimal)
+    \item \textbf{VRAM:} 12+ GB dedicated GPU memory (for character consistency and upscaling)
+    \item \textbf{Storage:} 100 GB NVMe SSD available space
+    \item \textbf{Audio:} High-quality microphone and speakers for voice features
+    \item \textbf{Note:} GPU dramatically improves all generation speeds (30-60s vs 3-5min)
+\end{itemize}
+
+\subsection{Production Server Requirements}
+\begin{itemize}
+    \item \textbf{Processor:} Intel Xeon or AMD EPYC (16+ cores)
+    \item \textbf{RAM:} 64+ GB DDR4
+    \item \textbf{GPU:} Multiple NVIDIA A100 or H100 (for concurrent users)
+    \item \textbf{Storage:} 1+ TB NVMe SSD with backup
+    \item \textbf{Network:} High-bandwidth connection for model serving
+    \item \textbf{Database:} PostgreSQL or MySQL with Redis cache
+\end{itemize}
+
+\subsection{Software Dependencies}
+
+\textbf{Backend (Python 3.8+):}
+\begin{itemize}
+    \item FastAPI 0.116.1+
+    \item Uvicorn 0.35.0+
+    \item Pydantic 2.11.9+
+    \item PyTorch 2.0.0+ (with CUDA support for GPU, CPU-only also supported)
+    \item Diffusers 0.21.0+
+    \item Transformers 4.56.2+
+    \item Accelerate 1.10.1+
+    \item Pillow 11.0.0+
+    \item Ollama 0.5.3+ (Python client)
+    \item ReportLab (for PDF generation)
+    \item Requests 2.32.5+
+    \item SQLAlchemy 2.0+ (database ORM)
+    \item Redis 4.5+ (caching and session management)
+    \item Coqui TTS 0.22+ (text-to-speech)
+    \item OpenAI Whisper 20231117+ (speech-to-text)
+    \item IP-Adapter 1.0+ (character consistency)
+    \item ControlNet 0.1+ (advanced image control)
+    \item WebSockets 11.0+ (real-time chat)
+    \item Celery 5.3+ (background task processing)
+    \item Gunicorn 21.2+ (production WSGI server)
+\end{itemize}
+
+\textbf{Frontend (Node.js 18+):}
+\begin{itemize}
+    \item Next.js 14.2+
+    \item React 18.2.0+
+    \item React-DOM 18.2.0+
+    \item TypeScript 5.0+
+    \item Tailwind CSS 3.4+ (styling)
+    \item Framer Motion 10.16+ (animations)
+    \item React Hook Form 7.48+ (form handling)
+    \item Zustand 4.4+ (state management)
+    \item React Query 5.0+ (data fetching)
+    \item Web Speech API (voice input)
+    \item Web Audio API (audio playback)
+\end{itemize}
+
+\textbf{Database and Storage:}
+\begin{itemize}
+    \item PostgreSQL 14+ (primary database)
+    \item Redis 7.0+ (caching and sessions)
+    \item SQLite 3.40+ (development database)
+    \item MinIO (S3-compatible object storage)
+\end{itemize}
+
+\textbf{External Services:}
+\begin{itemize}
+    \item Ollama (local installation for LLM inference)
+    \item Stable Diffusion checkpoint files (DreamShaper 8, ~2GB)
+    \item TTS model files (Coqui TTS, ~500MB)
+    \item STT model files (Whisper, ~1.5GB)
+    \item IP-Adapter models (~2GB)
+    \item ControlNet models (~1GB)
+\end{itemize}
+
+\section{Complete System Installation and Deployment}
+
+\subsection{Environment Setup}
+\begin{verbatim}
+# Clone repository
+git clone https://github.com/username/personalized-ai-storybook.git
+cd personalized-ai-storybook
+
+# Create environment file
+cp .env.example .env
+# Edit .env with your configuration
+\end{verbatim}
+
+\subsection{Database Setup}
+\begin{verbatim}
+# Install PostgreSQL and Redis
+# Ubuntu/Debian:
+sudo apt-get install postgresql redis-server
+
+# macOS:
+brew install postgresql redis
+
+# Windows:
+# Download and install PostgreSQL and Redis
+
+# Create database
+createdb storybook_db
+
+# Run migrations
+cd backend
+alembic upgrade head
+\end{verbatim}
+
+\subsection{Backend Setup}
+\begin{verbatim}
+# Navigate to backend directory
+cd backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install PyTorch with CUDA support (if GPU available)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# Download all required models
+ollama pull llama3.1:8b-instruct-q4_K_M
+
+# Download Stable Diffusion checkpoint
+# DreamShaper 8: https://civitai.com/models/4384/dreamshaper
+# Save to: backend/pretrained/dreamshaper_8.safetensors
+
+# Download TTS models
+python -c "from TTS.api import TTS; TTS.list_models()"
+# Download preferred TTS model
+
+# Download STT models
+whisper --model base
+
+# Download IP-Adapter models
+# Download from Hugging Face: IP-Adapter models
+
+# Initialize database
+python -c "from backend.database import init_db; init_db()"
+
+# Start backend server
+python main.py
+# Or use: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+\end{verbatim}
+
+\subsection{Frontend Setup}
+\begin{verbatim}
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your configuration
+
+# Start development server
+npm run dev
+
+# Frontend will open at http://localhost:3000
+\end{verbatim}
+
+\subsection{Production Deployment}
+\begin{verbatim}
+# Backend production setup
+cd backend
+pip install gunicorn
+gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+
+# Frontend production build
+cd frontend
+npm run build
+npm start
+
+# Database setup for production
+# Configure PostgreSQL with proper security
+# Set up Redis with persistence
+# Configure reverse proxy (Nginx)
+\end{verbatim}
+
+\subsection{Docker Deployment}
+\begin{verbatim}
+# Build and run with Docker Compose
+docker-compose up -d
+
+# This will start:
+# - PostgreSQL database
+# - Redis cache
+# - Backend API
+# - Frontend application
+# - Nginx reverse proxy
+\end{verbatim}
+
+\section{Complete System Testing Procedures}
+
+\subsection{Agent Testing Suite}
+\begin{verbatim}
+# Test all agents
+cd backend
+python -m pytest agents/test_*.py -v
+
+# Test individual agents
+python agents/test_prompt.py
+python agents/test_writer.py
+python agents/test_reviewer.py
+python agents/test_editor.py
+python agents/test_director.py
+python agents/test_image.py
+python agents/test_tts.py
+python agents/test_stt.py
+python agents/test_chatbot.py
+python agents/test_evaluation.py
+\end{verbatim}
+
+\subsection{Integration Testing}
+\begin{verbatim}
+# Test complete pipeline
+python -m pytest tests/integration/ -v
+
+# Test API endpoints
+python -m pytest tests/api/ -v
+
+# Test database operations
+python -m pytest tests/database/ -v
+
+# Test file generation
+python -m pytest tests/generation/ -v
+\end{verbatim}
+
+\subsection{Performance Testing}
+\begin{verbatim}
+# Load testing
+python tests/performance/load_test.py
+
+# Memory usage testing
+python tests/performance/memory_test.py
+
+# GPU utilization testing
+python tests/performance/gpu_test.py
+\end{verbatim}
+
+\subsection{API Testing with cURL}
+\begin{verbatim}
+# Test basic story generation
+curl -X POST http://localhost:8000/api/generate \
+  -H "Content-Type: application/json" \
+  -d "{\"prompt\": \"a brave cat\", \"generate_images\": true}"
+
+# Test voice input
+curl -X POST http://localhost:8000/api/generate/voice \
+  -H "Content-Type: application/json" \
+  -d "{\"audio_file\": \"base64_audio_data\", \"language\": \"en-US\"}"
+
+# Test chat mode
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d "{\"message\": \"I want a story about dragons\", \"session_id\": \"test123\"}"
+
+# Test audio generation
+curl -X POST http://localhost:8000/api/generate/audio \
+  -H "Content-Type: application/json" \
+  -d "{\"story_id\": \"story123\", \"voice_style\": \"neutral\"}"
+
+# Test character consistency
+curl -X POST http://localhost:8000/api/generate/character-consistent \
+  -H "Content-Type: application/json" \
+  -d "{\"story_id\": \"story123\", \"style_transfer\": true}"
+
+
+# Test export to PDF
+curl -X POST http://localhost:8000/api/export/pdf \
+  -H "Content-Type: application/json" \
+  -d "{\"story_id\": \"story123\", \"format\": \"standard\"}"
+
+# Test export to audiobook
+curl -X POST http://localhost:8000/api/export/audiobook \
+  -H "Content-Type: application/json" \
+  -d "{\"story_id\": \"story123\", \"voice_style\": \"narrator\"}"
+
+# Test device information
+curl http://localhost:8000/device
+
+# Test user preferences
+curl -X GET http://localhost:8000/api/user/preferences
+curl -X PUT http://localhost:8000/api/user/preferences \
+  -H "Content-Type: application/json" \
+  -d "{\"preferred_style\": \"fantasy\", \"age_group\": \"children\"}"
+\end{verbatim}
+
+\subsection{Frontend Testing}
+Comprehensive testing procedures for the complete system:
+\begin{enumerate}
+    \item \textbf{Basic Story Generation:}
+    \begin{itemize}
+        \item Navigate to \texttt{http://localhost:3000}
+        \item Click "Start Creating"
+        \item Enter test prompt: "A robot learning to paint"
+        \item Toggle image generation on/off
+        \item Click "Weave Magic"
+        \item Verify loading screen appears
+        \item Verify story displays with page navigation
+    \end{itemize}
+    
+    \item \textbf{Voice Input Testing:}
+    \begin{itemize}
+        \item Click microphone button
+        \item Record test prompt: "A brave knight's adventure"
+        \item Verify speech-to-text conversion
+        \item Verify story generation from voice input
+    \end{itemize}
+    
+    \item \textbf{Chat Mode Testing:}
+    \begin{itemize}
+        \item Click "Chat Mode" button
+        \item Type: "I want a story about space exploration"
+        \item Verify chatbot responses
+        \item Continue conversation to develop story
+        \item Verify story generation from chat
+    \end{itemize}
+    
+    \item \textbf{Audio Generation Testing:}
+    \begin{itemize}
+        \item Generate a story first
+        \item Click "Generate Audio" button
+        \item Select voice style and language
+        \item Verify audio generation and playback
+        \item Test different voice styles
+    \end{itemize}
+    
+    \item \textbf{Character Consistency Testing:}
+    \begin{itemize}
+        \item Generate story with images
+        \item Click "Character Consistency" option
+        \item Verify character appearance consistency
+        \item Test style transfer options
+    \end{itemize}
+    
+    
+    \item \textbf{Export Testing:}
+    \begin{itemize}
+        \item Generate story with images and audio
+        \item Test PDF export with different formats
+        \item Test audiobook export with different voices
+        \item Verify file downloads and quality
+    \end{itemize}
+    
+    \item \textbf{User Preferences Testing:}
+    \begin{itemize}
+        \item Access user settings/preferences
+        \item Modify preferred style, age group, language
+        \item Generate stories and verify preferences applied
+        \item Test preference learning from usage patterns
+    \end{itemize}
+    
+    \item \textbf{Theme and UI Testing:}
+    \begin{itemize}
+        \item Test theme toggle (light/dark mode)
+        \item Test responsive design on different screen sizes
+        \item Test accessibility features
+        \item Test loading states and error handling
+    \end{itemize}
+\end{enumerate}
+
+\section{Complete System Error Codes and Troubleshooting}
+
+\subsection{HTTP Error Codes}
+\begin{itemize}
+    \item \textbf{400 Bad Request:} Invalid input, malformed request, or validation errors
+    \item \textbf{401 Unauthorized:} Authentication required or invalid credentials
+    \item \textbf{403 Forbidden:} Insufficient permissions or rate limit exceeded
+    \item \textbf{404 Not Found:} Resource not found (story, user, file)
+    \item \textbf{409 Conflict:} Resource already exists or concurrent modification
+    \item \textbf{413 Payload Too Large:} File size exceeds limits
+    \item \textbf{422 Unprocessable Entity:} Invalid data format or business logic errors
+    \item \textbf{429 Too Many Requests:} Rate limit exceeded
+    \item \textbf{500 Internal Server Error:} Agent processing failure, model inference error, or system error
+    \item \textbf{502 Bad Gateway:} External service unavailable
+    \item \textbf{503 Service Unavailable:} System maintenance or overload
+    \item \textbf{504 Gateway Timeout:} Request timeout
+\end{itemize}
+
+\subsection{Agent-Specific Error Codes}
+\begin{itemize}
+    \item \textbf{PROMPT\_INVALID:} Prompt validation failed
+    \item \textbf{WRITER\_FAILED:} Story generation failed after retries
+    \item \textbf{IMAGE\_GENERATION\_FAILED:} Image generation error
+    \item \textbf{TTS\_FAILED:} Text-to-speech generation failed
+    \item \textbf{STT\_FAILED:} Speech-to-text conversion failed
+    \item \textbf{CHATBOT\_FAILED:} Chatbot response generation failed
+    \item \textbf{TRANSLATION\_FAILED:} Language translation failed
+    \item \textbf{EXPORT\_FAILED:} File export generation failed
+    \item \textbf{DATABASE\_ERROR:} Database operation failed
+    \item \textbf{STORAGE\_ERROR:} File storage operation failed
+\end{itemize}
+
+\subsection{Comprehensive Troubleshooting Guide}
+
+\textbf{Model and Agent Issues:}
+\begin{itemize}
+    \item \textbf{ModuleNotFoundError or ImportError:} Ensure virtual environment is activated and all dependencies installed via \texttt{pip install -r requirements.txt}
+    \item \textbf{FileNotFoundError for models:} Verify all model paths in environment variables point to valid files
+    \item \textbf{CUDA out of memory:} Close other GPU-intensive applications. System will automatically fall back to CPU
+    \item \textbf{Agent processing failed:} Check agent logs, verify model availability, restart services
+    \item \textbf{JSON parsing errors:} System includes automatic retry logic. If persistent, try rephrasing input
+\end{itemize}
+
+\textbf{Database and Storage Issues:}
+\begin{itemize}
+    \item \textbf{Database connection failed:} Verify PostgreSQL/Redis is running, check connection strings
+    \item \textbf{File storage errors:} Check disk space, verify write permissions, ensure storage backend is configured
+    \item \textbf{Session management issues:} Clear Redis cache, restart Redis service
+    \item \textbf{User data not persisting:} Check database permissions, verify user authentication
+\end{itemize}
+
+\textbf{API and Network Issues:}
+\begin{itemize}
+    \item \textbf{Connection refused errors:} Verify backend is running on port 8000, check firewall settings
+    \item \textbf{CORS errors:} Check CORS configuration, verify allowed origins
+    \item \textbf{WebSocket connection failed:} Verify WebSocket server is running, check proxy configuration
+    \item \textbf{Rate limiting:} Check rate limit configuration, implement proper queuing
+\end{itemize}
+
+\textbf{Frontend Issues:}
+\begin{itemize}
+    \item \textbf{Blank page:} Check browser console for errors, ensure Next.js dev server is running
+    \item \textbf{Images not displaying:} Check network errors, verify file paths, check CORS settings
+    \item \textbf{Voice input not working:} Check microphone permissions, verify Web Speech API support
+    \item \textbf{Audio playback issues:} Check audio codec support, verify file format compatibility
+    \item \textbf{Theme not persisting:} Check localStorage permissions, verify client-side rendering
+\end{itemize}
+
+\textbf{Performance Issues:}
+\begin{itemize}
+    \item \textbf{Slow generation:} Expected on CPU-only systems. Consider GPU upgrade or cloud processing
+    \item \textbf{Memory usage high:} Monitor RAM usage, implement model caching, restart services
+    \item \textbf{Concurrent user issues:} Implement proper queuing, scale horizontally
+    \item \textbf{File generation timeouts:} Increase timeout limits, optimize generation parameters
+\end{itemize}
+
+\textbf{Security Issues:}
+\begin{itemize}
+    \item \textbf{Authentication failures:} Check JWT configuration, verify user credentials
+    \item \textbf{File upload security:} Validate file types, implement size limits, scan for malware
+    \item \textbf{Input validation:} Sanitize all user inputs, implement proper validation
+    \item \textbf{API security:} Implement rate limiting, use HTTPS, validate API keys
+\end{itemize}
+
+\section{Complete System Performance Benchmarks}
+
+\subsection{Generation Time Metrics (Average)}
+
+\textbf{GPU-Accelerated (NVIDIA RTX 3060 12GB):}
+\begin{itemize}
+    \item Prompt validation \& enhancement: 0.5 seconds
+    \item Story generation (5 scenes): 10-12 seconds
+    \item Image generation (per scene): 25-35 seconds
+    \item Character consistency processing: 15-20 seconds
+    \item TTS generation (per scene): 8-12 seconds
+    \item STT processing: 2-3 seconds
+    \item Chatbot interaction: 3-5 seconds
+    \item Review and edit: 2-3 seconds
+    \item PDF generation: 2-3 seconds
+    \item Audiobook generation: 5-8 seconds
+    \item \textbf{Total (5-scene story with all features): ~180-250 seconds (3-4 min)}
+\end{itemize}
+
+\textbf{CPU-Only (Intel Core i7-10th gen):}
+\begin{itemize}
+    \item Prompt validation \& enhancement: 0.5 seconds
+    \item Story generation (5 scenes): 15-20 seconds
+    \item Image generation (per scene): 150-200 seconds (2.5-3.5 min)
+    \item Character consistency processing: 60-90 seconds
+    \item TTS generation (per scene): 30-45 seconds
+    \item STT processing: 5-8 seconds
+    \item Chatbot interaction: 8-12 seconds
+    \item Review and edit: 4-6 seconds
+    \item PDF generation: 3-5 seconds
+    \item Audiobook generation: 15-25 seconds
+    \item \textbf{Total (5-scene story with all features): ~600-900 seconds (10-15 min)}
+\end{itemize}
+
+\textbf{Text-Only Mode (images and audio disabled):}
+\begin{itemize}
+    \item Total generation time: 15-25 seconds
+    \item Platform-independent (CPU/GPU identical)
+\end{itemize}
+
+\textbf{Cloud/Server Performance (NVIDIA A100):}
+\begin{itemize}
+    \item All operations 3-5x faster than RTX 3060
+    \item Concurrent user support: 10-20 simultaneous generations
+    \item Total generation time: ~60-90 seconds for full features
+\end{itemize}
+
+\subsection{Complete System Resource Utilization}
+\begin{itemize}
+    \item \textbf{Memory (GPU mode):} 8-12 GB VRAM during full generation, 6-8 GB system RAM
+    \item \textbf{Memory (CPU mode):} 12-16 GB system RAM during full generation
+    \item \textbf{Disk space per story:} 
+    \begin{itemize}
+        \item With images and audio: 15-25 MB (5 images @ ~2-3MB each + audio @ ~1-2MB per scene + JSON + PDF + audiobook)
+        \item With images only: 8-12 MB (5 images + JSON + PDF)
+        \item Text-only: ~100-200 KB (JSON + PDF)
+    \end{itemize}
+    \item \textbf{Model storage:} 
+    \begin{itemize}
+        \item Ollama llama3.1:8b: ~4.7 GB
+        \item DreamShaper 8 checkpoint: ~2 GB
+        \item Stable Diffusion components: ~3 GB
+        \item TTS models (Coqui): ~500 MB
+        \item STT models (Whisper): ~1.5 GB
+        \item IP-Adapter models: ~2 GB
+        \item ControlNet models: ~1 GB
+        \item \textbf{Total model storage: ~15 GB}
+    \end{itemize}
+    \item \textbf{Database storage:} 
+    \begin{itemize}
+        \item User data: ~1-5 KB per user
+        \item Story metadata: ~2-10 KB per story
+        \item Chat sessions: ~5-20 KB per session
+        \item Media file references: ~1-2 KB per file
+    \end{itemize}
+    \item \textbf{Network bandwidth:} 
+    \begin{itemize}
+        \item API requests: ~1-5 KB per request
+        \item File uploads: ~1-10 MB per audio file
+        \item Generated content download: ~15-25 MB per complete story
+    \end{itemize}
+\end{itemize}
+
+\section{Complete System Security Considerations}
+
+\subsection{Input Validation and Sanitization}
+Comprehensive input validation across all system components:
+\begin{itemize}
+    \item \textbf{Prompt validation:} Length limits, content filtering, language detection
+    \item \textbf{File upload security:} Type validation, size limits, malware scanning
+    \item \textbf{Audio input validation:} Format validation, duration limits, quality checks
+    \item \textbf{Database input sanitization:} SQL injection prevention, XSS protection
+    \item \textbf{API input validation:} Schema validation, type checking, range validation
+\end{itemize}
+
+\subsection{Authentication and Authorization}
+\begin{itemize}
+    \item \textbf{User authentication:} JWT-based authentication with refresh tokens
+    \item \textbf{Role-based access control:} User, admin, moderator roles
+    \item \textbf{Session management:} Secure session handling with Redis
+    \item \textbf{API key management:} Rate limiting and key rotation
+    \item \textbf{Multi-factor authentication:} Optional 2FA for enhanced security
+\end{itemize}
+
+\subsection{Data Privacy and Protection}
+\begin{itemize}
+    \item \textbf{Data encryption:} AES-256 encryption for sensitive data at rest
+    \item \textbf{Transit security:} HTTPS/TLS 1.3 for all communications
+    \item \textbf{Data anonymization:} User data anonymization for analytics
+    \item \textbf{GDPR compliance:} Data retention policies, right to deletion
+    \item \textbf{Local processing:} All AI processing occurs locally when possible
+    \item \textbf{Data minimization:} Collect only necessary user information
+\end{itemize}
+
+\subsection{Network Security}
+\begin{itemize}
+    \item \textbf{CORS configuration:} Restrictive CORS policies for production
+    \item \textbf{Rate limiting:} API rate limiting to prevent abuse
+    \item \textbf{DDoS protection:} Request throttling and IP blocking
+    \item \textbf{Firewall rules:} Network-level security controls
+    \item \textbf{SSL/TLS:} End-to-end encryption for all communications
+\end{itemize}
+
+\subsection{File and Storage Security}
+\begin{itemize}
+    \item \textbf{File type validation:} Strict file type checking and validation
+    \item \textbf{Path traversal prevention:} Secure file path handling
+    \item \textbf{Storage encryption:} Encrypted storage for sensitive files
+    \item \textbf{Access controls:} File-level permissions and access logging
+    \item \textbf{Backup security:} Encrypted backups with secure key management
+\end{itemize}
+
+\subsection{Production Security Configuration}
+\textbf{CORS Configuration:}
+\begin{verbatim}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://yourdomain.com"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
+)
+\end{verbatim}
+
+\textbf{Environment Variables:}
+\begin{verbatim}
+# Security Configuration
+SECRET_KEY=your-256-bit-secret-key
+JWT_SECRET_KEY=your-jwt-secret
+ENCRYPTION_KEY=your-encryption-key
+CORS_ORIGINS=https://yourdomain.com
+RATE_LIMIT_PER_MINUTE=60
+SESSION_TIMEOUT=3600
+\end{verbatim}
+
+\section{Complete System File Structure Reference}
+
+\subsection{Complete Directory Layout}
+\begin{verbatim}
+personalized-ai-storybook/
+├── backend/
+│   ├── agents/
+│   │   ├── prompt_agent.py
+│   │   ├── writer_agent.py
+│   │   ├── reviewer_agent.py
+│   │   ├── editor_agent.py
+│   │   ├── image_agent.py
+│   │   ├── director_agent.py
+│   │   ├── story_agent.py
+│   │   ├── evaluation_agent.py
+│   │   ├── tts_agent.py
+│   │   ├── stt_agent.py
+│   │   ├── chatbot_agent.py
+│   │   ├── test_*.py (test files)
+│   │   └── __pycache__/
+│   ├── models/
+│   │   ├── story_schema.py
+│   │   ├── user_schema.py
+│   │   ├── chat_schema.py
+│   │   └── __pycache__/
+│   ├── database/
+│   │   ├── models.py
+│   │   ├── migrations/
+│   │   └── __pycache__/
+│   ├── api/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── __pycache__/
+│   ├── services/
+│   │   ├── auth_service.py
+│   │   ├── file_service.py
+│   │   └── __pycache__/
+│   ├── pretrained/
+│   │   ├── dreamshaper_8.safetensors
+│   │   ├── tts_models/
+│   │   ├── stt_models/
+│   │   └── ip_adapter_models/
+│   ├── main.py
+│   ├── main_pipeline.py
+│   ├── requirements.txt
+│   ├── start_backend.bat
+│   ├── .env.example
+│   └── venv/
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── globals.css
+│   │   ├── components/
+│   │   │   ├── ClientThemeProvider.tsx
+│   │   │   └── __pycache__/
+│   │   ├── pages/
+│   │   │   ├── Home/
+│   │   │   ├── Story/
+│   │   │   └── Chat/
+│   │   ├── layout/
+│   │   ├── shared/
+│   │   ├── contexts/
+│   │   ├── hooks/
+│   │   ├── styles/
+│   │   └── utils/
+│   ├── public/
+│   ├── package.json
+│   ├── next.config.js
+│   ├── tsconfig.json
+│   ├── .env.local.example
+│   └── start_frontend.bat
+├── generated/           # Created on first run
+│   ├── images/
+│   ├── stories/
+│   ├── drafts/
+│   ├── prompts/
+│   ├── reviews/
+│   ├── edits/
+│   ├── exports/
+│   ├── evaluations/
+│   ├── audio/
+│   ├── audiobooks/
+│   └── translations/
+├── database/
+│   ├── migrations/
+│   ├── seeds/
+│   └── backups/
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── performance/
+│   └── e2e/
+├── memory-bank/         # Project documentation
+├── document/            # LaTeX FYP documentation
+├── diagrams/            # Architecture diagrams
+├── docker/
+│   ├── Dockerfile.backend
+│   ├── Dockerfile.frontend
+│   └── docker-compose.yml
+├── scripts/
+│   ├── setup.sh
+│   ├── deploy.sh
+│   └── backup.sh
+├── .env.example
+├── .gitignore
+├── start_all.bat
+└── README.md
+\end{verbatim}
+
+\clearpage

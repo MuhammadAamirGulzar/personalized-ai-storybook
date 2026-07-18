@@ -1,0 +1,98 @@
+@startuml MyAIStorybook_Relational_Schema
+title MyAIStorybook - Relational Schema (Chen Notation)
+
+skinparam object {
+    BackgroundColor White
+    BorderColor Black
+}
+
+' Define entities as rectangles
+object USER {
+}
+
+object WORKSHOP_SESSION {
+}
+
+object WORKSHOP_MESSAGE {
+}
+
+object WORKSHOP_STORY {
+}
+
+' Define relationships as diamonds using hexagon
+hexagon INITIATES
+hexagon CONTAINS_WORKSHOP
+hexagon GENERATES
+
+' Define attributes as ovals using cloud
+cloud "id\n<<PK>>" as user_id
+cloud email as user_email
+cloud username as user_username
+cloud hashed_password as user_pass
+cloud is_active as user_active
+cloud created_at as user_created
+
+cloud "id\n<<PK>>" as workshop_id
+cloud "user_id\n<<FK>>" as workshop_user_fk
+cloud mode as workshop_mode
+cloud status as workshop_status
+cloud created_at as workshop_created
+cloud updated_at as workshop_updated
+
+cloud "id\n<<PK>>" as workshop_msg_id
+cloud "session_id\n<<FK>>" as workshop_session_fk
+cloud role as workshop_role
+cloud message as workshop_msg
+cloud message_metadata as workshop_meta
+cloud created_at as workshop_msg_created
+
+cloud "id\n<<PK>>" as ws_story_id
+cloud "session_id\n<<FK>>" as ws_session_fk
+cloud version as ws_version
+cloud story_text as ws_text
+cloud user_story_text as ws_user_text
+cloud created_at as ws_created
+
+' Connect USER attributes
+user_id -- USER
+user_email -- USER
+user_username -- USER
+user_pass -- USER
+user_active -- USER
+user_created -- USER
+
+' Connect WORKSHOP_SESSION attributes
+workshop_id -- WORKSHOP_SESSION
+workshop_user_fk -- WORKSHOP_SESSION
+workshop_mode -- WORKSHOP_SESSION
+workshop_status -- WORKSHOP_SESSION
+workshop_created -- WORKSHOP_SESSION
+workshop_updated -- WORKSHOP_SESSION
+
+' Connect WORKSHOP_MESSAGE attributes
+workshop_msg_id -- WORKSHOP_MESSAGE
+workshop_session_fk -- WORKSHOP_MESSAGE
+workshop_role -- WORKSHOP_MESSAGE
+workshop_msg -- WORKSHOP_MESSAGE
+workshop_meta -- WORKSHOP_MESSAGE
+workshop_msg_created -- WORKSHOP_MESSAGE
+
+' Connect WORKSHOP_STORY attributes
+ws_story_id -- WORKSHOP_STORY
+ws_session_fk -- WORKSHOP_STORY
+ws_version -- WORKSHOP_STORY
+ws_text -- WORKSHOP_STORY
+ws_user_text -- WORKSHOP_STORY
+ws_created -- WORKSHOP_STORY
+
+' Connect entities to relationships
+USER -- "(1,1)" INITIATES
+INITIATES -- "(0,N)" WORKSHOP_SESSION
+
+WORKSHOP_SESSION -- "(1,1)" CONTAINS_WORKSHOP
+CONTAINS_WORKSHOP -- "(1,N)" WORKSHOP_MESSAGE
+
+WORKSHOP_SESSION -- "(1,1)" GENERATES
+GENERATES -- "(0,N)" WORKSHOP_STORY
+
+@enduml

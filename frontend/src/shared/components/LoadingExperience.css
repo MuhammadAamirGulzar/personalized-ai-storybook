@@ -1,0 +1,66 @@
+/* Loading Experience Styles */
+.loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.5s ease;
+}
+
+.loading-animation {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.loading-animation::before, .loading-animation::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  inset: 0;
+  background: conic-gradient(from 90deg at 50% 50%, var(--color-primary), var(--color-accent), transparent);
+  animation: spin 2s linear infinite;
+}
+
+.loading-animation::after {
+  animation-delay: -0.5s;
+}
+
+.loading-text {
+  margin-top: var(--spacing-xxl);
+  font-size: 1.4rem;
+  color: var(--color-textPrimary);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  font-family: var(--font-primary);
+}
+
+/* Global Animations */
+@keyframes fadeIn { 
+  from { opacity: 0; } 
+  to { opacity: 1; } 
+}
+
+@keyframes spin { 
+  from { transform: rotate(0deg); } 
+  to { transform: rotate(360deg); } 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loading-text {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 0 var(--spacing-md);
+  }
+  
+  .loading-animation {
+    width: 100px;
+    height: 100px;
+  }
+}

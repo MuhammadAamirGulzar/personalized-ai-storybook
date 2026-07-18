@@ -1,0 +1,65 @@
+@startuml MyAIStorybook_Deployment_Diagram
+!define RECTANGLE
+skinparam componentStyle rectangle
+
+title MyAIStorybook - Deployment Diagram
+
+node "Client Device" <<device>> {
+    artifact "Web Browser" <<artifact>>
+    artifact "Next.js Frontend" <<artifact>>
+    
+    [Web Browser] ..> [Next.js Frontend] : runs
+}
+
+node "Application Server" <<server>> {
+    artifact "FastAPI Backend" <<artifact>>
+    artifact "Uvicorn Server" <<artifact>>
+    artifact "AI Agent Pipeline" <<artifact>>
+    
+    [Uvicorn Server] ..> [FastAPI Backend] : hosts
+    [FastAPI Backend] ..> [AI Agent Pipeline] : uses
+}
+
+node "AI Model Server" <<server>> {
+    artifact "Ollama Service" <<artifact>>
+    artifact "Llama 3.1 Model" <<artifact>>
+    artifact "Stable Diffusion" <<artifact>>
+    artifact "DreamShaper 8" <<artifact>>
+    
+    [Ollama Service] ..> [Llama 3.1 Model] : loads
+    [Stable Diffusion] ..> [DreamShaper 8] : uses
+}
+
+node "Database Server" <<server>> {
+    database "PostgreSQL" <<database>>
+    artifact "Users DB" <<artifact>>
+    artifact "Stories DB" <<artifact>>
+    artifact "Chat DB" <<artifact>>
+    
+    [PostgreSQL] ..> [Users DB] : manages
+    [PostgreSQL] ..> [Stories DB] : manages
+    [PostgreSQL] ..> [Chat DB] : manages
+}
+
+node "File Storage" <<server>> {
+    folder "Generated Content" <<folder>>
+    artifact "Images" <<artifact>>
+    artifact "Stories" <<artifact>>
+    artifact "PDFs" <<artifact>>
+    
+    [Generated Content] ..> [Images] : contains
+    [Generated Content] ..> [Stories] : contains
+    [Generated Content] ..> [PDFs] : contains
+}
+
+' Connections between nodes
+[Next.js Frontend] --> [FastAPI Backend] : HTTP/HTTPS\n:3000 → :8000
+
+[FastAPI Backend] --> [Ollama Service] : HTTP\n:11434
+[FastAPI Backend] --> [Stable Diffusion] : Local API
+
+[FastAPI Backend] --> [PostgreSQL] : TCP/IP\n:5432
+
+[FastAPI Backend] --> [Generated Content] : File I/O
+
+@enduml

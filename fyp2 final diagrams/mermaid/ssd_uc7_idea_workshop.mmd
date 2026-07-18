@@ -1,0 +1,26 @@
+---
+title: "SSD UC7 — Idea Workshop"
+---
+sequenceDiagram
+    actor User as ":User"
+    participant S as ":System"
+
+    Note over User,S: System treated as BLACK BOX<br/>UC7 — Idea Workshop (Multi-turn Ideation)
+
+    User->>S: startWorkshopSession(mode)
+    S-->>User: sessionStarted(sessionId, greeting)
+
+    loop until all requirements collected
+        User->>S: sendWorkshopMessage(sessionId, message)
+        S-->>User: agentResponse(message, requirementsCollected, requirementsNeeded, isReady)
+    end
+
+    S-->>User: requirementsComplete(summary, confirmationMessage)
+
+    User->>S: confirmAndGenerate(sessionId, confirmed: true)
+
+    loop system generating story
+        S-->>User: progressUpdate(stage, message)
+    end
+
+    S-->>User: storyGenerated(storyId, title, scenes[], pdfPath)

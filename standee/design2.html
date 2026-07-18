@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 2 - Flowing Narrative Magic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --deep: #0f0c29;
+            --mid: #302b63;
+            --light: #24243e;
+            --gold: #ffcb05;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            font-family: 'Quicksand', sans-serif;
+            color: white;
+        }
+
+        /* 24x60 scaled */
+        .standee {
+            width: 800px;
+            height: 2000px;
+            background: linear-gradient(to bottom, var(--deep), var(--mid), var(--light));
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header with SVG Wave */
+        header {
+            height: 400px;
+            position: relative;
+            z-index: 10;
+            padding: 60px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .uni-branding {
+            text-align: left;
+        }
+
+        .uni-branding h4 {
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+
+        .supervisor-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .supervisor-box b {
+            color: var(--gold);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .project-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 4.8rem;
+            line-height: 1;
+            margin-top: 40px;
+            background: linear-gradient(to bottom, #fff, #b39ddb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Flowing Wave Container */
+        .wave-container {
+            position: absolute;
+            top: 350px;
+            width: 100%;
+            height: 150px;
+            z-index: 5;
+        }
+
+        /* Content Bubble Shapes */
+        .content {
+            padding: 100px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            z-index: 2;
+        }
+
+        .bubble {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            padding: 60px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Irregular Shape for Motivation */
+        .shape-motivation {
+            clip-path: polygon(0% 15%, 100% 0%, 100% 85%, 0% 100%);
+            border-radius: 0;
+            background: linear-gradient(135deg, rgba(106, 27, 154, 0.2), rgba(48, 43, 99, 0.2));
+        }
+
+        /* Circle Shape for Visual */
+        .shape-visual {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid var(--gold);
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            padding-left: 45px;
+            position: relative;
+        }
+
+        li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        /* Decorative Elements */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 80px 60px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-tag {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="standee">
+        <!-- Background Orbs -->
+        <div class="orb"
+            style="width: 400px; height: 400px; top: 10%; left: -10%; background: rgba(106, 27, 154, 0.3);"></div>
+        <div class="orb"
+            style="width: 500px; height: 500px; bottom: 10%; right: -10%; background: rgba(48, 43, 99, 0.3);"></div>
+
+        <header>
+            <div class="header-content">
+                <div class="uni-branding">
+                    <h4>FAST-NUCES ISLAMABAD</h4>
+                </div>
+                <div class="supervisor-box">
+                    <b>Supervisor //</b> Mr. Muhammad Aamir Gulzar
+                    <div style="margin-top: 15px;">
+                        muhammadaamirgulzar &bull; muhammadaamirgulzar &bull; muhammadaamirgulzar
+                        <br>muhammadaamirgulzar | 1237 | 1969
+                    </div>
+                </div>
+            </div>
+            <h1 class="project-title">personalized-ai-storybook</h1>
+        </header>
+
+        <svg class="wave-container" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#302b63" fill-opacity="0.3"
+                d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,224C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+            </path>
+        </svg>
+
+        <div class="content">
+            <div class="bubble shape-motivation">
+                <h2>Our Vision</h2>
+                <p style="font-size: 1.8rem; line-height: 1.4; color: #eee;">We empower the next generation of
+                    storytellers by bridging the gap between imagination and AI visualization.</p>
+            </div>
+
+            <div class="shape-visual">
+                <div style="font-weight: 900; color: var(--gold); font-size: 1.5rem; text-align: center;">SAMPLE
+                    STORYBOARD<br>SCENE</div>
+            </div>
+
+            <div class="bubble">
+                <h2>The Magic Path</h2>
+                <ul>
+                    <li>Upload your photo & become the hero.</li>
+                    <li>Multi-Agent coherence & consistency.</li>
+                    <li>Offline, child-safe generative AI.</li>
+                </ul>
+            </div>
+
+            <div class="bubble" style="background: var(--gold); color: black;">
+                <h2 style="color: black;">Tech Stack</h2>
+                <p style="font-size: 1.6rem; font-weight: 700;">Llama 3.1 &bull; Stable Diffusion &bull; FastAPI</p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-tag">Job Fair '26 &bull; National University of CES</div>
+        </footer>
+    </div>
+</body>
+
+</html>

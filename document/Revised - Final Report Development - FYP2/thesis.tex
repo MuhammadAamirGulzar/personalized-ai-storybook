@@ -1,0 +1,78 @@
+\documentclass{fast-nuces-bs}
+%\documentclass{article}
+
+\usepackage{blindtext}
+\usepackage{mathptmx}% Times Roman font
+\usepackage[T1]{fontenc}
+\usepackage{lipsum} 
+\usepackage{sectsty}
+\usepackage{tikz-uml}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{verbatim}
+
+
+% Information about the Thesis 
+% -----------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\department{Department of Computer Science}
+\faculty{Computer Science}
+\degreeyear{2026}
+\degreemonth{June}
+\degreename{Computer Science}
+\campuscity{Islamabad}
+\authorone{muhammadaamirgulzar Kiyani}{muhammadaamirgulzar}
+\authortwo{muhammadaamirgulzar}{muhammadaamirgulzar}
+\authorthree{muhammadaamirgulzar}{muhammadaamirgulzar}
+\supervisor{Sir Muhammad Aamir Gulzar}
+\sessionduration{2022-2026}
+\cosupervisor{Mr./ Ms./ Dr. Co-Supervisor Name}
+\deanname{Dr. Dean Computing}
+\directorname{Dr. Director of the Campus}
+\hodname{Dr. Head of Computer Science Department}
+\fypcoordinatorname{Name of FYP Coordinator}
+\title{personalized-ai-storybook: LLM and Diffusion-Based Pipeline for Personalized Storybook Generation with Voice Narration and Evaluation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Former document starts below this
+\begin{document}
+
+%\begin{acknowledgements}
+%   The team would like to thank Sir Muhammad Aamir Gulzar for his continuous
+%   guidance, feedback, and support throughout the FYP journey.
+%\end{acknowledgements}
+
+%\begin{abstract}
+%personalized-ai-storybook is an AI-powered children's storybook generation platform that
+%integrates local Large Language Models (Ollama/llama3.1:8b), Stable Diffusion
+%image generation with IP-Adapter character consistency, Piper Text-to-Speech
+%narration, OpenAI Whisper Speech-to-Text input, and a comprehensive evaluation
+%framework (CLIP, Sentence Transformers, Flesch-Kincaid, InsightFace) into a
+%cohesive, fully offline system. The system produces illustrated, narrated, and
+%styled PDF storybooks through a multi-agent pipeline orchestrated by FastAPI,
+%presented through an interactive open-book Next.js UI. All processing occurs
+%locally, ensuring complete privacy for children's content creation.
+%\end{abstract}
+
+\include{sections/chapter1}
+\include{sections/chapter2}
+\include{sections/chapter3}
+\include{sections/chapter4}
+\include{sections/conclusions}
+
+%\appendix
+%\include{appendix1/appendix1}
+
+\bibliographystyle{plain}
+\bibliography{bib} 
+\addcontentsline{toc}{chapter}{References} 
+\input{appendix}
+
+\end{document}

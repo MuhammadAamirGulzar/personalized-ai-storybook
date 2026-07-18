@@ -1,0 +1,32 @@
+@startuml MyAIStorybook_SSD_Character_Chat
+title MyAIStorybook - System Sequence Diagram: Character Chat Scenario
+
+actor "User" as User
+participant ":System" as System
+
+note over User, System
+    Character Chat Scenario (Main Success)
+    System is treated as BLACK BOX
+end note
+
+User -> System : selectStory(story_id)
+System --> User : story_details
+
+User -> System : selectCharacter(character_name)
+System --> User : chat_ready
+
+loop [conversation continues]
+    User -> System : sendMessage(message_text)
+    System --> User : character_response(response_text)
+end
+
+User -> System : endChat()
+System --> User : chat_ended
+
+note right of System
+    System operations are high-level
+    Character responses generated internally
+    Focus on WHAT system does
+end note
+
+@enduml

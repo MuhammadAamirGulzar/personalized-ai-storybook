@@ -1,0 +1,90 @@
+@startuml MyAIStorybook_UseCase_Diagram
+!define RECTANGLE
+skinparam packageStyle rectangle
+
+title MyAIStorybook - Use Case Diagram
+
+left to right direction
+
+actor "Guest User" as Guest
+actor "Authenticated User" as AuthUser
+actor "Parent/Educator" as Parent
+actor "Child" as Child
+
+Parent -up-|> AuthUser
+Child -up-|> Guest
+
+rectangle "MyAIStorybook System" {
+    
+    ' Story Generation Use Cases
+    package "Story Generation" {
+        usecase "Generate Story from Prompt" as UC1
+        usecase "Generate Story from Voice Input" as UC2
+        usecase "Generate Story Images" as UC4
+        usecase "Generate Audio Narration" as UC5
+    }
+    
+    ' Interactive Features
+    package "Interactive Features" {
+        usecase "Interactive Story Chat" as UC3
+        usecase "Chat with Story Characters" as UC_Chat
+        usecase "Idea Workshop" as UC_Workshop
+    }
+    
+    ' Export Features
+    package "Export Features" {
+        usecase "Export Story to PDF" as UC6
+        usecase "Export Story to Audio" as UC7
+        usecase "View Generated Stories" as UC_View
+    }
+    
+    ' Authentication
+    package "Authentication" {
+        usecase "Register Account" as UC_Register
+        usecase "Login" as UC_Login
+        usecase "Manage Profile" as UC_Profile
+    }
+}
+
+' External Systems
+actor "Ollama LLM" as LLM <<System>>
+actor "Stable Diffusion" as SD <<System>>
+actor "Whisper STT" as STT <<System>>
+actor "Coqui TTS" as TTS <<System>>
+
+' Guest User Relationships
+Guest --> UC1 : text-only stories
+Guest --> UC_Register
+Guest --> UC_Login
+
+' Authenticated User Relationships
+AuthUser --> UC1 : with images
+AuthUser --> UC2
+AuthUser --> UC3
+AuthUser --> UC4
+AuthUser --> UC5
+AuthUser --> UC6
+AuthUser --> UC7
+AuthUser --> UC_Chat
+AuthUser --> UC_Workshop
+AuthUser --> UC_View
+AuthUser --> UC_Profile
+
+' Include Relationships
+UC1 ..> UC4 : <<include>>
+UC2 ..> UC1 : <<include>>
+UC1 ..> UC6 : <<include>>
+
+' Extend Relationships
+UC5 ..> UC1 : <<extend>>
+UC7 ..> UC5 : <<extend>>
+
+' System Dependencies
+UC1 --> LLM : uses
+UC4 --> SD : uses
+UC2 --> STT : uses
+UC5 --> TTS : uses
+UC_Chat --> LLM : uses
+UC_Workshop --> LLM : uses
+
+@enduml

@@ -1,0 +1,297 @@
+@startuml MyAIStorybook_Class_Diagram
+title MyAIStorybook - Class Diagram (System Architecture)
+
+!define AGENT class
+!define MODEL class
+!define SERVICE class
+
+' Database Models
+package "Database Models" {
+    class User {
+        - id: int
+        - email: str
+        - username: str
+        - password_hash: str
+        - is_active: bool
+        - created_at: datetime
+        + verify_password(password: str): bool
+    }
+
+    class Story {
+        - id: int
+        - user_id: int
+        - title: str
+        - mode: str
+        - story_data: dict
+        - created_at: datetime
+        + to_dict(): dict
+    }
+
+    class ChatConversation {
+        - id: int
+        - story_id: int
+        - character_name: str
+        - created_at: datetime
+    }
+
+    class ChatMessage {
+        - id: int
+        - conversation_id: int
+        - role: str
+        - message: str
+        - created_at: datetime
+    }
+
+    class WorkshopSession {
+        - id: int
+        - user_id: int
+        - mode: str
+        - status: str
+        - created_at: datetime
+    }
+
+    class WorkshopMessage {
+        - id: int
+        - session_id: int
+        - role: str
+        - message: str
+        - message_metadata: dict
+        - created_at: datetime
+    }
+
+    class WorkshopStory {
+        - id: int
+        - session_id: int
+        - version: int
+        - story_text: str
+        - user_story_text: str
+        - created_at: datetime
+    }
+}
+
+' Pydantic Schemas
+package "Pydantic Schemas" {
+    class GenerateRequest {
+        + prompt: str
+        + generate_images: bool
+        + mode: str
+    }
+
+    class ChatRequest {
+        + story_id: int
+        + character_name: str
+        + user_message: str
+    }
+
+    class WorkshopStartRequest {
+        + mode: str
+        + user_story: str
+    }
+
+    class StoryResponse {
+        + title: str
+        + setting: str
+        + characters: list
+        + scenes: list
+    }
+
+    class SceneSchema {
+        + scene_number: int
+        + text: str
+        + image_prompt: str
+        + image_path: str
+        + audio_path: str
+    }
+
+    class CharacterSchema {
+        + name: str
+        + description: str
+        + personality: str
+    }
+}
+
+' AI Agents
+package "AI Agents" {
+    abstract class BaseAgent {
+        # model_name: str
+        # ollama_client: Client
+        + {abstract} process(input: str): dict
+    }
+
+    class PromptAgent {
+        + validate_and_enhance(prompt: str): dict
+        - classify_prompt(prompt: str): str
+        - enhance_prompt(prompt: str): str
+    }
+
+    class WriterAgent {
+        + generate_story(prompt: str): dict
+        - create_characters(prompt: str): list
+        - write_scenes(characters: list): list
+        - retry_on_error(max_retries: int): dict
+    }
+
+    class ReviewerAgent {
+        + review_story(story: dict): dict
+        - check_coherence(story: dict): bool
+        - assess_age_appropriateness(story: dict): bool
+        - evaluate_educational_value(story: dict): int
+    }
+
+    class EditorAgent {
+        + refine_story(story: dict, feedback: dict): dict
+        - apply_feedback(story: dict, feedback: dict): dict
+        - validate_json(story: dict): bool
+        + export_pdf(story: dict): str
+    }
+
+    class DirectorAgent {
+        - writer: WriterAgent
+        - reviewer: ReviewerAgent
+        - editor: EditorAgent
+        + orchestrate_pipeline(prompt: str): dict
+        - coordinate_agents(): dict
+    }
+
+    class ImageAgent {
+        - pipeline: StableDiffusionPipeline
+        - scheduler: DPMSolverMultistepScheduler
+        + generate_image(prompt: str, scene_num: int): str
+        - txt2img(prompt: str): Image
+        - img2img(image: Image): Image
+        - truncate_prompt(prompt: str): str
+    }
+
+    class ChatbotAgent {
+        + chat(story: dict, character: str, message: str): str
+        - build_character_prompt(story: dict, character: str): str
+        - generate_response(prompt: str): str
+    }
+
+    class IdeaWorkshopAgent {
+        + process_message(message: str, history: list): dict
+        + generate_story(requirements: dict): dict
+        - extract_requirements(message: str): dict
+        - ask_questions(requirements: dict): str
+    }
+
+    class EvaluationAgent {
+        + evaluate_story(story: dict): dict
+        - calculate_metrics(story: dict): dict
+        - run_async(): None
+    }
+}
+
+' Services
+package "Services" {
+    class AuthService {
+        + register_user(email: str, password: str): User
+        + login_user(email: str, password: str): str
+        + get_current_user(token: str): User
+        - create_access_token(user_id: int): str
+        - verify_token(token: str): dict
+    }
+
+    class StoryService {
+        + create_story(user_id: int, story_data: dict): Story
+        + get_story(story_id: int): Story
+        + get_user_stories(user_id: int): list
+    }
+
+    class ChatService {
+        + create_conversation(story_id: int, character: str): ChatConversation
+        + add_message(conversation_id: int, role: str, message: str): ChatMessage
+        + get_conversation_history(conversation_id: int): list
+    }
+
+    class WorkshopService {
+        + create_session(user_id: int, mode: str): WorkshopSession
+        + add_message(session_id: int, message: str, metadata: dict): WorkshopMessage
+        + get_session_history(session_id: int): list
+        + save_story(session_id: int, story: str): WorkshopStory
+    }
+}
+
+' FastAPI Application
+package "FastAPI Application" {
+    class FastAPIApp {
+        + app: FastAPI
+        + register_routes(): None
+        + setup_middleware(): None
+        + setup_database(): None
+    }
+
+    class StoryRouter {
+        + generate_story(request: GenerateRequest): StoryResponse
+    }
+
+    class ChatRouter {
+        + chat_with_character(request: ChatRequest): dict
+    }
+
+    class WorkshopRouter {
+        + start_workshop(request: WorkshopStartRequest): dict
+        + workshop_chat(session_id: int, message: str): dict
+        + generate_from_workshop(session_id: int): StoryResponse
+    }
+
+    class AuthRouter {
+        + register(email: str, password: str): dict
+        + login(email: str, password: str): dict
+        + get_me(token: str): User
+    }
+}
+
+' Relationships - Database
+User "1" -- "0..*" Story : creates
+Story "1" -- "0..*" ChatConversation : enables
+ChatConversation "1" *-- "1..*" ChatMessage : contains
+User "1" -- "0..*" WorkshopSession : participates
+WorkshopSession "1" *-- "1..*" WorkshopMessage : contains
+WorkshopSession "1" -- "0..*" WorkshopStory : generates
+
+' Relationships - Schemas
+StoryResponse *-- "3..*" SceneSchema : contains
+StoryResponse *-- "1..*" CharacterSchema : has
+
+' Relationships - Agents
+BaseAgent <|-- PromptAgent
+BaseAgent <|-- WriterAgent
+BaseAgent <|-- ReviewerAgent
+BaseAgent <|-- EditorAgent
+BaseAgent <|-- ChatbotAgent
+BaseAgent <|-- IdeaWorkshopAgent
+BaseAgent <|-- EvaluationAgent
+
+DirectorAgent *-- WriterAgent : uses
+DirectorAgent *-- ReviewerAgent : uses
+DirectorAgent *-- EditorAgent : uses
+
+' Relationships - Services
+AuthService ..> User : manages
+StoryService ..> Story : manages
+ChatService ..> ChatConversation : manages
+ChatService ..> ChatMessage : manages
+WorkshopService ..> WorkshopSession : manages
+WorkshopService ..> WorkshopMessage : manages
+WorkshopService ..> WorkshopStory : manages
+
+' Relationships - Routers
+StoryRouter ..> DirectorAgent : uses
+StoryRouter ..> ImageAgent : uses
+StoryRouter ..> StoryService : uses
+
+ChatRouter ..> ChatbotAgent : uses
+ChatRouter ..> ChatService : uses
+
+WorkshopRouter ..> IdeaWorkshopAgent : uses
+WorkshopRouter ..> WorkshopService : uses
+
+AuthRouter ..> AuthService : uses
+
+FastAPIApp *-- StoryRouter : includes
+FastAPIApp *-- ChatRouter : includes
+FastAPIApp *-- WorkshopRouter : includes
+FastAPIApp *-- AuthRouter : includes
+
+@enduml

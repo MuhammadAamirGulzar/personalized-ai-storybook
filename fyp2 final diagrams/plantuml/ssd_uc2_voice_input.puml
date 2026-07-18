@@ -1,0 +1,46 @@
+@startuml
+skinparam sequenceMessageAlign left
+skinparam sequenceArrowThickness 2
+skinparam participantFontSize 13
+skinparam backgroundColor #FEFEFE
+skinparam sequenceParticipantBackgroundColor #DDEEFF
+skinparam sequenceActorBackgroundColor #FFFACD
+
+title System Sequence Diagram (SSD): UC2 — Generate Story from Voice Input
+
+actor ":User" as U
+participant ":System" as S
+
+note over U, S #LightYellow
+  Use Case: UC2 — Generate Story from Voice Input
+  Primary Actor: Registered User
+  The system is treated as a BLACK BOX.
+  <<extends UC1: the transcribed text flows into the generate story use case>>
+end note
+
+U -> S : clickVoiceInput()
+S --> U : recorderStarted, recorderState: "listening"
+
+U -> S : submitVoiceAudio(audioFile: WAV)
+note right: User speaks story idea, frontend\nrecords and sends WAV to backend
+
+S --> U : transcriptionResult(text: String, language: String, confidence: float)
+note left: STT returns transcribed text\nand detected language code
+
+alt [confidence < threshold OR text is empty]
+    S --> U : error("Could not transcribe audio. Please try again.")
+end
+
+U -> S : confirmTranscription(transcribedText: String)
+note right: User confirms or edits the\npre-filled prompt field
+
+' From here the flow continues as UC1
+S --> U : promptReceived, promptType: String
+
+loop [system generating story]
+    S --> U : progressUpdate(stage: String, message: String)
+end
+
+S --> U : storyGenerated(storyId: int, title: String,\n  scenes: Scene[], pdfPath: String)
+
+@enduml

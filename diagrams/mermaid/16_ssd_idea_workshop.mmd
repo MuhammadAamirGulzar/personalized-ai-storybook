@@ -1,0 +1,23 @@
+%% MyAIStorybook - System Sequence Diagram: Idea Workshop Scenario
+
+sequenceDiagram
+    actor User
+    participant System as :System
+    
+    Note over User,System: Idea Workshop Scenario (Main Success)<br/>System is treated as BLACK BOX
+    
+    User->>System: startWorkshop(mode)
+    System-->>User: workshop_started, initial_question
+    
+    loop gathering requirements
+        User->>System: provideInput(user_input)
+        System-->>User: acknowledgment, next_question
+    end
+    
+    User->>System: requestStoryGeneration()
+    System-->>User: generated_story(title, scenes[])
+    
+    User->>System: endWorkshop()
+    System-->>User: workshop_ended
+    
+    Note right of System: System guides user through<br/>interactive story ideation<br/>Collects requirements internally

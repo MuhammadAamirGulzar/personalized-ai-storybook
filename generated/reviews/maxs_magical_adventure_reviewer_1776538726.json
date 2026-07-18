@@ -1,0 +1,54 @@
+{
+  "title": "Max's Magical Adventure",
+  "setting": "A mystical forest realm hidden behind a gateway in the local park",
+  "characters": [
+    "Max",
+    "Glimmer"
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "On a bright sunny day, young Max was playing in the local park with his friends. As they explored deeper into the woods, they stumbled upon something extraordinary: an ancient stone gateway covered in ivy. With a gentle push, it creaked open to reveal a hidden path leading into a lush, magical forest filled with glowing flowers and sparkling streams. Max, feeling adventurous, stepped through the gateway, his friends close behind. They soon found themselves face-to-face with Glimmer, a friendly talking fairy who offered to guide them around this enchanting realm.",
+      "image_description": "Max and his friends discovering an ancient stone gateway in a sunny park",
+      "image_path": null
+    },
+    {
+      "scene_number": 2,
+      "text": "Glimmer led the group deeper into the magical forest, where they witnessed incredible sights like talking animals and dancing flowers. However, their joy turned to worry when they came across a dark, withered tree surrounded by wilted plants. Glimmer explained that this was the heart of the realm, and if it died, so would all the magic within it. Just then, a mischievous gnome appeared, cackling about how he'd stolen the tree's golden acorn to prevent new growth. Max, with his friends' encouragement, volunteered to rescue the acorn from the gnome's lair atop a nearby hill.",
+      "image_description": "Max and friends discovering a dark, withered tree in Glimmer's magical forest",
+      "image_path": null
+    },
+    {
+      "scene_number": 3,
+      "text": "With determination in his heart, Max climbed the hill, facing various challenges like slippery paths and whimsical winds. Finally reaching the gnome's lair, he found the golden acorn but was cornered by the grumpy gnome. Max stood his ground and spoke kindly to the gnome, explaining how much the magical realm meant to him and his friends. The gnome, touched by Max's sincerity, agreed to return the acorn if Max promised to visit often and share stories of their human world. With the golden acorn replanted, the heart tree began to bloom once more, filling the realm with renewed magic. Max and his friends returned home, forever cherishing the memory of their magical adventure.",
+      "image_description": "Max standing bravely before a grumpy gnome in the hill's lair",
+      "image_path": null
+    }
+  ],
+  "consistency_report": {
+    "per_scene": {
+      "1": {
+        "scene_number": 1,
+        "word_count": 93,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "2": {
+        "scene_number": 2,
+        "word_count": 99,
+        "length_score": 1.0,
+        "has_image": true
+      },
+      "3": {
+        "scene_number": 3,
+        "word_count": 116,
+        "length_score": 1.0,
+        "has_image": true
+      }
+    },
+    "overall": {
+      "avg_length_score": 1.0,
+      "image_coverage": 1.0
+    }
+  }
+}

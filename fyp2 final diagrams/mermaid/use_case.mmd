@@ -1,0 +1,61 @@
+---
+title: MyAIStorybook FYP-2 — Use Case Diagram
+---
+flowchart TB
+    subgraph Actors
+        U["👤 Registered User"]
+        SYS["⚙️ System Background"]
+    end
+
+    subgraph System["MyAIStorybook System"]
+        subgraph SG["Story Generation"]
+            UC1["📖 Generate Story\nfrom Text Prompt"]
+            UC2["🎙️ Generate Story\nfrom Voice Input"]
+            UC4["👤 Generate\nPersonalized Story"]
+        end
+
+        subgraph AF["Audio Features"]
+            UC3["🔊 Listen to\nStory Narration"]
+        end
+
+        subgraph EX["Evaluation & Export"]
+            UC5["📊 View Evaluation\nMetrics"]
+            UC8["📄 Export Story\nto PDF"]
+        end
+
+        subgraph IF["Interactive Features"]
+            UC6["💬 Chat with\nStory Character"]
+            UC7["💡 Idea Workshop"]
+        end
+
+        subgraph BG["Background Processing"]
+            UC_EVAL["🤖 Run Evaluation Agent\nAutomatic"]
+        end
+    end
+
+    U --> UC1
+    U --> UC2
+    U --> UC3
+    U --> UC4
+    U --> UC5
+    U --> UC6
+    U --> UC7
+
+    UC1 -. "include" .-> UC8
+    UC4 -. "include" .-> UC8
+    UC2 -. "extend" .-> UC1
+    UC1 -. "include" .-> UC_EVAL
+    UC4 -. "include" .-> UC_EVAL
+    UC_EVAL -. "extend" .-> UC5
+
+    SYS --> UC_EVAL
+
+    style UC1 fill:#AED6F1,stroke:#1A5276
+    style UC2 fill:#AED6F1,stroke:#1A5276
+    style UC3 fill:#A9DFBF,stroke:#1E8449
+    style UC4 fill:#AED6F1,stroke:#1A5276
+    style UC5 fill:#F9E79F,stroke:#B7950B
+    style UC6 fill:#D2B4DE,stroke:#6C3483
+    style UC7 fill:#D2B4DE,stroke:#6C3483
+    style UC8 fill:#F9E79F,stroke:#B7950B
+    style UC_EVAL fill:#FDEBD0,stroke:#CA6F1E

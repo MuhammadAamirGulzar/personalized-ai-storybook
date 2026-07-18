@@ -1,0 +1,80 @@
+@startuml
+skinparam stateBackgroundColor LightBlue
+skinparam stateBorderColor DarkBlue
+skinparam stateArrowColor DarkSlateGray
+skinparam stateFontSize 12
+skinparam noteBackgroundColor LightYellow
+
+title MyAIStorybook FYP-2 — State Diagram: Story Lifecycle
+
+[*] --> IDLE : System ready
+
+IDLE --> PROMPT_RECEIVED : User submits prompt\n(text or voice)
+
+PROMPT_RECEIVED --> STT_PROCESSING : [voice input selected]
+STT_PROCESSING --> PROMPT_RECEIVED : Whisper transcribes audio\n[text returned to input field]
+
+PROMPT_RECEIVED --> VALIDATING : Prompt submitted to backend
+
+VALIDATING --> IDLE : [Invalid / Nonsense] → Error returned
+VALIDATING --> GENERATING_TEXT : [Valid prompt]
+
+GENERATING_TEXT --> REVIEWING : Writer Agent completes\nstory draft
+
+REVIEWING --> GENERATING_TEXT : [Coherence check failed]\nRetry (max 2x)
+REVIEWING --> EDITING : [Story approved by\nReviewer Agent]
+
+EDITING --> EXPORTING_PDF : Editor finalizes\n& triggers PDF export
+
+EXPORTING_PDF --> IMAGE_GENERATION : [generate_images = true]\nOllama paused (GPU freed)
+
+state IMAGE_GENERATION {
+    [*] --> GENERATING_SCENE_1
+    GENERATING_SCENE_1 --> GENERATING_SCENE_2 : txt2img → img2img done
+    GENERATING_SCENE_2 --> GENERATING_SCENE_3 : txt2img → img2img done
+    GENERATING_SCENE_3 --> [*] : All scenes done
+    note right of GENERATING_SCENE_1
+        Personalized: IP-Adapter FaceID
+        Simple: Standard Stable Diffusion
+    end note
+}
+
+IMAGE_GENERATION --> COMPLETED : Images saved\nOllama resumed
+
+EXPORTING_PDF --> COMPLETED : [generate_images = false]\nText-only story returned
+
+COMPLETED --> EVALUATING : Evaluation Agent\nstarted (background)
+note right of EVALUATING
+    Async subprocess:
+    - CLIP image-text alignment
+    - CLIP visual consistency
+    - Sentence Transformer coherence
+    - Flesch-Kincaid readability
+    - Story structure heuristic
+    - InsightFace (personalized only)
+    Saves JSON to generated/evaluations/
+end note
+
+EVALUATING --> COMPLETED : Evaluation done\n(score saved)
+
+COMPLETED --> NARRATING : User clicks Play
+NARRATING --> NARRATING : User changes page /\nswitches voice
+NARRATING --> COMPLETED : User stops playback
+
+COMPLETED --> CHATTING : User opens Character Chat
+CHATTING --> CHATTING : Multi-turn conversation
+CHATTING --> COMPLETED : User closes chat
+
+COMPLETED --> WORKSHOP : User starts Idea Workshop
+WORKSHOP --> WORKSHOP : Multi-turn requirements\ncollection
+WORKSHOP --> PROMPT_RECEIVED : Requirements complete\n→ Auto-generate story
+
+COMPLETED --> [*] : Session ends
+
+' Error transitions
+GENERATING_TEXT --> ERROR : [LLM unavailable /\nMax retries exceeded]
+IMAGE_GENERATION --> COMPLETED : [Image generation fails]\nGraceful degradation\n(text-only story)
+STT_PROCESSING --> ERROR : [Whisper model error]
+ERROR --> IDLE : User retries
+
+@enduml

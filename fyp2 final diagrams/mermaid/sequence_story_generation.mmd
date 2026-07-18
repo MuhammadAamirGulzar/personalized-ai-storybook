@@ -1,0 +1,94 @@
+---
+title: MyAIStorybook FYP-2 — Sequence Diagram: Story Generation with TTS/STT
+---
+sequenceDiagram
+    actor User
+    participant FE as Frontend (Next.js)
+    participant API as FastAPI (main.py)
+    participant PA as PromptAgent
+    participant DA as DirectorAgent
+    participant WA as WriterAgent
+    participant RA as ReviewerAgent
+    participant EA as EditorAgent
+    participant IA as ImageAgent
+    participant OM as OllamaManager
+    participant EVA as EvaluationAgent (Async)
+    participant TTS as TTSManager
+    participant FS as FileSystem
+
+    Note over User,FS: === User Input Phase ===
+
+    alt Voice Input
+        User->>FE: Click voice button, speak prompt
+        FE->>API: POST /api/stt (WAV file)
+        API->>API: WhisperSTTManager.transcribe_audio()
+        API-->>FE: {text: transcribed_text}
+        FE->>FE: Pre-fill prompt field
+    end
+
+    User->>FE: Submit prompt (text/genre/style/mode)
+    FE->>API: POST /api/generate {prompt, mode, genre, style, generate_images, user_photo?}
+
+    Note over API,PA: === Validation Phase ===
+    API->>PA: process_prompt(user_prompt)
+    PA->>PA: Validate length, classify, ContentSafety check
+    PA-->>API: {enhanced_prompt, prompt_type}
+    alt Invalid/Nonsense
+        API-->>FE: HTTP 400 error
+    end
+
+    Note over DA,EA: === Story Generation Phase ===
+    API->>DA: create_story(enhanced_prompt, genre, style, length)
+    DA->>WA: generate_story(prompt)
+    WA-->>WA: Call Ollama LLM (retry up to 2x)
+    WA-->>DA: story_draft {title, setting, characters, scenes[]}
+
+    DA->>RA: review_story(story_draft)
+    RA-->>DA: reviewed_story
+
+    DA->>EA: edit_story(reviewed_story)
+    EA->>EA: export_pdf(story_data) - open-book layout
+    EA->>FS: Save PDF to generated/exports/
+    EA-->>DA: final_story, pdf_path
+
+    Note over IA,OM: === Image Generation Phase ===
+    opt generate_images = true
+        DA->>OM: pause_ollama()
+        OM-->>DA: Ollama paused (GPU freed)
+        loop For each scene
+            alt Personalized Mode
+                DA->>IA: PersonalizedImageAgent.generate_image(desc, user_photo)
+                IA-->>IA: IP-Adapter FaceID embedding
+                IA-->>IA: POST /sdapi/v1/txt2img (512x512)
+                IA-->>IA: POST /sdapi/v1/img2img (768x768)
+            else Simple Mode
+                DA->>IA: ImageAgent.generate_image(desc)
+                IA-->>IA: txt2img + img2img WebUI API
+            end
+            IA->>FS: Save PNG to generated/images/
+            IA-->>DA: image_path
+        end
+        DA->>OM: resume_ollama()
+    end
+
+    Note over API,EVA: === Save & Return Phase ===
+    DA->>FS: Save story JSON
+    DA-->>API: final_story (with image paths)
+
+    API-->>EVA: Launch async subprocess (evaluation_agent.py)
+    Note right of EVA: Async: CLIP, SentenceTransformer,<br/>Flesch-Kincaid, InsightFace,<br/>Story Structure → save JSON
+
+    API-->>FE: {story_json, pdf_path, status: success}
+    FE->>FE: Render open-book UI
+
+    Note over User,TTS: === TTS Narration Phase ===
+    User->>FE: Click Play on scene page
+    FE->>API: POST /api/tts {story_id, scene_number, voice}
+    API->>TTS: generate_audio(text, story_id, scene_n, voice)
+    alt Cache miss
+        TTS-->>TTS: Run Piper TTS subprocess (PowerShell)
+        TTS->>FS: Save WAV to generated/audio/
+    end
+    TTS-->>API: relative_audio_path
+    API-->>FE: {audio_path}
+    FE->>FE: Play WAV audio

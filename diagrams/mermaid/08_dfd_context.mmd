@@ -1,0 +1,53 @@
+%% MyAIStorybook - DFD Context Diagram (Level 0)
+%% Note: Mermaid flowchart used to represent DFD
+
+graph TB
+    %% External Entities
+    User[USER<br/>Parent/Educator/Child]
+    Ollama[OLLAMA LLM<br/>SERVICE]
+    SD[STABLE DIFFUSION<br/>SERVICE]
+    Whisper[WHISPER STT<br/>SERVICE]
+    TTS[COQUI TTS<br/>SERVICE]
+    
+    %% System
+    System[MyAIStorybook<br/>System]
+    
+    %% Data Flows - Inputs to System
+    User -->|Story Prompt| System
+    User -->|Voice Input| System
+    User -->|Chat Messages| System
+    User -->|Workshop Ideas| System
+    User -->|User Credentials| System
+    
+    %% Data Flows - Outputs from System
+    System -->|Generated Story| User
+    System -->|Story Images| User
+    System -->|PDF Export| User
+    System -->|Audio Narration| User
+    System -->|Character Responses| User
+    System -->|Workshop Guidance| User
+    
+    %% External System Interactions
+    System -->|Text Generation Request| Ollama
+    Ollama -->|Generated Text| System
+    
+    System -->|Image Generation Request| SD
+    SD -->|Generated Images| System
+    
+    System -->|Audio Input| Whisper
+    Whisper -->|Transcribed Text| System
+    
+    System -->|Text for Narration| TTS
+    TTS -->|Audio Output| System
+    
+    %% Styling
+    classDef external fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    classDef system fill:#bbdefb,stroke:#1565c0,stroke-width:3px
+    
+    class User,Ollama,SD,Whisper,TTS external
+    class System system
+    
+    %% Note
+    note1[The MyAIStorybook system processes<br/>user inputs through multiple AI agents<br/>to generate personalized illustrated<br/>stories with interactive features]
+    
+    style note1 fill:#fff9c4,stroke:#f57f17,stroke-width:1px

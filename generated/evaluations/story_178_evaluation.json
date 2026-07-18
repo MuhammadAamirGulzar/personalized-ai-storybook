@@ -1,0 +1,30 @@
+{
+  "story_id": 178,
+  "timestamp": "2026-04-19T00:02:21.578387",
+  "mode": "simple",
+  "num_scenes": 3,
+  "overall_score": 86,
+  "metrics": {
+    "image_text_alignment": {
+      "score": 89,
+      "label": "Great"
+    },
+    "visual_consistency": {
+      "score": 79,
+      "label": "Good"
+    },
+    "text_coherence": {
+      "score": 92,
+      "label": "Excellent"
+    },
+    "readability": {
+      "score": 68,
+      "label": "Fair"
+    },
+    "story_structure": {
+      "score": 100,
+      "label": "Excellent"
+    }
+  },
+  "evaluation_time_seconds": 11.38
+}

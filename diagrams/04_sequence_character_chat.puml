@@ -1,0 +1,47 @@
+@startuml MyAIStorybook_Sequence_Character_Chat
+title MyAIStorybook - Sequence Diagram: Character Chat Interaction
+
+actor "User" as User
+participant "Frontend\n(Next.js)" as Frontend
+participant "FastAPI\nBackend" as Backend
+participant "ChatbotAgent" as Chatbot
+participant "Ollama\nLLM" as LLM
+database "PostgreSQL" as DB
+
+User -> Frontend: Select character to chat with
+activate Frontend
+
+Frontend -> Backend: POST /api/chat\n{story_id, character_name, user_message}
+activate Backend
+
+Backend -> DB: Get story data
+activate DB
+DB --> Backend: Story with characters
+deactivate DB
+
+Backend -> Chatbot: chat(story_context, character, message)
+activate Chatbot
+
+Chatbot -> Chatbot: Build character prompt\nwith story context
+
+Chatbot -> LLM: Generate character response\n(2-4 sentences, child-friendly)
+activate LLM
+LLM --> Chatbot: Character response
+deactivate LLM
+
+Chatbot --> Backend: Response text
+deactivate Chatbot
+
+Backend -> DB: Save conversation\n(conversation_id, messages)
+activate DB
+DB --> Backend: Saved
+deactivate DB
+
+Backend --> Frontend: {response, character}
+deactivate Backend
+
+Frontend -> Frontend: Display character response\nin chat interface
+Frontend --> User: Show character message
+deactivate Frontend
+
+@enduml

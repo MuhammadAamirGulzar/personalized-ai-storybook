@@ -1,0 +1,141 @@
+@startuml MyAIStorybook_Domain_Model
+!define ENTITY class
+skinparam classAttributeIconSize 0
+
+title MyAIStorybook - Domain Model (Conceptual Class Diagram)
+
+' Core Domain Entities
+class User {
+    - id: Integer
+    - email: String
+    - username: String
+    - password_hash: String
+    - is_active: Boolean
+    - created_at: DateTime
+}
+
+class Story {
+    - id: Integer
+    - title: String
+    - mode: String
+    - story_data: JSON
+    - created_at: DateTime
+}
+
+class Scene {
+    - scene_number: Integer
+    - text: String
+    - image_prompt: String
+    - image_path: String
+    - audio_path: String
+}
+
+class Character {
+    - name: String
+    - description: String
+    - personality: String
+    - backstory: String
+}
+
+class Setting {
+    - location: String
+    - time_period: String
+    - atmosphere: String
+    - description: String
+}
+
+class ChatConversation {
+    - id: Integer
+    - character_name: String
+    - created_at: DateTime
+}
+
+class ChatMessage {
+    - id: Integer
+    - role: String
+    - message: String
+    - created_at: DateTime
+}
+
+class WorkshopSession {
+    - id: Integer
+    - mode: String
+    - status: String
+    - created_at: DateTime
+}
+
+class WorkshopMessage {
+    - id: Integer
+    - role: String
+    - message: String
+    - message_metadata: JSON
+    - created_at: DateTime
+}
+
+class WorkshopStory {
+    - id: Integer
+    - version: Integer
+    - story_text: String
+    - user_story_text: String
+    - created_at: DateTime
+}
+
+class Image {
+    - filename: String
+    - path: String
+    - scene_number: Integer
+    - created_at: DateTime
+}
+
+class Audio {
+    - filename: String
+    - path: String
+    - scene_number: Integer
+    - created_at: DateTime
+}
+
+class PDFDocument {
+    - filename: String
+    - path: String
+    - created_at: DateTime
+}
+
+' Relationships
+User "1" -- "0..*" Story : Creates >
+Story "1" *-- "3..*" Scene : Contains >
+Story "1" *-- "1..*" Character : Has >
+Story "1" *-- "1" Setting : Has >
+Story "1" -- "0..1" PDFDocument : Exports to >
+
+Scene "1" -- "0..1" Image : Illustrated by >
+Scene "1" -- "0..1" Audio : Narrated by >
+
+Story "1" -- "0..*" ChatConversation : Enables >
+ChatConversation "1" *-- "1..*" ChatMessage : Contains >
+ChatConversation "1" -- "1" Character : About >
+
+User "1" -- "0..*" WorkshopSession : Participates in >
+WorkshopSession "1" *-- "1..*" WorkshopMessage : Contains >
+WorkshopSession "1" -- "0..*" WorkshopStory : Generates >
+
+note right of Story
+  Story contains complete
+  narrative structure in
+  JSON format with all
+  metadata
+end note
+
+note right of Scene
+  Each story has exactly
+  3 scenes (configurable)
+  with text and optional
+  media
+end note
+
+note right of Character
+  Characters can be
+  chatted with after
+  story generation
+end note
+
+@enduml

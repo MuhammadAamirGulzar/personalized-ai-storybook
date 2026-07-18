@@ -1,0 +1,52 @@
+@startuml
+skinparam sequenceMessageAlign left
+skinparam sequenceArrowThickness 2
+skinparam participantFontSize 12
+skinparam backgroundColor #FEFEFE
+skinparam sequenceLifeLineBorderColor #1A5276
+skinparam sequenceParticipantBackgroundColor #D6EAF8
+skinparam sequenceActorBackgroundColor #D6EAF8
+
+title Sequence Diagram: UC3 — Listen to Story Narration (TTS)
+
+actor "User" as U
+participant "Frontend" as FE
+participant "FastAPI" as API
+participant "TTSManager" as TTS
+participant "Piper TTS\n(subprocess)" as PIPER
+participant "File System" as FS
+
+U -> FE : open story, select voice\n(male / female)
+U -> FE : click Play on scene page
+
+FE -> API : POST /api/tts\n{story_id, scene_number, voice}
+API -> TTS : generate_audio\n(text, story_id, scene_number, voice)
+
+alt audio file already cached
+    TTS --> API : cached audio path
+else audio not cached
+    TTS -> PIPER : run Piper subprocess\n(text → WAV)
+    PIPER --> TTS : synthesis complete
+    TTS -> FS : save WAV file\ngenerated/audio/
+    TTS --> API : new audio path
+end
+
+API --> FE : audio_path
+FE -> FE : load audio element\nfrom static route
+FE --> U : audio plays in browser
+
+opt user pauses
+    U -> FE : click Pause
+    FE -> FE : pause audio element
+end
+
+opt user changes page
+    U -> FE : navigate to next scene
+    FE -> API : POST /api/tts\n{story_id, next_scene, voice}
+    API -> TTS : generate_audio(...)
+    TTS --> API : audio_path
+    API --> FE : audio_path
+    FE --> U : new scene audio ready
+end
+
+@enduml

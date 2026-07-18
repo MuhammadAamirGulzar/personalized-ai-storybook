@@ -1,0 +1,83 @@
+%% MyAIStorybook - DFD Level 2: Story Generation Process (Process 2.0)
+
+graph TB
+    %% External Entities
+    User[USER]
+    Ollama[OLLAMA LLM]
+    
+    %% Data Stores
+    StoriesDB[(STORIES)]
+    DraftsDB[(DRAFTS)]
+    ReviewsDB[(REVIEWS)]
+    EditsDB[(EDITS)]
+    PromptsDB[(PROMPTS)]
+    
+    %% Sub-processes of Process 2.0
+    P21[2.1<br/>Validate and<br/>Enhance Prompt]
+    P22[2.2<br/>Orchestrate<br/>Pipeline]
+    P23[2.3<br/>Write<br/>Story Draft]
+    P24[2.4<br/>Review<br/>Story]
+    P25[2.5<br/>Edit and<br/>Finalize Story]
+    P26[2.6<br/>Evaluate<br/>Quality]
+    
+    %% Data Flows
+    User -->|Raw Prompt| P21
+    P21 -->|Validation Request| Ollama
+    Ollama -->|Classification Result| P21
+    P21 -->|Save Enhanced Prompt| PromptsDB
+    PromptsDB -->|Prompt Data| P21
+    
+    P21 -->|Validated Prompt| P22
+    P21 -.->|Error Message [if invalid]| User
+    
+    P22 -->|Enhanced Prompt| P23
+    P23 -->|Story Generation Request<br/>title, setting, characters, scenes| Ollama
+    Ollama -->|Story Draft JSON| P23
+    P23 -->|Save Draft| DraftsDB
+    DraftsDB -->|Draft Data| P23
+    P23 -->|Story Draft| P22
+    
+    P22 -->|Story Draft| P24
+    P24 -->|Review Request<br/>coherence, age-appropriateness| Ollama
+    Ollama -->|Review Feedback| P24
+    P24 -->|Save Review| ReviewsDB
+    ReviewsDB -->|Review Data| P24
+    P24 -->|Feedback| P22
+    
+    P22 -->|Draft + Feedback| P25
+    P25 -->|Refinement Request| Ollama
+    Ollama -->|Final Story JSON| P25
+    P25 -->|Save Edit| EditsDB
+    EditsDB -->|Edit Data| P25
+    P25 -->|Final Story| P22
+    
+    P22 -->|Save Final Story| StoriesDB
+    StoriesDB -->|Story ID| P22
+    P22 -->|Complete Story| User
+    
+    P22 -.->|Final Story [background]| P26
+    P26 -->|Evaluation Request| Ollama
+    Ollama -->|Quality Metrics| P26
+    P26 -->|Update Metrics| StoriesDB
+    
+    %% Styling
+    classDef external fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    classDef process fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef datastore fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
+    
+    class User,Ollama external
+    class P21,P22,P23,P24,P25,P26 process
+    class StoriesDB,DraftsDB,ReviewsDB,EditsDB,PromptsDB datastore
+    
+    %% Notes
+    note1[PromptAgent:<br/>- Validates prompt format<br/>- Classifies type<br/>- Enhances with details]
+    note2[WriterAgent:<br/>- Generates title<br/>- Creates setting<br/>- Develops characters<br/>- Writes 3 scenes<br/>- Max 2 retries on JSON error]
+    note3[ReviewerAgent:<br/>- Checks coherence<br/>- Validates age-appropriateness<br/>- Assesses educational value<br/>- Provides suggestions]
+    note4[EditorAgent:<br/>- Applies feedback<br/>- Refines text<br/>- Ensures JSON validity<br/>- Generates PDF]
+    note5[EvaluationAgent:<br/>Runs asynchronously<br/>without blocking response]
+    
+    style note1 fill:#e3f2fd,stroke:#1976d2,stroke-width:1px
+    style note2 fill:#e3f2fd,stroke:#1976d2,stroke-width:1px
+    style note3 fill:#e3f2fd,stroke:#1976d2,stroke-width:1px
+    style note4 fill:#e3f2fd,stroke:#1976d2,stroke-width:1px
+    style note5 fill:#fff3e0,stroke:#ef6c00,stroke-width:1px

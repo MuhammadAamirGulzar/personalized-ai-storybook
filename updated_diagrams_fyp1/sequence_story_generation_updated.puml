@@ -1,0 +1,119 @@
+@startuml Sequence_Story_Generation_Updated
+title MyAIStorybook - Story Generation Workflow (Current Iteration with WebUI API)
+
+actor User
+participant "Next.js\nFrontend" as Frontend
+participant "FastAPI\nBackend" as Backend
+participant "PromptAgent" as Prompt
+participant "DirectorAgent" as Director
+participant "WriterAgent" as Writer
+participant "ReviewerAgent" as Reviewer
+participant "EditorAgent" as Editor
+participant "Ollama\nLLM" as Ollama
+participant "PersonalizedImageAgent" as ImageAgent
+participant "WebUI\nAPI Server" as WebUI
+participant "PostgreSQL\nDatabase" as DB
+database "File\nSystem" as FS
+
+User -> Frontend: Enter story prompt\n+ user photo (optional)
+activate Frontend
+
+Frontend -> Backend: POST /api/generate\n{prompt, use_personalized, user_photo}
+activate Backend
+
+Backend -> Prompt: process_prompt(prompt)
+activate Prompt
+Prompt -> Prompt: Validate & classify
+Prompt --> Backend: enhanced_prompt, prompt_type
+deactivate Prompt
+
+alt Invalid prompt
+    Backend --> Frontend: 400 Error: Invalid prompt
+    Frontend --> User: Show error message
+else Valid prompt
+    
+    Backend -> Director: create_story(enhanced_prompt)
+    activate Director
+    
+    '== Story Text Generation ==
+    Director -> Writer: generate_story(prompt)
+    activate Writer
+    Writer -> Ollama: Generate story JSON
+    activate Ollama
+    Ollama --> Writer: {title, setting, characters, scenes[]}
+    deactivate Ollama
+    Writer -> FS: Save draft JSON
+    Writer --> Director: story_draft
+    deactivate Writer
+    
+    Director -> Reviewer: review_story(story_draft)
+    activate Reviewer
+    Reviewer -> Ollama: Validate & assess quality
+    activate Ollama
+    Ollama --> Reviewer: review_feedback
+    deactivate Ollama
+    Reviewer -> FS: Save review JSON
+    Reviewer --> Director: reviewed_story
+    deactivate Reviewer
+    
+    Director -> Editor: edit_story(reviewed_story)
+    activate Editor
+    Editor -> Editor: Polish & format
+    Editor -> Editor: Generate PDF (ReportLab)
+    Editor -> FS: Save PDF to exports/
+    Editor -> FS: Save final story JSON
+    Editor --> Director: final_story + pdf_path
+    deactivate Editor
+    
+    Director --> Backend: final_story
+    deactivate Director
+    
+    '== Image Generation (if enabled) ==
+    alt Image generation enabled
+        note right of Backend: Pause Ollama to\nfree GPU memory
+        Backend -> Ollama: Pause service
+        
+        loop For each scene in story
+            Backend -> ImageAgent: generate_image(scene, user_photo)
+            activate ImageAgent
+            
+            ImageAgent -> WebUI: POST /sdapi/v1/txt2img\n{prompt, ip_adapter_image}
+            activate WebUI
+            WebUI -> WebUI: Load Realistic Vision model
+            WebUI -> WebUI: Inject IP-Adapter embedding
+            WebUI -> WebUI: First pass: txt2img (512x512)
+            WebUI --> ImageAgent: base_image
+            deactivate WebUI
+            
+            ImageAgent -> WebUI: POST /sdapi/v1/img2img\n{image, denoise_strength}
+            activate WebUI
+            WebUI -> WebUI: Second pass: img2img refinement
+            WebUI -> WebUI: Upscale to 768x768
+            WebUI --> ImageAgent: final_image
+            deactivate WebUI
+            
+            ImageAgent -> FS: Save PNG to images/
+            ImageAgent --> Backend: image_path
+            deactivate ImageAgent
+        end
+        
+        note right of Backend: Resume Ollama\nafter images complete
+        Backend -> Ollama: Resume service
+    end
+    
+    '== Database Save ==
+    Backend -> DB: Save story metadata\n+ user_id + mode + story_data
+    activate DB
+    DB --> Backend: story_id
+    deactivate DB
+    
+    '== Return Response ==
+    Backend --> Frontend: {story, images[], pdf_path}
+    deactivate Backend
+    
+    Frontend -> Frontend: Render story UI
+    Frontend --> User: Display story with\nimages and PDF link
+    deactivate Frontend
+end
+
+@enduml

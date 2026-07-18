@@ -1,0 +1,28 @@
+---
+title: "SSD UC1 — Generate Story from Text Prompt"
+---
+sequenceDiagram
+    actor User as ":User"
+    participant S as ":System"
+
+    Note over User,S: System treated as BLACK BOX<br/>UC1 — Generate Story from Text Prompt
+
+    User->>S: makeNewSale()
+    User->>S: selectMode(mode: "simple")
+    S-->>User: modeConfirmed, availableGenres[]
+
+    User->>S: setStoryOptions(genre, style, length)
+    S-->>User: optionsConfirmed
+
+    User->>S: submitPrompt(promptText)
+    S-->>User: promptReceived, promptType
+
+    alt promptType = "invalid" OR "nonsense"
+        S-->>User: error("Invalid prompt")
+    end
+
+    loop system generating story
+        S-->>User: progressUpdate(stage, message)
+    end
+
+    S-->>User: storyGenerated(storyId, title, scenes[], pdfPath)

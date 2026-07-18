@@ -1,0 +1,39 @@
+@startuml MyAIStorybook_System_Sequence_Diagram
+title MyAIStorybook - System Sequence Diagram: Generate Story Scenario
+
+actor "User" as User
+participant ":System" as System
+
+note over User, System
+    Generate Story Scenario (Main Success)
+    System is treated as BLACK BOX
+end note
+
+User -> System : makeNewStory()
+
+User -> System : enterPrompt(prompt_text)
+System --> User : validation_result
+
+User -> System : selectOptions(generate_images, mode)
+
+User -> System : generateStory()
+
+alt generate_images == true
+    System --> User : story_with_images(title, scenes[], images[])
+else generate_images == false
+    System --> User : story_text_only(title, scenes[])
+end
+
+loop [for each page]
+    User -> System : viewPage(page_number)
+    System --> User : page_content(text, image)
+end
+
+note right of System
+    System operations are high-level
+    No implementation details shown
+    Focus on WHAT system does,
+    not HOW it does it
+end note
+
+@enduml

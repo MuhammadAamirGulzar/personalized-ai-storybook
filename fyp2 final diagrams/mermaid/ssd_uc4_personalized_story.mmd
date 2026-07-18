@@ -1,0 +1,36 @@
+---
+title: "SSD UC4 — Generate Personalized Story"
+---
+sequenceDiagram
+    actor User as ":User"
+    participant S as ":System"
+
+    Note over User,S: System treated as BLACK BOX<br/>UC4 — Generate Personalized Story
+
+    User->>S: selectMode(mode: "personalized")
+    S-->>User: modeConfirmed, uploadPromptVisible: true
+
+    User->>S: uploadReferencePhoto(photoFile)
+    S-->>User: faceDetectionResult(faceDetected, confidence, gender)
+
+    alt faceDetected = false
+        S-->>User: warning("No face detected")
+        User->>S: continueAnywayOrRetry(choice)
+    end
+
+    User->>S: setStoryOptions(genre, style, length)
+    S-->>User: optionsConfirmed
+
+    User->>S: submitPrompt(promptText)
+    S-->>User: promptReceived, promptType
+
+    alt promptType = "invalid"
+        S-->>User: error("Invalid prompt")
+    end
+
+    loop system generating personalized story
+        S-->>User: progressUpdate(stage, message)
+    end
+
+    S-->>User: storyGenerated(storyId, title, scenes[], pdfPath, mode: "personalized")
+    Note right of S: All scene images maintain facial<br/>consistency via IP-Adapter FaceID

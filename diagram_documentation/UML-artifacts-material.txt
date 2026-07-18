@@ -1,0 +1,2665 @@
+FYP UML Workshop
+Dr. Javaria Imtiaz
+Assistant Professor
+javaria.imtiaz@nu.edu.pk
+
+Agenda
+1. Introduction
+2. Project Vision
+3. Use Case Diagram
+4. High-level use cases
+5. Expanded Use cases
+6. Domain Model
+7. SSD
+8. Activity Diagram/Data Flow Diagram
+9. Operations Contracts
+10. Sequence Diagram
+11. Architecture Diagram
+
+Introduction
+• This section covers the overview of the entire document.
+• The main purpose of this section is to identify the purpose and scope of the
+project.
+• It
+also
+includes
+definitions,
+synonyms,
+abbreviations,
+and
+sometimes
+references.
+
+Project Vision
+– Problem statement
+– Business Opportunity
+– Objectives
+– Project Scope
+– Constraints
+– Stakeholder description
+– Stakeholder summary
+
+Problem statement
+• Summarize the problem that this project solves. Use the following
+statements as a model, providing project details to replace the
+parenthetical elements:
+“The problem of (describe the problem) affects (the stakeholders affected by the 
+problem). The impact of the problem is (what is the impact of the problem). A 
+successful solution would include (list some key benefits of a successful 
+solution).”
+
+Scope
+• Project scope is the part of project planning that involves
+determining and documenting a list of specific project goals,
+deliverables, tasks, and deadlines.
+
+Stakeholder Description
+• This
+section
+identifies
+the
+key
+problems
+related
+to
+the
+users’
+and
+stakeholders’ interests. The factors affecting product decisions are market
+demographics.
+• A stakeholder summary, a user summary, detailed working user environment,
+user profile, stakeholder profiles, and key stakeholder or user needs should
+be included in this section.
+
+Stakeholder summary
+• List all the identified stakeholders. For each stakeholder type, provide this
+information:
+– Name: Name the stakeholder type.
+– Represents: Briefly describe which individuals, teams, or organizations this stakeholder
+type represents.
+– Role: Briefly describe the role this stakeholder type plays in the development effort.
+
+Textbooks and Supplementary Reading List
+• Text Book(s)
+• Craig Larman, Applying UML and Patterns, 3rd edition, 2004.
+• Bernd Bruegge, Allen H. Dutoit, Object-Oriented Software Engineering, using
+UML, Patterns, and
+Java.
+• UML 2 Toolkit Published by Wiley Publishing, Inc.
+• UML 2.0, Documentation:www.rational.com
+•
+Additional Reading List
+• Unified Modeling Language: Superstructure, version 2.1.2, formal/07-11-02, OMG, www.omg.org
+Available in the Library/E-Book
+9
+
+Software
+• UML  (Designing/Modeling Standard)
+• Rational Software Architect (Modeling tool)
+• Enterprise Architect
+10
+
+Requirements Analysis and 
+Use-Case Diagrams
+
+•
+If the software is large scale, employing perhaps dozens of developers over several years, it is important that
+all members of the development team communicate using a common language.
+•
+This isn’t meant to imply that they all need to be fluent in English or C++, but it does mean that they need to
+be able to describe their software’s operation and design to another person.
+•
+That is, the ideas in the head of say the analyst have to be conveyed to the designer in some way so that
+he/she can implement that idea in code.
+•
+Just as mathematicians use algebra and electronics engineers have evolved circuit notation and theory to
+describe their ideas, software engineers have evolved their own notation for describing the architecture and
+behaviour of software system.
+•
+That notation is called UML. The Unified Modelling Language. Some might prefer the title Universal Modelling
+language since it can be used to model many things besides software.
+How are design ideas communicated in a team environment?
+
+•
+UML is not a language in the same way that we view programming languages such as ‘C++’, ‘Java’ or
+‘Basic’.
+•
+UML is however a language in the sense that it has syntax and semantics which convey meaning,
+understanding and constraints (i.e. what is right and wrong and the limitations of those decisions) to
+the reader and thereby allows two people fluent in that language to communicate and understand the
+intention of the other.
+•
+UML represents a collection of graphical notations to capture requirements and design alternatives.
+•
+UML is to software engineers what building plans are to an architect and an electrical circuit diagrams
+is to an electrician.
+•
+UML is suitable for large scale projects
+What is UML ?
+
+Phases of System Development
+•
+Requirement Analysis
+–
+The functionality users require from the system
+–
+Use-case model
+•
+OO Analysis
+–
+Discovering classes and relationships
+–
+Class diagram
+•
+OO Design 
+–
+Result of Analysis expanded into technical solution
+–
+Sequence diagram, state diagram, etc.
+–
+Results in detailed specs for the coding phase
+•
+Implementation (Programming/coding)
+–
+Models are converted into code
+•
+Testing
+–
+Unit tests, integration tests, system tests and acceptance tests.
+4
+
+Definition of a Use-Case
+•
+A process or procedure, describing a user’s interaction with the system (e.g. 
+library) for a specified, identifiable purpose. (e.g. borrowing a book). 
+•
+As such, each Use-Case describes a step-by-step sequence of operations, 
+iterations and events that document
+– The Interaction taking place. 
+– The Measurable Benefits to the user interacting with the system.
+– The Effect of that Interaction on the system.
+•
+It is important to document these use-cases as fully as possible as each 
+use-case captures some important functionality that our system will have to 
+provide in the automated version of the library.
+
+Register Course
+Withdraw 
+Money
+Apply for Loan
+Issue Book
+Make Payment
+Order Food
+Make Purchase
+Book Online 
+Ticket
+Flex
+ATM
+Bank
+Online Shoping
+Management 
+system
+Library
+OSM
+HMS
+FMS
+
+Use Cases in Iterative Development
+Functional requirements are primarily captured in use cases
+Use cases drive the iteration planning and work Easy for users to understand
+Influence user manual/documentation
+Functional or system testing corresponds to the scenarios of use cases
+Independent of implementing technology
+UI shortcuts for most common
+scenarios
+
+What ‘should’ and what ‘shouldn’t ‘ be included in use cases?
+
+How to Find Use Cases?
+•
+Choose the system boundary
+
+what you are building?
+
+who will be using the system?
+
+what else will be used that you are not building?
+•
+Find primary actors and their goals
+
+brainstorm the primary actors first  who starts and stops the system?
+
+who gets notified when there are errors or failures?
+•
+Define use cases that satisfy user goals
+
+prepare an actor-goal list (and not actor-task list)  in general, one use 
+case for each user goal
+
+name the use case similar to the user goal
+
+What Tests Can Help Find Useful Use Cases?
+
+Negotiate a Supplier Contract  
+
+Handle Returns
+
+Log in
+
+Move Piece on the Game Board
+•
+Which of these are valid use cases?
+
+What Tests Can Help Find Useful Use Cases?
+
+Negotiate a Supplier Contract  
+
+Handle Returns
+
+Log in
+
+Move Piece on the Game Board
+•
+Which of these are valid use cases?
+All of these can be use cases at different levels, depending on the 
+system, boundary, actors, and goals
+
+What Tests Can Help Find Useful Use  
+Cases?
+•
+Rather than asking
+
+”What is a valid use case?” More practical question:
+
+“What is a useful level of focus to express use cases for application requirements
+analysis?”
+•
+Rules of thumb
+
+The Boss Test
+
+The EBP Test
+
+The size test
+
+What Tests Can Help Find Useful Use  
+Cases?
+The boss test
+“What have you been doing all day?”
+Your reply “logging in!”
+Is your boss happy? No value? No good use case!
+The Elementary Business Process (EBP) test
+a task performed by one person in one place at one time, in
+response to a
+business event, which adds measurable business
+value and leaves data in a
+consistent state
+Good Examples: Approve Credit or Price Order
+Bad Examples: delete a line item or print the document
+The size test
+Just a single step in a sequence of others -> not good!
+
+Applying Tests
+Negotiate a supplier contract
+
+Much broader than EBP, rather a business use case
+Handle returns
+
+OK with the Boss. EBP. Size is good.
+Log in
+
+Boss is not happy is this is all you do all day!
+Move piece on game board
+
+Single step – fails the size test.
+
+Use Case Diagram Concepts
+•
+Summarizes all use cases (for the part of the system being modeled)
+together in one picture.
+•
+Typically drawn early in the SDLC
+•
+Shows the associations between actors and use cases
+
+Use Case (Context) Diagrams:  
+Suggested Notation
+
+Example
+Requirement 1
+The content management system shall
+allow an administrator to create a
+new
+blog
+account,
+provided
+the
+personal details of the new blogger
+are
+verified
+using
+the
+author
+credentials database.
+The requirement 
+indicates that that 
+the Administrator
+interacts with the 
+system to create a 
+new blogger's 
+account
+The
+Administrator
+interacts with the 
+system and is not 
+part of the 
+system; thus, the 
+Administrator
+Is an Actor.
+It's actually worth being very careful when naming your
+actors. The best approach is to use a name that can be
+understood by both your customer and your system designers.
+
+Example
+• What can be the use case in our Requirement 1?
+Requirement 1
+The content management system 
+shall allow an administrator to 
+create a new blog account, 
+provided the personal details of 
+the new blogger are verified 
+using the author credentials 
+database.
+to create a 
+new blog 
+account
+UML Representation
+
+Example (Cont)
+Requirement 2
+The content management system shall allow an administrator 
+to create a new personal Wiki, provided the personal details of 
+the applying author are verified using the Author Credentials 
+Database.
+
+Use Case Diagram– Guidelines & Caution
+•
+Actors should be Use cases should ideally begin with a verb – i.e generate report.
+•
+Use cases should NOT be open ended – i.e Register (instead should be named as Register New User)
+•
+Avoid showing communication between actors.
+
+named as singular. i.e., student and NOT students. NO names should be used – i.e John, Sam, etc.
+
+Do NOT show behavior in a use case diagram; instead only depict only system functionality.
+
+Use case diagram does not show sequence – unlike DFDs.
+
+Granularity of Use Cases
+Add  
+reference
+Remove  
+reference
+User
+Search for  
+reference
+List  
+references
+
+Granularity of Use Cases
+Manage  
+Reference
+User
+Generally, a use case should embody sufficient levels
+of
+granularity without which the use case may not be rendered as
+useful.
+
+Point of Sale System 
+A customer arrives at a checkout with items to
+purchase. The cashier uses the POS system to
+record
+each
+purchased
+item.
+The
+system
+presents a running total and line-item details.
+The
+customer
+enters
+payment
+information,
+which the system validates and records. The
+system
+updates
+inventory.
+The
+customer
+receives a receipt from the system and then
+leaves with the items.
+33
+
+Actors and User Goals
+Actor
+Goal
+Actor
+Goal
+Cashier
+1. Process sales 
+2. Process rentals
+3. Handle returns
+4. Cash in
+5. Cash out
+…
+System Administrator
+1. Add users
+2. Modify users
+3. Delete users
+4. Manage security
+5. Manage system tables
+Manager
+1. Start up
+2. Shut down
+Sales Activity System
+1. Analyze sales and
+performance data
+…
+…
+…
+…
+34
+
+35
+
+Use Case
+• A use case is a set of scenarios tied together by a common user 
+goal.
+• Examples are:
+– “sign up for the exam”,
+– “make a bank transfer”.
+
+Use Case Diagram
+1.
+A use case diagram for the entire system – a graphic model.
+2.
+Use cases are not diagrams they are text documents.
+3.
+Use cases are one way of capturing the functional requirements.
+4.
+Use cases are text stories of some actors using a system to meet goals.
+5.
+One or more use case narratives for each use case – descriptions in text.
+High-level Use Cases
+Expanded/Extended Use Cases
+4-37
+
+Use Case
+What it is:
+Text story
+Widely used to discover and record (mostly functional) requirements
+What is it about:
+Some actor(s) using a system to meet specific goals 
+Answering questions:
+Who is using the system, what are their typical 
+scenarios of use, and what are their goals?
+What it is NOT:
+Not object-oriented
+Not a diagram
+UML use cases diagrams are “secondary-value” artifacts
+Focus: use cases, not use case diagrams
+Withdraw Money through ATM?
+Submit Online Exam
+Place an order Food Panda
+
+Use Case Scenario
+• A scenario is a specific sequence of actions and interactions
+between actors and the system under discussion.
+• It is also called a use case instance.
+• It is one particular story of using a system, or one path through
+the
+use
+case;
+for
+example,
+the
+scenario
+of
+successfully
+purchasing items with cash, or the scenario of failing to purchase
+items because of a credit card transaction denial.
+
+Process Sale: 
+1.
+A customer arrives at a checkout with items to purchase.
+2.
+The cashier uses the POS system to record each purchased
+item.
+3.
+The system presents a running total and line-item details.
+4.
+The customer enters payment information, which the system
+validates and records.
+5.
+The system updates inventory.
+6.
+The customer receives a receipt from the system and then leaves
+with the items.
+40
+
+Use Case Format
+Brief
+Succinct one-paragraph summary usually the
+main success scenario
+done during early requirements analysis should take
+only a couple of minutes
+Casual
+informal paragraph format
+multiple paragraphs covering various scenarios
+Fully dressed
+details all steps and variations
+includes supporting sections such as preconditions and success guarantees
+mainly done after many use cases are identified and during early requirements
+workshop for high-value and high-risk requirements (e.g., core architectural)
+
+High Level/Brief Use Case Format
+Buy Items
+A brief description of use case’s role and purpose
+
+High Level/Brief Use Cases
+
+A Template for Fully Dressed Style
+• Use case name
+• start with a verb
+• Scope
+• the system under design
+• Level
+• user goal or subfunction level
+• Primary actor
+• calls on the system to deliver a service
+• Stakeholders and interests
+• who cares about this use case, and what do 
+they want?
+• Preconditions
+• what must be true on start, and worth 
+telling the reader
+• Success guarantee (postcondition)
+•
+what must be true on successful completion, and 
+worth telling the reader
+•
+Main success scenario
+• a typical, unconditional happy  path scenario of 
+success
+•
+Extensions
+• alternate scenarios of success  and failure
+•
+Special requirements
+• related non-functional  requirements
+•
+Technology and data variations list
+• varying I/O methods and date  formats
+
+Scope
+• Defines how broad the use case is.
+• This can be for the whole system, as in the POS example,
+or narrow, as in a use case for creating a journal entry in
+an accounting system.
+45
+
+Level
+• User-goal:
+Scenarios
+that
+let
+a
+user
+get
+something
+done.
+Corresponds to an elementary business process.
+• Sub function: smaller steps required to support a user goal.
+46
+user-level for a use case that describes one complete activity in the system;
+or subfunction for a use case that depends on a user-level use case but is too long to
+include in the user-level use case.
+
+Primary Actor
+• The person (or sometimes object) that calls upon system
+services to fulfill a goal. (When might an actor not be a
+person?)
+47
+
+Stakeholders and Interests
+• The stakeholders are people who have a reason to want this 
+system.  The Interests are their reasons for wanting it and what 
+they expect from it. 
+• You could view the system as a contract between various 
+stakeholders.
+48
+Someone or something with an interest in the behavior of the system
+under discussion. E.g. company stakeholders, customers, vendors, and
+government regulatory agencies,…
+
+Preconditions
+• It announces what the system will ensure is true before
+letting the use case start. Since it is enforced by the
+system and known to be true, it will not be checked again
+during the use case execution; e.g. user has logged in.
+49
+
+What the system will ensure is true before letting the use case start
+
+Success Guarantee
+• States what interests of the stakeholders are satisfied
+after a successful conclusion of the use case, either at the
+end of the main success scenario or at the end of a
+successful alternative path. The success guarantees are
+written additionally to the minimal guarantees.
+
+
+Main Success Scenario
+• This satisfies the interests of the stakeholders.  You get 
+your groceries, the store gets your money, inventory is 
+reduced, etc.
+• Steps:
+– An interaction between actors
+– Validation (by the system)
+– State change to the system
+53
+a case in which nothing goes wrong.
+
+One 
+Column
+Format
+
+Two Column Format
+Two column emphasizes interaction
+
+Extensions or Alternate Flows
+• These include all other possible outcomes, both success 
+and failure.
+56
+what can happen differently during a scenario.
+
+Technology and Data Variations
+• Technical variations on how something must be done:
+– Scan bar code
+– Key item ID
+– RFID
+• Avoid early design decisions; keep things general.
+57
+
+
+
+
+
+
+Write in a UI-Free Style
+• Most programs are dependent upon a particular user 
+interface.  However, avoid constraining your program too 
+early:
+• “The user keys an ID and password into a dialog box and 
+presses the OK button.”
+• “The user identifies himself to the system.”
+• The latter allows for biometric ID, keyin, etc.
+63
+
+Essential Style
+• Focus on the essence, or basic idea, not the details of 
+implementation
+• Contrast with concrete style
+64
+
+Write Black-Box Use Cases
+Focus on what the system must do,
+i.e., the behavior or functional requirements 
+Not on how it will do (the design)
+Examples:
+Good: The system records the sale
+Bad:
+The system writes the sale to the database.
+Worse: System generates SQL INSERT statement for the sale
+
+Expanded Use Cases
+Buy Items
+Pay by 
+CASH
+Pay by 
+CREDIT
+Pay by 
+CHEQUE
+
+Expanded Essential Use Cases (2)
+Lecture 08 -OOAD
+Typical Course of Events
+Actor Action
+System Response
+1. This use case begins when Customer arrives at the
+POST checkout with items to purchase.
+2. The Cashier records each item. If there is more than
+one item, Cashier can enter the quantity as well.
+3.
+Determines the
+item price and adds
+the item
+information
+to
+the
+running
+sales
+transaction.
+The
+description and price of the current item are presented.
+4. On completion of item entry, the Cashier indicates to
+the POST that item entry is complete.
+5. Calculates and presents the sale total.
+6. The Cashier tells the Customer the total.
+7. Customer chooses payment type:
+a. If cash payment, see section Pay by Cash.
+b. If credit payment, see section Pay by Credit.
+c. If check payment, see section Pay by Check
+8. Logs the completed sale.
+9. Updates inventory levels.
+10. Generates a receipt.
+
+Expanded Essential Use Cases (3)
+Lecture 08 -OOAD
+Typical Course of Events
+Actor Action
+System Response
+11.The Cashier gives the receipt
+to the Customer.
+12.The Customer leaves with
+the items purchased.
+Alternative Courses
+Line 2: Invalid item identifier entered. Indicate error.
+Line 7: Customer could not pay. Cancel sale transaction.
+
+Expanded Essential Use Cases (4)
+Lecture 08 -OOAD
+Section: Pay By Cash
+Actor Action
+System Response
+1. The Customer gives a cash payment-the
+“cash tendered” - possibly greater then
+the sale total.
+2. The Cashier records the cash tendered.
+3. Shows the balance due
+back to the Customer.
+4. The Cashier deposits the cash received and 
+extracts the balance owing. The Cashier gives 
+the balance owing to the Customer.
+Alternative Courses
+Line 1:Customer does not have sufficient cash. May cancel sale or initiate another payment 
+method.
+Line 4: Cash drawer does not contain sufficient cash. Cashier requests additional cash from 
+supervisor or asks Customer for different payment amount or method.
+
+Expanded Essential Use Cases (5)
+Lecture 08 -OOAD
+Section: Pay By Credit
+Actor Action
+System Response
+1. The Customer communicates their credit 
+information for the credit payment.
+2.Generates a credit payment Request and 
+sends it to an external Credit Authorization 
+service.
+3. Credit Authorization Service authorizes the 
+payment
+4. Receives a credit approval Reply from the 
+Credit Authorization Service (CAS)
+5. POST (records) the credit payment and 
+approval reply information to the Accounts 
+Receivable system.(The CAS owes money to 
+the Store, hence Acct/Recv must track it).
+6. Display authorization success message.
+Alternative Courses
+Line 3: Credit request denied by Credit Authorization Service. Suggest different payment 
+method.
+
+Expanded Essential Use Cases (6)
+
+Domain Model
+• Why:
+Domain modeling helps us to identify the relevant concepts and ideas of a
+domain
+• When:
+Domain modeling is done during object-oriented analysis
+• Guideline:
+Only create a domain model for the tasks at hand
+
+“Good designs require deep 
+application knowledge.”
+Curtis’law
+
+Domain Model
+•
+The Domain Model illustrates noteworthy concepts in a domain.
+•
+The domain model is created during object-oriented analysis to decompose the domain into
+concepts or objects in the real world.
+•
+The model should identify the set of conceptual classes (The domain model is iteratively
+completed.)
+•
+Also known as Visual Dictionary
+•
+It is the basis for the design of the software.
+•
+The domain model is also called conceptual model, domain object model or analysis
+object mode.
+– conceptual is idea, thing, object
+74
+
+Domain Model
+•
+Illustrates meaningful conceptual classes in problem domain (Analysis phase)
+•
+It helps us identify, relate and visualize important information.
+•
+Represents real-world concepts, not software components
+•
+Software-oriented class diagrams will be developed later (during design phase)
+•
+It
+provides
+inspiration
+for
+later
+creation
+of
+software
+design
+classes,
+to
+reduce
+“representational gap.”
+75
+
+-Domain Modeling is useful to understand the ideas and concepts of the domain
+and their interrelationships
+- A Domain Model is usually created at the beginning of a project and is a basis for the
+design model
+- ADomain Model is created using a subset ofthe UMLclass diagram notation
+Domain Model
+
+To visualize domain models the UML class diagram notation is used.
+• However, no operations are defined in domain models
+•
+Only ... 
+– domain objects and conceptual classes
+– associations between them
+– attributes of conceptual classes
+77
+
+A Domain Model is Conceptual, not a Software 
+Artifact
+Conceptual Class:
+Sale
+amt
+item
+SalesDatabase
+Sale
+Double amt;
+Item item;
+void print()
+Software Artifacts:
+vs.
+What’s the
+difference?
+
+Monopoly Game domain model
+(first identify concepts as classes)
+Monopoly Game
+Player
+Piece
+Dice
+Board
+Square
+
+Monopoly Game domain model
+Larman, Figure 9.28
+
+Syntax of Domain Model
+Conceptual Class:
+Student
+- age: int
+- name: String
+Association
+Registers
+Registers
+Cardinality
+1
+*
+Attributes
+
+How to Create Domain Model
+1.Find conceptual classes
+2.Draw them as conceptual classes
+3.Add associations and attributes
+82
+
+Finding Conceptual Classes
+1. Reuse or modify the existing model if one exists
+– There are many published, well-crafted domain models. 
+2. Use Conceptual Category List
+3. Identify noun phrases in your use-cases
+– Identify nouns and phrases in textual descriptions of a domain ( use cases, or other 
+documents) 
+83
+
+Reuse or Modify Existing Models
+• There are published, well--‐crafted domain models and data models
+(which can be modified into domain models) for many common
+domains, such as inventory, finance, health, and so forth..
+• Knowledge sources are:
+– Interviews
+– Questionnaires
+– Mission Statements
+– Subject Matter Experts (SMEs)
+• Reusing existing models is excellent
+84
+
+How to create the domain model?
+Use a category list to find the conceptual classes.
+
+Identify noun phrases to find the conceptual 
+classes
+• Identify
+the
+nouns
+and
+noun
+phrases
+in
+textual
+descriptions of a domain and consider them as candidate
+conceptual classes or attributes.
+“Use Cases” are also an excellent source for identifying 
+conceptual classes.
+
+
+
+List and Draw UML Diagram
+1.Sale
+2.Cash Payment
+3.SaleLineItem
+4.Item
+5.Register
+6.Amount
+7.Cashier
+1. Decide which ones are classes and which ones are attributes
+2. Add attributes and relation to the identified domain classes
+89
+
+Association Notations
+Association name:
+
+Use verb phrase
+
+Capitalize
+
+Typically camel-case or hyphenated
+
+Avoid “has”, “use”
+Multiplicity (Cardinality):
+
+‘*’ means “many”
+
+x..y means from x to y inclusively
+Reading direction:
+Can exclude if 
+association reads left-to-
+right or top-to-bottom
+90
+
+Cardinality (or Multiplicity)
+zero or more; 
+"many"
+one or more
+one to 40
+exactly 5
+T
+T
+T
+T
+*
+1..*
+1..40
+5
+T
+3, 5, 8
+exactly 3, 5, or 8
+91
+
+92
+UML: Multiplicity
+zero or more;
+"many"
+one or more
+one to forty
+exactly five
+T
+T
+T
+T
+*
+1..*
+1..40
+5
+T
+3, 5, 8
+exactly three,
+five or eight
+Customer
+Video
+Rents 
+*
+One instance of a
+Customer may be
+renting zero or more
+Videos.
+One instance of a Video
+may be being rented by
+zero or one Customers.
+0..1
+
+EXAMPLE: Partial Domain Model
+Video
+ID
+Stocks4
+Rents4
+Rents-from 4
+1
+1..*
+1
+*
+1
+*
+VideoStore
+address
+name
+phoneNumber
+Customer
+address
+name
+phoneNumber
+
+Attributes
+• An object’s logical data value that must be remembered
+– Some attributes are derived from other attributes
+Sale
+dateTime
+/ total : Money
+attributes
+derived 
+attribute
+94
+
+Visibility in Domain Models
+Sale
+- dateTime : Date
+- / total : Money
+Private visibility 
+attributes
+Math
++ pi : Real = 3.14 {readOnly}
+Public visibility readonly 
+attribute with initialization
+Person
+firstName
+middleName : [0..1]
+lastName
+Optional value
+95
+e.g. + store : Walmart [1..*] 
+{readOnly}
+The full UML attribute syntax:
+
+EXAMPLES
+96
+
+Point of Sale System
+
+4. DomainModel
+Point ofSale
+1.
+Is there any register?
+2.
+Is there any actor?
+3.
+Is there any service or product?
+4.
+Is there any physical place where activity 
+has been performed?
+5.
+Is there any report?
+6.
+Is there any payment mechanism?
+7.
+Is there any description class?
+
+System Sequence Diagram
+
+Interaction between cashier and system to perform process Sale
+Main Success Scenario
+
+System Sequence Diagram
+• An SSD shows – for one particular scenario of a use case –
+– the events that external actors generate,
+– their order, and
+– inter-system events
+• The system is treated as a black-box (no implementation details).
+• A description of “What” system does with some time aspects.
+• SSDs are derived from use cases; SSDs are often drawn for the
+main success scenarios of each use case and frequent or complex
+alternative scenarios.
+• SSDs are used as input for object design
+
+
+System Events and System Operations
+• System operations are the operations that the system as
+a black box component offers in its public interface. These
+are high-level operations triggered by an external input
+event / system event generated by an external actor
+• During system behavior analysis, system operations are
+assigned to a conceptual class System
+
+System SequenceDiagram
+•
+A system sequence diagram shows the interaction between an actor  and the 
+system for one use case scenario.
+•
+It shows:
+
+The system (as a black box)
+
+The initiating actor
+
+Each external system which sends messages to the system
+
+The messages into and out of the system
+
+The sequence in which the messages occur
+
+enterItem(itemID,quantity)
+:System
+:Cashier
+endSale
+makePayment(amount)
+a UML loop  
+interaction  
+frame, with a  
+booleanguard  
+expression
+external actorto  
+system
+Process Sale Scenario
+system as black box
+the name could be "NextGenPOS" but "System" keepsit  
+simple
+the ":" and underline imply an instance, and are explained ina  
+later chapter on sequence diagram notation in the UML
+a messagewith
+parameters
+it is anabstraction  
+representing the  
+system event of  
+entering the  
+payment data by  
+some mechanism
+description,total
+return value(s)  
+associated with the  
+previous message
+an abstraction that  
+ignorespresentation  
+and medium
+the return line is  
+optional if nothingis  
+returned
+total with taxes
+change due,receipt
+makeNewSale
+[ more items]
+loop
+Elements of a System
+SequenceDiagram
+System SequenceDiagram
+1.
+Actor
+2.
+Lifeline
+3.
+System
+4.
+Messages
+5.
+Parameters
+6.
+Actions
+7.
+Responses
+8.
+Loop
+
+: Cashier
+:System
+Simple cash-only Process Sale scenario:
+1. Customer arrives at a POS checkout with goods and/or services topurchase.
+2. Cashier starts a new sale.
+3. Cashier enters item identifier and quantity.
+4. System records sale line item and presents item description, price, and running total.
+5. Cashier repeats steps 3-4 untilindicates done.
+6. System presents total with taxes calculated.
+7. Cashier tells Customer the total,and asks for payment.
+8. Customer pays and Systemhandles payment.
+...
+enterItem(itemID, quantity)
+endSale
+makePayment(amount)
+description, price, total
+total with taxes
+change due,receipt
+makeNewSale
+[ more items]
+loop
+Process Sale Scenario
+Mapping from Use Case toSystem  
+SequenceDiagram
+System SequenceDiagram
+
+• System
+operations
+are the operations that thesystem as a
+black box
+component oﬀers in its publicinterface.
+• These are high-level operations triggered by an external input
+event /
+system event generatedby an external actor
+• During system behavior analysis, system operations are assigned to a
+conceptual classSystem
+SystemEventsandSystemOperations
+
+•
+A SalesLineltem instance sli was created (instance creation).
+•
+sli was associated with the current Sale (associationformed).
+•
+sli.quantity became quantity (attribute modification).
+•
+sli was associated with a ProductSpecification, based on itemID match 
+(association formed).
+• A Sale instance s was created (instance creation).
+• s was associated with the Register (association formed).
+• Attributes of s were initialized. 
+
+• A Payment instance p was created (instance creation).
+• p.amountTendered became amount (attribute modification).
+• p was associated with the current Sale (association formed).
+• The current Sale was associated with the Register (association formed)
+Sale.isComplete became true (attribute modification)
+
+Use Case: Process Sale Scenario - Main Success Story
+1. Cashier starts new sale
+2. Cashier enters item identifier
+3. System records sale line item and presents item description,  
+price and running total
+St e p s 2 and 3 ar e re p e a t e d unti l al l it e m s ar e pr oc ess ed.
+4. System presents total with taxescalculated
+5. Cashier tells Customer the total and asks for payment
+6. Customer pays and System handlespayment
+Example of an SSD for the Process Sale Scenario
+
+Visualizing SSDs - Excerpt From the POS Domain
+:Syste m
+:Cashier
+ent er Item(itemId, quant ity)
+des cript ion, price, to ta l
+loop
+[m o r e it e m s]
+Process Sale Scenario
+
+Message Formats in System Sequence Diagrams
+• The UML format for a message consists of a message name followed
+(in
+parentheses) by a parameter list.
+• All names begin with a lower-case letter.
+• There are no spaces in a name.
+• Upper-case letters separate the words within a name.
+• Names in the parameter list are separated by commas.
+
+UML
+Interaction Diagrams
+• UML Sequence Diagrams
+
+Sequence Diagram
+• Sequence diagram simply depicts interaction between
+objects in a sequential order (i.e. the order in which
+these interactions take place.)
+• Sequence diagrams describe how and in what order the
+objects in a system function
+
+Sequence Diagram
+They
+illustrate
+how
+the
+different
+parts
+of
+a
+system
+interact with each other to carry out a function, and the
+order in which the interactions occur when a particular
+use case is executed
+
+3
+Interaction diagrams are used to visualize the interaction  
+via messages between objects; they are used for dynamic  
+object modeling.
+
+Example
+
+Example of Sequence Diagram
+:A
+myB:B
+do2
+do3
+do1
+
+Java Code for Interaction Diagrams
+7
+:A
+myB:B
+do2
+do3
+do1
+public class A {  
+private B myB = ...;
+public void do1() {  
+myB.do2();
+myB.do3();
+}
+}
+E
+x
+a
+m
+p
+l
+e
+Sequence Diagram
+
+Common Notations for UML Interaction Diagrams
+Lifeline box representing an unnamed instance of class Sale.
+:Sale
+
+Common Notations for UML Interaction Diagrams
+Lifeline box representing a named instance (s1) of Sale.
+s1:Sale
+Java Code:
+Sale s1 = …;
+
+Common Notations for UML Interaction Diagrams
+sales:ArrayList<Sale>
+Java Code:
+ArrayList<Sale> sales = …;
+Lifeline box representing an instance of an ArrayList class,  
+parameterized to hold Sale objects.
+
+Common Notations for UML Interaction Diagrams
+sales[i]:Sale
+Java Code:
+ArrayList<Sale> sales = …;  
+Sale sale = sales.get(i);
+Lifeline box representing one instance of class Sale, selected  from 
+the sales ArrayList<Sale> collection.
+
+Common Notations for UML Interaction Diagrams
+sales[i]:Sale
+sales:ArrayList<Sale>
+s1:Sale
+:Sale
+
+Sequence Diagram Example
+13
+
+Common Notations for UML Interaction Diagrams -
+Format for Interaction Messages
+initialize(code)  
+initialize
+d = getProductDescription (id)
+d = getProductDescription (id : ItemId)
+d = getProductDescription (id : ItemId) : ProductDescription
+“Commonly” Used Grammar:
+return = message(parameter:parameterType):returnType
+Parentheses are usually excluded if there are no parameters.  
+Type information may be excluded if unimportant.
+The same syntax is used by, e.g., the Scala programming language.
+
+UML Sequence Diagrams
+
+
+UML Sequence Diagrams | 18
+Modeling (Synchronous) Messages
+:Register
+:Sale
+getDate()
+Report()
+toString()
+getRegNo()
+a found message whose sender  
+will not be specified
+execution specification bar  
+indicates focus of control
+typical synchronous message  
+shown with a filled-arrow line
+
+Self messages can be modeled using nested execution  
+specification bars.
+UML Sequence Diagrams | 20
+:Register
+cancelTransaction
+log
+self message
+
+To show the return value of a message you can  
+either use the message syntax (A) or use amessage  
+line at the end of an execution specification bar (B).
+:Register
+:Sale
+theReport = report
+report
+:Register
+:Sale
+report
+report
+theReport
+V a r i a n t
+A
+V a r i a n t
+B
+
+The name create is an UML idiom; it is not required.
+Object Instance Creation
+:Register
+:Sale
+makePayment(cashTendered)
+create(cashTendered)
+authorize
+:Payment
+Newly created objects are placed  
+at their creation “height”.
+
+The object destruction notation is also used to mark objects that are no  
+longer usable.
+Object Instance Destruction
+:Register
+:Sale
+makePayment(cashTendered)
+create(cashTendered)
+...
+:Payment
+X
+Not strictly required by the UML.
+
+Corresponding Java Code
+Invoking Static Methods (Class Methods)
+public class Register {  
+public void report() {
+Locale[] locales = Calendar.getAvailableLocales();
+}
+}
+Calendar
+:Register
+locales = getAvailableLocales
+report
+
+Diagram frames in UML sequence diagrams are used to  
+support - among others - conditional and looping  
+constructs.
+:System
+:Cashier
+enterItem(itemId, quantity)
+description, price, total
+loop
+[more items]
+
+
+How to model the iteration over a collection?
+Modeling task: Calculate the total of a sale by summing up the  
+sub totals for each sales line item.
+
+Use a UML loop frame to iterate over a collection.
+:Sale
+t = getTotal
+lineItems[i] :  
+SalesLineItem
+[0 < i < lineItems.size]
+loop
+st = getSubTotal
+i++
+Modeling task: Calculate the total of a sale by summing up the  
+sub totals for each sales line item.
+
+Use a UML loop frame to iterate over a collection.
+UML Sequence Diagrams | 29
+:Sale
+t = getTotal
+st = getSubTotal
+lineItems[i] : SalesLineItem
+[for each sales line item]
+loop
+Modeling task: Calculate the total of a sale by summing up the  
+sub totals for each sales line item.
+
+Java code corresponding to a UML loop frame.
+UML Sequence Diagrams | 30
+public class Sale {
+private List<SalesLineItem> lineItems
+= new ArrayList<SalesLineItem>();
+:Sale
+t = getTotal
+st = getSubTotal
+lineItems[i] : SalesLineItem
+[for each sales line item]
+loop
+public Money getTotal() {
+Money t = new Money();
+Money st = null;
+for
+(SalesLineItem
+lineItem
+:
+lineItems)
+{
+st = lineItem.getSubtotal();
+t.add(st);
+}
+return t;
+}
+}
+
+How to model the sending of a message only if a  
+guard condition matches?
+UML Sequence Diagrams | 31
+Modeling task: Get the sum of all sales that happened today  
+after 18:00 o’clock.
+
+Use a UML opt frame to model the sending of a  
+message if the guard condition matches.
+UML Sequence Diagrams | 32
+:Register
+r = getTotal(startDate)
+t = getTotal
+sales[i] : Sale
+[for each sale]
+loop
+opt
+date = getDate
+[startDate < date]
+Frames can be nested.
+Modeling task: Get the sum of all sales that happend today  
+after 18:00 o’clock.
+Use a UML opt frame to model the sending of a  
+message if the guard condition matches.
+UML Sequence Diagrams | 32
+:Register
+r = getTotal(startDate)
+t = getTotal
+sales[i] : Sale
+[for each sale]
+loop
+opt
+date = getDate
+[startDate < date]
+Frames can be nested.
+Modeling task: Get the sum of all sales that happend today  
+after 18:00 o’clock.
+
+How to model mutually exclusive alternatives?
+UML Sequence Diagrams | 33
+Modeling task: A register should be able to handle credit card  
+payments and cash payments.
+
+Use the UML alt frame to model between 2 and n  
+mutually exclusive alternatives.
+UML Sequence Diagrams | 34
+:Register
+makePayment(type,sale)
+create
+:CreditCardPayment
+[type = CreditCardPayment]
+alt
+:CashPayment
+[type = CashPayment]
+create
+Modeling task: A register should be able to handle credit card  
+payments and cash payments.
+
+Conditional Messages
+
+Mutually Exclusive Conditional Messages
+
+1. The Order asks each Order Line to calculate its own Price.
+2. The
+Order
+Line
+itself
+further
+hands
+off
+the
+calculation
+to
+the
+Product; note how we show the passing of a parameter.
+3. Similarly, to calculate the discount, the Order invokes a method on
+the Customer. Because it needs information from the Order to do
+this, the Customer makes a reentrant call (getBaseValue) to the
+Order to get the data.
+
+
+
+Process Sale Scenario
+: Cashier
+:System
+enterItem(itemID, quantity)
+endSale
+makePayment(amount)
+description, price, total
+total with taxes
+change due,receipt
+makeNewSale ()
+[ more items]
+loop
+1. makeNewSale()
+2. enterItem(itemID, quantity)
+3. endSale()
+4. makePayment(amount)
+
+Domain Model
+
+Process Sale
+
+The goal of this lecture is to enable you to  
+systematically carry out small(er) software  
+projects that produce quality software.
+• Modeling the dynamic behavior is often more rewarding than modeling the static  
+structure w.r.t. understanding a domain
+• Modeling the dynamic behavior is often particularly useful if the control-flow is more  
+involved; but only draw the part that is relevant to understand the problem at hand
+• The UML is often used informally - this is OK if everyone interprets the diagrams in the  
+same way
+Summary
+
+Object-Oriented Design
+“After identifying your requirements and creating a domain model, then create software classes, and define the messaging
+between the objects to fulfill the requirements.”
+Often make Sequence diagram and Class Diagram in parallel using the domain model and SSD
+
+Class Diagram 
+A class consists of
+properties (attributes), 
+behavior (operations), 
+relationships to other objects, 
+Examples
+Employee: has a name, employee# and department; an employee is hired, and fired; an employee works in one or
+more projects
+
+Student
++ name: string = “Anon” 
++ registeredIn: Course [*]
++ register (c: Course)
++ isRegistered (c: Course) : Boolean
+Name of the class
+Visibility:
++, -, #
+Attribute
+name
+Operation
+name
+Parameters
+Return value
+Attribute
+type
+Multiplicity
+Default value
+Class Diagram Notation 
+
+Order
++ dateReceived: Date [0..1] 
++ isPrepaid: Boolean
++ lineItems: OrderLine [*] 
+Navigability
+
+Person
++ carsOwned: Car [*] 
+Car
++ Owner: Person [0..1] 
+How implement it?
+Bidirectional Association
+
+Generalization/Specialization
+Generalization hierarchies may be created by generalizing from specific 
+things or by specializing from general things.
+
+Inheritance
+•Class inheritance is implicit in a generalization relationship between classes.
+•Subclasses inherit attributes, associations, & operations from the superclass
+What
+is
+the
+inheritance
+mechanism in Java?
+
+Inheritance
+Java Inheritence
+• A subclass may override an inherited aspect
+• e.g. AdminStaff & CreativeStaff have different 
+•
+methods for calculating bonuses
+• A Subclass may add new features
+• qualification is a new attribute in CreativeStaff
+• Superclasses may be declared {abstract}, meaning they have no 
+instances
+• Implies that the subclasses cover all possibilities
+• e.g. there are no other staff than AdminStaff and CreativeStaff
+
+Aggregation vs Composition
+Aggregation implies a relationship where the child can exist independently of the parent. For
+example, Bank and Employee, delete the Bank and the Employee still exist.
+whereas Composition implies a relationship where the child cannot exist independent of the
+parent. Example: Human and heart, heart don’t exist separate to a Human.
+Aggregation relation is “has-a” and composition is “part-of” relation.
+Composition is a strong Association whereas Aggregation is a weak Association.
+50
+
+• This is the “Has-A” relationship
+:Person
+:Car
+:Train
+0..1
+0..1
+passengers
+driver
+1
+0..*
+aggregation
+*
+aggregation
+Member
+Club
+*
+Aggregation
+
+3..*
+centre
+{ordered}
+1
+Polygon
+Circle
+Point
+Aggregation and Composition
+•Composition is strong form of aggregation that implies ownership:
+if the whole is removed from the model, so is the part.
+the whole is responsible for the disposition of its parts
+Note: Parts can be removed from the composite (where allowed) before the composite is 
+deleted
+
+:Engine
+:Person
+:Car
+:Train
+1
+0..1
+0..1
+1..*
+passengers
+driver
+1
+1
+0..1
+0..*
+composition
+aggregation
+:Locomotive
+Aggregation and Composition
+
+Object-Oriented Design
+“After identifying your requirements and creating a domain model, then add methods to the software classes, and define
+the messaging between the objects to fulfill the requirements.”
+But how?
+How should concepts be implemented by classes? 
+What method belongs where?
+How should the objects interact?
+This is a critical, important, and non-trivial task
+
+56
+
+57
+
+58
+
+Design Patterns - GRASP
+Responsibility Driven Development
+General Responsibility Assignment Software Patterns
+Information Expert
+Creator
+High Cohesion
+Low Coupling
+Controller
+A design pattern is a general 
+repeatable solution to a 
+commonly occurring problem
+in software design
+Design patterns can speed up 
+the development process by 
+providing tested, proven 
+development paradigms
+
+Controller
+A simple layered architecture has a user interface layer (UI) and a business logic layer.
+Actors, such as the human user, generate UI events (such as clicking a button).
+The UI software objects (such as a JFrame window and a JButton) must process the event.
+When objects in the UI layer pick up an event, they must delegate the request to an object in
+the domain layer.
+Problem: What first object in the business logic layer should receive the message from
+the UI layer?
+OR in other words
+Who should be responsible for handling system events ?
+
+Controller
+The Controller is also an important idiom in modern web development frameworks, in
+forming a pillar of the Model-View-Controller architectural pattern. Controllers are
+used in AngularJS, Ruby on Rails, Sails and more.
+61
+
+Problem:
+What
+first
+object
+in
+the
+business logic layer should receive the
+message from the UI layer?
+Solution: 
+Façade Controller to hide the complexity 
+•
+Works as a wrapper
+•
+Should not contain business logic
+
+Controller
+Which class will receive the first system call?
+Deals with how to delegate the request from the UI layer objects to domain layer objects.
+When a request comes from UI layer object, Controller pattern helps us in determining what is that first object that
+receive the message from the UI layer objects.
+This object is called controller object which receives request from UI layer object and then controls/coordinates with
+other object of the domain layer to fulfill the request.
+It delegates the work to other class and coordinates the overall activity.
+
+Façade Controller
+All system operations are assigned to one controller.
+
+Controller
+We can make an object as Controller, if
+– Object represents the overall system (facade controller)
+– Object represent a use case, handling a sequence of operations (session controller).
+Benefits
+– can reuse this controller class.
+– Can use to maintain the state of the use case.
+– Can control the sequence of the activities
+
+Bloated Controller
+Controller class is called bloated, if
+– The class is overloaded with too many responsibilities.
+– Solution: Add more controllers
+The responsibility of controller class is to delegate things to others.
+It will not perform any kind of business logic/ calculations.
+
+Example
+Domain Model
+System Sequence Diagram
+Sequence Diagram
+67
+
+68
+
+69
+
+Information Expert
+Problem : What is general principle of assigning responsibilities to Objects?
+Solution : Assign Responsibility to class that has the information to fulfil the responsibility
+Decision of which class to call? The class that has relevant data
+Can be current class or some other class
+
+73
+
+Benefits
+Information encapsulation is maintained since objects use their own information to
+fulfill tasks.
+This usually supports low coupling, which leads to more robust and maintainable
+systems.
+Behavior is distributed across the classes that have the required information, thus
+encouraging
+more
+cohesive
+"lightweight"
+class
+definitions
+that
+are
+easier
+to
+understand and maintain.
+
+Example
+Assume we need to get all the videos of a VideoStore.
+Since VideoStore knows about all the videos, we can assign this responsibility of giving all
+the videos can be assigned to VideoStore class.
+VideoStore is the information expert.
+
+76
+
+Creator
+Problem: Who should be responsible for creating new instances of a class?
+“Container” object creates “contained” objects.
+Decide who can be creator based on the objects association and their interaction.
+Solution: B creates If,
+B aggregates A
+B contains A
+B records A
+B closely uses A
+B initializes A
+
+78
+
+79
+
+Low Coupling
+Problem: How to support Low dependency, low change impact, increase re-use ?
+
+Coupling
+How dependent one element (e.g. class) is on other elements (e.g. classes)
+Coupling is a measure of how strongly one element is connected to, has knowledge of, or 
+relies on other elements.
+High coupling is problematic
+High coupling
+
+Problems with High Coupling
+High coupling would mean that your class knows the way too much about the inner workings of other classes.
+classes that know too much about other classes make changes hard to coordinate and make code brittle and difficult to 
+reuse.
+If class A knows too much about class B, changes in class B may break the functionality in class A.
+
+Low Coupling
+Problem: How to achieve low dependency, low change impact, increase re-use ?
+Solution : Assign responsibilities so that coupling remains low.
+
+Low Coupling
+Low coupling is an evaluative pattern that dictates how to assign responsibilities
+for the following benefits:
+lower dependency between the classes
+change in one class having a lower impact on other classes
+higher reuse potential.
+Low coupling
+High coupling
+
+Example (High Coupling)
+
+Example (Low Coupling)
+
+87
+
+Example
+Domain Model
+System Sequence Diagram
+Sequence DiagramPoorDesign
+Design Alternative
+
+High Cohesion
+Cohesion refers to how the functions of a class belong together. Related code
+should be close to each other to make it highly cohesive.
+Problem: How to keep complexity manageable ?
+Solution : Assign responsibilities so that cohesion remains high.
+Note low cohesion and high coupling often go together.
+
+High Cohesion
+How are the operations of any element functionally related?
+Related responsibilities in to one manageable unit
+Prefer high cohesion
+Clearly defines the purpose of the element
+Benefits
+Easily understandable and maintainable.
+Code reuse
+Low coupling
+
+Example of Low Cohesion
+Example of High Cohesion
+
+Pure Fabrication 
+If domain model provides no reasonable concept to assign responsibility without violating cohesion/coupling -> create a
+new abstraction (e.g., PersistantStorage).
+Assign a highly cohesive set of responsibilities to an artificial or convenience class that does not represent a problem
+domain concept—something made up, to support high cohesion, low coupling, and reuse
+92
+
+93
+
+GRASP Pattern
+Sale
+date
+time
+SalesLineItem
+quantity
+Product
+Specification
+description
+price
+itemID
+1
+*
+*
+1
+Described by
+Contains
+t := getTotal()
+: Sale
+Initial Domain Model
+Sequence Diagram
+Software Class
+:Sale
+date
+time
+getTotal()
+
+95
+Domain Model
+
+96
+System Sequence Diagram
+
+makeNewSale()
+97
+Controller ?
+Information Expert ??
+Creator ??
+
+Explanation
+98
+Register may be thought of as recording a Sale
+Register is a reasonable candidate for creating a Sale.
+By having the Register create the Sale, the Register can easily be associated with it over time,
+During future operations within the session, the Register will have a reference to the 
+current Sale instance.
+When the Sale is created
+it must create an empty collection (container) to record all future SalesLineItem instances that will 
+be added.
+This collection will be contained within and maintained by the Sale instance,
+Therefore:
+the Register creates the Sale
+the Sale creates an empty collection, represented by a multiobject in the interaction diagram.
+
+enterNewItem(itemID, quantity)
+99
+First step: access ProductDescription based on the itemID
+ProductCatalog is information expert of ProductDescriptions
+
+100
+
+101
+Code level view
+
+Class Diagram, So far
+102
+
+endSale – Design Decisions
+Sale is to be completed
+Total with tax calculated is presented
+103
+
+endSale()
+104
+
+105
+
+getTotal()
+106
+
+makePayment(cashTendered)
+107
+
+108
+
+109
+
+Software Design and Analysis
+CS-3004
+Lecture# 12
+Dr. Javaria Imtiaz
+Assistant Professor
+javaria.imtiaz@nu.edu.pk
+
+Outline
+• Package Diagram
+• Component Diagram
+• Deployment Diagram
+• Activity Diagram
+2
+
+Packages
+java
+util
+util
+util
+Date
+util
+java::util
+Date
+Date
+Date
+java::util::Date
+myPackage
+myPackage::Date
+Date
+3
+
+Package 
+•
+Classes are basic structural units in an OO system
+•
+In large systems with hundreds of classes, need to group the classes
+together into packages
+•
+A package in UML can be a collection of any packageable UML elements
+but it is most commonly a collection of classes
+•
+A package may contain other packages (subpackages)
+•
+A package in UML corresponds to a package in Java or a namespace in
+C++
+•
+Each package is a namespace
+–
+There must never be more than one class within a package with any given name
+–
+Classes in different packages can have the same name
+•
+If several teams working on project, each could work on a different package
+–
+Would mean they don’t have to worry about name clashes
+•
+To distinguish between classes with the same name in different packages,
+use fully qualified name
+–
+e.g., java::util::Date, myPackage::Date
+•
+UML package icon is a tabbed folder
+–
+Can show just name or contents too
+•
+If just name shown, then can be written in the middle of the icon, otherwise name written on tab
+–
+Can show all details of class or even class diagram within package
+–
+At other extreme, can just list names of classes within the package icon
+4
+
+Use Case Package Diagram:
+Use case Diagram 
+Use case Package  Diagram
+
+Use Case Package Diagram:
+
+Use Case Package Diagram:
+
+Class Package Diagram
+class Diagram       
+class Package  Diagram
+
+Package membership
+p
+s
+u
+Q
+r
+T
+V
+p
+s
+r
+Q
+T
+u
+V
+• These diagrams convey the same information
+9
+
+Class visibility and facades
+• Classes inside a package can be public or
+private
+– Indicate by preceding class name with + or -, respectively
+• Public class is part of package’s public interface
+– Can be used by classes in other packages
+• Private class is hidden within package
+– Can only be used by other classes within the package
+• Can control access to a package by making all
+classes private and then adding special, public
+façade classes that delegate public operations
+to the private classes within the package
+10
+
+Relationships between packages
+• Element can refer to other elements that are in its own
+package and in enclosing packages without using fully
+qualified names.
+• Element x must use fully qualified name to access element
+in package that does not contain x.
+• foo can be of class B or D
+• foo can be of class q::E or r::C
+11
+p
+r
+q
+D
+E
+B
+A
+foo: ??
+C
+s
+
+Packages and dependencies
+presentation
+domain
+• Package diagram shows packages and their
+dependencies
+• Package A depends on package B if A contains
+a class which depends on a class in B.
+– Inter-package dependencies summarise dependencies between
+classes
+12
+
+Package import
+•
+Element import identifies an element in another package and allows the
+element to be referenced using its name without a qualifier
+•
+Element import indicated by dashed arrow with open arrowhead from
+importing package to imported element and labelling arrow with
+–
+Keyword <<import>>, if visibility of imported element within importing package is
+public and
+–
+Keyword <<access>>, if visibility of imported element within importing package is
+private
+13
+Access: Indicates that one package requires assistance
+from the functions of another package.
+Import: Indicates that functionality has been imported
+from one package to another.
+
+Element import
+14
+e
+b
+a
+C
+D
+«import»
+C
+«access»
+F
+F
+«import» G
+h
+«import»
+In above example
+•
+Class b::C is referred to as just C in package a, and has public visibility within
+package a
+•
+Imported class C hides outer class e::C which must be referred to by its fully
+qualified name (before import, C referred to e::C in package a)
+•
+Class b::F is imported into package a, but there is already a class called F in a,
+therefore cannot import b::F without aliasing it
+•
+Class b::F is referred to as G in package a
+•
+Imported class b::D can be referred to as D in package a, and has private
+visibility within package a
+•
+Package h imports package a which means that, in h, b::C is referred to as C
+and b::F is referred to as G
+•
+b::D is not accessible from h because its visibility in a is private
+
+Package import
+•
+A package import is a directed relationship that identifies a package whose members are
+to be imported by a namespace (package)
+•
+Importing namespace adds names of members of imported package to its namespace
+•
+Conceptually equivalent to having an element import to each individual member of the
+imported namespace
+•
+Notated using dashed line with open arrowhead from importing namespace to imported
+package, labelled with keyword
+–
+<<import>> if package import is public and
+–
+<<access>> if package import is private
+•
+If package import is public, then imported elements will be visible outside of importing
+package, while if it is private, they will not be visible
+•
+In example above, elements in types are imported to shoppingCart and then further
+imported to webShop
+•
+But elements of auxiliary only accessible from shoppingCart, not webShop
+15
+auxiliary
+types
+shoppingCart
+webShop
+«import»
+«access»
+«import»
+
+Components
+•
+UML defines a component to be
+–
+“a modular unit with well-defined interfaces that is replaceable within its
+environment” (UML Superstructure Specification, v.2.0, Chapter 8)
+•
+Component-based design emphasises reuse
+–
+Component is an autonomous unit within a system
+•
+Component defines its behaviour in terms of provided and required
+interfaces
+–
+A component may be replaced with another if they both provide and require the
+same interfaces
+•
+In UML, a component is a special type of class
+–
+However, a component will often be a collection of collaborating classes
+•
+A component can therefore have attributes and operations and may
+participate in associations and generalizations
+•
+A component provides interfaces that it realizes and exposes to its
+environment
+•
+A component
+may
+require
+interfaces
+from
+other
+components
+in
+its
+environment in order to be able to provide all its functionality
+•
+External or “Black box” view on a component considers its publicly visible
+properties and operations
+•
+Internal or “White box” view on a component considers its private properties
+and realizing classifiers (i.e., the classes and other elements inside the
+component) and shows how the behaviour of the component is realized
+internally
+16
+
+17
+
+Component notation
+• Component icon is a class icon with the keyword
+<<component>>
+– Optionally can include a component icon in the top, right-hand
+corner
+• Black-box view shows only interfaces provided and
+required either using “ball-and-socket” notation or listed
+in a compartment of the component rectangle
+18
+
+Internal, white-box view on components
+«interface»
+OrderEntry
+create()
+validateDetails()
+addOrderline()
+«interface»
+Person
+findByName()
+create()
+getDetails()
+«component»
+Order
+«use»
+• Interfaces can also be displayed in full using class icons, 
+use 
+– Dashed arrow with white triangle head for provided interfaces 
+and
+– Dashed arrow with open arrowhead with keyword <<use>> for 
+required interfaces
+19
+
+Artifacts
+•
+An artifact is a concrete element in the physical world
+•
+An artifact is the specification of a physical piece of information
+such
+as
+a
+binary
+executable,
+a
+database
+table
+or
+an
+implemented component such as a DLL or a Java class file
+•
+Each artifact has a filename
+•
+An artifact is represented by a normal class rectangle with the
+keyword <<artifact>> or an artifact icon in the top right corner
+•
+Name of artifact may (optionally) be underlined
+•
+Artifact is said to manifest model elements that are used to
+construct the artifact
+– Manifestation
+indicated
+by
+dependency
+arrow
+with
+keyword
+<<manifest>>
+20
+«artifact»
+Order.jar
+«artifact»
+Order.jar
+«component»
+Order
+«manifest»
+
+21
+Component Diagram – another example
+(www.cs.tut.fi/tapahtumat/olio2004/richardson.pdf)
+
+Component Diagram – another example
+(www.cs.tut.fi/tapahtumat/olio2004/richardson.pdf)
+22
+
+What is a Deployment Diagram?
+•
+Deployment Diagram – a diagram that shows the physical relationships 
+among software and hardware components in a system
+– Components – physical modules of code
+– Connections – show communication paths
+– Dependencies – show how components communicate with other 
+components
+– Nodes – computational units, usually a pieces of hardware
+23
+A deployment diagram is a UML diagram type 
+that shows the execution architecture of a 
+system, including nodes such as hardware or 
+software execution environments, and the 
+middleware connecting them.
+
+•
+A deployment diagram is a UML diagram type that shows the
+execution architecture of a system, including nodes such as
+hardware or software execution environments, and the middleware
+connecting them.
+•
+Deployment diagrams are typically used to visualize the physical
+hardware and software of a system.
+•
+The term Deployment itself describes the purpose of the diagram.
+Deployment diagrams are used for describing the hardware
+components,
+where
+software
+components
+are
+deployed.
+Component diagrams and deployment diagrams are closely related.
+24
+
+Purpose
+•
+Component diagrams are used to describe the components and
+deployment diagrams shows how they are deployed in hardware.
+•
+UML is mainly designed to focus on the software artifacts of a system.
+However, these two diagrams are special diagrams used to focus on
+software and hardware components.
+•
+Most of the UML diagrams are used to handle logical components but
+deployment diagrams are made to focus on the hardware topology of a
+system. Deployment diagrams are used by the system engineers.
+25
+
+• The
+purpose
+of
+deployment
+diagrams
+can
+be
+described as −
+– Visualize the hardware topology of a system.
+– Describe the hardware components used to deploy
+software components.
+– Describe the runtime processing nodes.
+26
+
+27
+
+The physical layer
+davesPC : PC
+susannesMac: Mac
+«LAN»
+54mbps wireless
+• Deployment diagram shows
+– The physical communication links between hardware items (nodes)
+(e.g., pcs, printers)
+– The relationships between physical devices (nodes) and processes 
+(artifacts)
+• Physical layer consists of the machines, represented by nodes, 
+and the (physical) connections between them (e.g., cables), 
+represented by associations
+• Nodes have node types
+28
+
+Deploying the software artifacts on the 
+hardware nodes
+davesPC : PC
+susannesMac: Mac
+«LAN»
+54mbps wireless
+«artifact»
+oxo: GameEngine
+«artifact»
+p1: PlayerInterface
+«artifact»
+p2: PlayerInterface
+• Artifact shown inside a node to show that it runs on 
+the node
+• If an artifact depends on another artifact then there 
+must be a physical link between the nodes on which 
+they are deployed
+29
+
+Deployment Diagram
+30
+J2EE 
+Server
+Membership 
+Server
+IIS + PhP 
+Server
+Tomcat 
+Server
+TCP/IP
+TCP/IP
+DecNet
+•
+Shows a set of processing nodes and their relationships.
+•
+Represents the static deployment view of an architecture.
+•
+Nodes typically enclose one or more components.
+
+Structural Diagrams - Deployment Diagram
+(http://www.agilemodeling.com/artifacts/deploymentDiagram.htm)
+31
+Student administration application
+Physical nodes - stereotype device
+WebServer - physical device or software artifact
+RMI/message bus: connection type
+Nodes can contain other nodes or software
+artifacts recursively
+Deployment specs: configuration files: name and
+properties
+
+Activity Diagrams
+• Fancy flowchart
+– Displays the flow of activities involved in a single process 
+– States 
+• Describe what is being processed
+• Indicated by boxes with rounded corners
+– Swim lanes
+• Indicates which object is responsible for what activity
+– Branch
+• Transition that branch
+• Indicated by a diamond
+– Fork
+• Transition forking into parallel activities
+• Indicated by solid bars
+– Start and End
+
+Sample Activity Diagram
+• Ordering System
+• May need multiple 
+diagrams from 
+other points of view
+
+Activity Diagram Example
+
